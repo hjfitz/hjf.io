@@ -8,7 +8,7 @@ import PostSummary from '../components/PostSummary'
 
 export const pageQuery = graphql`
 query BlogContentQuery {
-  allMdx(filter: {frontmatter: {type: {eq: "blog"}}}) {
+  allMdx(filter: {frontmatter: {type: {eq: "blog"}}}, sort: {fields: frontmatter___date, order: DESC}) {
     edges {
       node {
         id

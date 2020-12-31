@@ -10,7 +10,7 @@ html, body, #___gatsby, #gatsby-focus-wrapper {
 }
 
 body {
-	--yellow: #ff0;
+	--yellow: #FBBF24;
 	--dark: #000;
 	&::-webkit-scrollbar {
 		width: 12px;
@@ -25,3 +25,35 @@ body {
 	}
 	scrollbar-color: var(--yellow) var(--dark);
 }
+
+@media screen and (max-width: 640px) {
+	.container {
+
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.container {
+	
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	.container {
+		max-width: 800px;
+	}
+}
+
+@media screen and (max-width: 1280px) {
+	.container {
+	
+	}
+}
+
+@media screen and (max-width: 1536px) {
+	.container {
+	
+	}
+}
+
+

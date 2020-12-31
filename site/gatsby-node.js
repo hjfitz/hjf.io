@@ -1,4 +1,5 @@
 const path = require('path')
+const {getGithubActivity} = require('./src/build-tools/get-github-info')
 
 const mdxTemplate = path.resolve(__dirname, 'src', 'templates', 'mdx.template.jsx')
 
@@ -49,7 +50,25 @@ function onCreateNode({ node, actions: {createNodeField}, getNode }) {
 }
 
 
+async function onCreatePage({page, actions: {createPage, deletePage}}) {
+	if (page.path === '/') {
+		console.log('modifying home page')
+		const ghActivity = await getGithubActivity()
+
+		deletePage(page)
+
+		createPage({
+			...page,
+			context: {
+				...page.context,
+				ghActivity,
+			}
+		})
+	}
+}
+
 module.exports = {
 	createPages,
 	onCreateNode,
+	onCreatePage,
 }
