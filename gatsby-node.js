@@ -1,5 +1,6 @@
 const path = require('path')
 const {getGithubActivity} = require('./src/build-tools/get-github-info')
+const {getTwitterTweets} = require('./src/build-tools/get-twitter-tweets')
 
 const mdxTemplate = path.resolve(__dirname, 'src', 'templates', 'mdx.template.jsx')
 
@@ -53,7 +54,10 @@ function onCreateNode({ node, actions: {createNodeField}, getNode }) {
 async function onCreatePage({page, actions: {createPage, deletePage}}) {
 	if (page.path === '/') {
 		console.log('modifying home page')
-		const ghActivity = await getGithubActivity()
+		const [ghActivity, tweets] = await Promise.all([
+			getGithubActivity(),
+			getTwitterTweets(),
+		])
 
 		deletePage(page)
 
@@ -62,6 +66,8 @@ async function onCreatePage({page, actions: {createPage, deletePage}}) {
 			context: {
 				...page.context,
 				ghActivity,
+				tweets,
+
 			}
 		})
 	}

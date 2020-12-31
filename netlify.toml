@@ -3,3 +3,6 @@
 	base = "./"
 	command = "yarn build"
 	publish = "./public"
+
+[dev]
+	framework = "#auto"

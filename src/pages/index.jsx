@@ -40,10 +40,12 @@ function useLiveData(context) {
 	useEffect(() => {
 		// refresh github and twitter data
 		async function refresh() {
-			const [ghActivity] = await Promise.all([
+			const [ghActivity, tweets] = await Promise.all([
 				getGithubActivity(),
+				fetch('/.netlify/functions/twitter').then(r => r.json())
 			])
-			setTwithubData({ghActivity})
+			console.log({tweets, context})
+			setTwithubData({ghActivity, tweets})
 		}
 
 		refresh()
@@ -53,14 +55,15 @@ function useLiveData(context) {
 
 
 const IndexPage = ({pageContext, data: {allMdx: {edges}}}) => {
-	const {ghActivity} = useLiveData(pageContext)
+	const {ghActivity, tweets} = useLiveData(pageContext)
+	console.log({tweets})
 	return (
 		<Layout>
 			<SEO title="Home" />
 			<div className="gap-6 grid grid-cols-1 md:grid-cols-3 grid-rows-2 md:grid-rows-1">
 				<section className="grid auto-rows-max gap-4 grid-cols-1 row-start-2 md:row-start-1">
 					<GithubActivity events={ghActivity} />
-					<TwitterActivity tweets={[]} />
+					<TwitterActivity tweets={tweets} />
 				</section>
 				<section className="grid gap-4 grid-cols-1 col-span-2">
 					<h1 className="text-lg text-center">Recent Blogs</h1>
