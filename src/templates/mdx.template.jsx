@@ -4,6 +4,10 @@ import {MDXRenderer} from 'gatsby-plugin-mdx'
 
 import SEO from '../components/SEO'
 import Layout from '../components/Layout'
+import {MDXProvider} from '@mdx-js/react'
+
+import "prismjs/themes/prism-solarizedlight.css"
+
 
 export const pageQuery = graphql`
 	query BlogPostQuery($id: String) {
@@ -25,9 +29,17 @@ const Post = ({data: {mdx}}) => (
 			title={mdx.frontmatter.title} 
 			description={mdx.frontmatter.description}
 		/>
-		<article className="">
-			<h1 className="">{mdx.frontmatter.title}</h1>
-			<MDXRenderer className="">{mdx.body}</MDXRenderer>
+		<article>
+			<h1>{mdx.frontmatter.title}</h1>
+			<MDXProvider
+				components={{
+					h2: props => <h2 {...props} className="text-xl" />
+				}}
+			>
+				<MDXRenderer className="">
+					{mdx.body}
+				</MDXRenderer>
+			</MDXProvider>
 		</article>
 	</Layout>
 )
