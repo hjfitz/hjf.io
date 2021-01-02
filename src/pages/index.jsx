@@ -44,7 +44,6 @@ function useLiveData(context) {
 				getGithubActivity(),
 				fetch('/.netlify/functions/twitter').then(r => r.json())
 			])
-			console.log({tweets, context})
 			setTwithubData({ghActivity, tweets})
 		}
 
@@ -56,7 +55,6 @@ function useLiveData(context) {
 
 const IndexPage = ({pageContext, data: {allMdx: {edges}}}) => {
 	const {ghActivity, tweets} = useLiveData(pageContext)
-	console.log({tweets})
 	return (
 		<Layout>
 			<SEO title="Home" />

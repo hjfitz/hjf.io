@@ -27,6 +27,7 @@ async function createPages({graphql, actions: { createPage }}) {
 
 	// We'll call `createPage` for each result
 	posts.forEach(({ node }, index) => {
+		if (node.frontmatter.draft) return
 
 		console.log(`creating ${node.frontmatter.path}`)
 		createPage({

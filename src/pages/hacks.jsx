@@ -33,7 +33,6 @@ query HacksContentQuery {
 `
 
 const Blog = ({data: {allMdx: {edges}}}) => {
-	console.log(edges[0])
 	return (
 		<Layout>
 			<SEO title="Home" />
