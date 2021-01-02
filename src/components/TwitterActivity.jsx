@@ -1,10 +1,5 @@
 import React from 'react'
-
-const decode = text => {
-	const el = document.createElement('div')
-	el.innerHTML = text
-	return el.textContent
-}
+import {decode} from 'html-entities'
 
 const TwitterActivity = ({tweets}) => {
 	return (

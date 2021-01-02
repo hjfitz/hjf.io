@@ -7,6 +7,7 @@ import {loginUrl, makeSpotifyRequest} from './spotify'
 import {capitalise, titleify} from './util'
 
 const App = () => {
+	if (typeof window === 'undefined') return ''
 	// get our token response, check if it's valid
 	const resp = JSON.parse(localStorage.getItem('tokenResponse'))
 	let isValid = false
