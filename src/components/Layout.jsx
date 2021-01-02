@@ -13,10 +13,11 @@ const Layout = ({children}) => {
 				<main className="container p-8 mx-auto">
 					<section className="pt-4 pb-8 text-center">
 						<header className="pb-8">hjf.io</header>
-						<nav className="text-4xl grid gap-4 grid-cols-4">
+						<nav className="text-4xl grid gap-4 sm:grid-cols-5">
 							<Link to="/">Home</Link>
 							<Link to="/about">About</Link>
 							<Link to="/blog">Blog</Link>
+							<Link to="/hacks">Hacks</Link>
 							<Link to="/uses">/uses</Link>
 						</nav>
 					</section>

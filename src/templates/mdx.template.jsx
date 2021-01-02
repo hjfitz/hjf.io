@@ -30,7 +30,7 @@ const Post = ({data: {mdx}}) => (
 			description={mdx.frontmatter.description}
 		/>
 		<article>
-			<h1>{mdx.frontmatter.title}</h1>
+			<h1 className="py-2 text-4xl text-center">{mdx.frontmatter.title}</h1>
 			<MDXProvider
 				components={{
 					h2: props => <h2 {...props} className="text-xl" />
