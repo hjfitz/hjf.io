@@ -30,7 +30,7 @@ const App = () => {
 	const terms = Object.keys(termLookup)
 	
 	const [term, setCurrentTerm] = useState(terms[0])
-	const [type, setCurentType] = useState('artists')
+	const [type, setCurentType] = useState('tracks')
 
 	const setType = type => () => setCurentType(type)
 	const setTerm = term => () => setCurrentTerm(term)
@@ -97,27 +97,28 @@ const App = () => {
 	}
 
 	async function fetchNowplaying() {
-		try {
-			const playingResp = await makeSpotifyRequest(`/me/player/currently-playing`, token.access_token) 
-			const {images} = playingResp.item.album
-			const {length, [length - 1]: cover} = images
-			setPlaying({
-				track: playingResp.item.name,
-				artist: playingResp.item.artists.map(a => a.name).join(', '),
-				album: playingResp.item.album.name,
-				art: cover.url,
-			})
-		} catch (err) {
-			console.info('unable to parse nowplaying data. err:', err)
+		const playingResp = await makeSpotifyRequest(`/me/player/currently-playing`, token.access_token) 
+		if (!playingResp) {
+			console.info('unable to parse nowplaying data')
+			setPlaying(null)
+			return
 		}
+		const {images} = playingResp.item.album
+		const {length, [length - 1]: cover} = images
+		setPlaying({
+			track: playingResp.item.name,
+			artist: playingResp.item.artists.map(a => a.name).join(', '),
+			album: playingResp.item.album.name,
+			art: cover.url,
+		})
 	}
 
-	function playTrack(uri) {
-		return makeSpotifyRequest('/me/player/play', token.access_token, 'PUT', {uris: [uri]})
+	async function playTrack(uri) {
+			return makeSpotifyRequest('/me/player/play', token.access_token, 'PUT', {uris: [uri]})
 	}
 
 	function playArtist(uri) {
-		return makeSpotifyRequest('/me/player/play', token.access_token, 'PUT', {context_uri: uri})
+			return makeSpotifyRequest('/me/player/play', token.access_token, 'PUT', {context_uri: uri})
 	}
 
 	useEffect(() => {
@@ -135,14 +136,14 @@ const App = () => {
 		)
 	}
 
+	const active = 'text-white bg-blue-600'
+
 	if (!data) return <div>Loading data</div>
 
 	return (
 		<main className="container mx-auto">
 			<header className="flex flex-row flex-wrap pt-2">
 				<span className="mr-4"><strong className="font-semibold">User:</strong> {data.self.display_name} ({data.self.id})</span>
-				<span className="mr-4"><strong className="font-semibold">Expires on:</strong> {token.expires}</span>
-
 				{playing 
 					? (
 						<span className="mr-4">
@@ -165,13 +166,13 @@ const App = () => {
 						<h2 className="py-2 text-lg text-center">Type</h2>
 						<div className="flex flex-wrap items-center justify-center">
 							<button 
-								className={`px-6 py-2 bg-blue-300 m-2 sm:my-0 rounded-md hover:bg-blue-500 ${type === 'artists' && 'active'}`} 
+								className={`px-6 py-2 bg-blue-300 m-2 sm:my-0 rounded-md hover:bg-blue-500 ${type === 'artists' && active}`} 
 								onClick={setType('artists')}
 							>
 								Artists
 							</button>
 							<button 
-								className={`px-6 py-2 bg-blue-300 m-2 sm:my-0 rounded-md hover:bg-blue-500 ${type === 'tracks' && 'active'}`} 
+								className={`px-6 py-2 bg-blue-300 m-2 sm:my-0 rounded-md hover:bg-blue-500 ${type === 'tracks' && active}`} 
 								onClick={setType('tracks')}
 							>
 								Tracks
@@ -183,7 +184,7 @@ const App = () => {
 						<div className="flex flex-wrap items-center justify-center">
 							{Object.entries(termLookup).map(([termL, desc]) => (
 								<button 
-									className={`px-6 py-2 bg-blue-300 rounded-md hover:bg-blue-500 m-2 sm:my-0 ${term === termL && 'active'}`} 
+									className={`px-6 py-2 bg-blue-300 rounded-md hover:bg-blue-500 m-2 sm:my-0 ${term === termL && active}`} 
 									key={termL} 
 									onClick={setTerm(termL)}
 								>

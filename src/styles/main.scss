@@ -26,6 +26,20 @@ body {
 	scrollbar-color: var(--yellow) var(--dark);
 }
 
+
+
+
+:not(pre) > code[class*="language-"] {
+	padding: 0 0.5rem!important;
+	font-size: 1rem!important;
+	line-height: 1.5rem!important;
+}
+
+pre[class*="language-"] {
+	font-size: 0.75rem!important;
+	line-height: 1rem!important;
+}
+
 @media screen and (max-width: 640px) {
 	.container {
 

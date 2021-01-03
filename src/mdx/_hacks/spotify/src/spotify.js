@@ -36,9 +36,9 @@ export function makeSpotifyRequest(endpoint, token, method = 'GET', body = {}) {
 		requestInit.body = JSON.stringify(body)
 	}
 
-	console.log({requestInit})
+	console.log({endpoint, requestInit})
 
-	return fetch(url, requestInit).then(r => r.json())
+	return fetch(url, requestInit).then(r => r.json()).catch(console.warn)
 }
 
 

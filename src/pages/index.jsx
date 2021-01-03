@@ -68,7 +68,7 @@ const IndexPage = ({pageContext, data: {allMdx: {edges}}}) => {
 					{edges.map(edge => (
 						<PostSummary 
 							post={edge.node.frontmatter} 
-							key={edge.id}
+							key={edge.node.id}
 						/>
 					))}
 				</section>
