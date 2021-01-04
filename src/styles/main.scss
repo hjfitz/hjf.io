@@ -40,6 +40,11 @@ pre[class*="language-"] {
 	line-height: 1rem!important;
 }
 
+.token.table {
+	// prism and gatsby are a bit iffy sometimes
+	display: inline!important;
+}
+
 @media screen and (max-width: 640px) {
 	.container {
 

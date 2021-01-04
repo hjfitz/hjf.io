@@ -10,19 +10,25 @@ tags:
   - "Health"
 description: "I'm trying to lose weight and retain muscle - I made this calculator to help me, and you."
 featureImg: "./feature-arm.png"
+featureAlt: "A robotic arm, flexing"
 ---
 
 import Calculator from './src'
 
 Losing weight without muscle is my gain for the next few months. There are a few things that I've found out there that seem to be common, things that appear to be 'the way'. I'll stuff them here, partly to help me process, partly because I want to write some code.
 
-There's some acronyms to get through, of course.
+The rule of thumb for weight is calories in === calories out. That is, if you eat as many calories as you burn, you won't change in shape.
 
-* BMR: Basal Metabolic Rate. This is, if you were in a coma, the amount of calories needed to keep you alive. If you eat this, you will likely lose weight
-* TDEE: Total Daily Energy Expenditure. The total amount of calories to keep you going, at your current weight, with all of the activities you do. If you eat this, nothing will change. If you eat less, you will lose weight.
+If you eat more calories than what you need, you'll store those excess calories as fat. Less than you need and you'll lose the fat you've stored.
+
+When you're trying to look lean, or ripped, there's an art to losing that stored fat, whilst minimising muscle loss. You *will* lose muscle when you 'cut' calories - but you can minimise this with a high protein intake.
+
+There are a few terms to understand when it comes to calories, too: BMR and TDEE.
+* Your Basal Metabolic Rate (BMR) is, if you were in a coma, the amount of calories needed to keep you alive. If you eat this, you will likely lose weight
+* Total Daily Energy Expenditure, TDEE, is the total amount of calories to keep you living. This is the calories in === calories out part. The energy you need to do living and moving.
 
 As well as this, there are some other things to keep in mind. From what I've seen on the internet, which never lies, there are two more things to keep in mind and this is specific to weight loss with muscle retention. Thou shalt:
-* Eat 2.0-2.4g of protein for each KG of muscle mass.
+* Eat 2.0-2.4g of protein for each KG of muscle mass. If you go over, this is fine - it will end up in the loo 💩.
 * Aim to lose 0.5-1.0KG per week.
 
 Of course, you still want to hit the gym and keep training - remind your body that you need those muscles. That training also burns extra calories, so we need to keep that in mind. For all of this, I've hacked out a calculator that we can use, below.
