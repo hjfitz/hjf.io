@@ -131,7 +131,7 @@ const App = () => {
 	if (!token) {
 		return (
 			<div>
-				<h1><a href={loginUrl}>Login to spotify to view stats</a></h1>
+				<h1><a href={loginUrl}>Click here to ogin to spotify to view stats</a></h1>
 			</div>
 		)
 	}
