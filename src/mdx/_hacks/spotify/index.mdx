@@ -1,7 +1,7 @@
 ---
 title: "Spotify Most Listened"
 date: "2021-01-02T18:57:00.000Z"
-type: hack
+type: blog
 draft: false
 path: "/spotify-listened/"
 description: "A quick SPA to show you your most listened to tracks on spotify, short and long term"
@@ -9,6 +9,17 @@ featureImg: "./spotify.jpg"
 ---
 
 import SpotifyStats from "./src/index.jsx"
+
+I love playing with different APIs. Sometimes there are hidden bits of information that you can pull...
+
+In the case of Spotify, we can login, get an access token and pull some information about our favourite tracks. They give us this through a few feeds:
+
+* long-term (all-time) 
+* short-term (recent 4 weeks).
+
+It's a little different to the yearly wrap-up (and not as cool as [an AI roasting your taste](https://pudding.cool/2020/12/judge-my-spotify/))
+
+The below login link will log in (via an oauth-implicit flow) and show you those. It will also show your now-playing. If you're already listening to something, clicking a song will play it on your spotify!
 
 <SpotifyStats />
 
