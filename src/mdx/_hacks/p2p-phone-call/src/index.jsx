@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {render} from 'react-dom'
-import Peer from 'peerjs'
 
+// largely broken
 import './style.css'
 
 const randID = () => Math.random().toString(36).substr(2, 10)
@@ -56,6 +56,8 @@ function useChat(peer) {
 
 
 const ChatApp = () => {
+	if (typeof window === 'undefined') return ''
+	const Peer = require('peerjs').default
 	const idInit = randID()
 	const id = useRef(idInit)
 	const peer = useRef(new Peer(idInit))
@@ -223,4 +225,18 @@ const ChatApp = () => {
 	)
 }
 
-export default ChatApp
+// awful hack but i guess it helps load time!
+const GatsbyPeerCallHelper = () => {
+	const [peerCode, setPeerCode] = useState(null)
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const lib = require('peerjs')
+			setPeerCode(lib.default)
+		}
+	}, [])
+	if (!peerCode) return ''
+	console.log({peerCode})
+	return <ChatApp Peer={peerCode} />
+}
+
+export default ChatApp 
