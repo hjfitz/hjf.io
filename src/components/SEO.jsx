@@ -26,7 +26,7 @@ function SEO({description, lang, meta, title, img, canonical}) {
 		`
 	)
 
-	const seoImg = img || (site.siteMetadata.url + '/public/wiz.png')
+	const seoImg = img || (site.siteMetadata.url + '/static/wiz.png')
 
 	const canon = canonical || site.siteMetadata.siteUrl
 
