@@ -13,23 +13,45 @@ import "prism-themes/themes/prism-material-oceanic.css"
 
 export const pageQuery = graphql`
 	query BlogPostQuery($id: String) {
-		mdx(id: { eq: $id }) {
+		mdx(id: {eq: $id}) {
 			id
 			body
 			frontmatter {
 				title
 				description
 				date
+				path
+				featureImg {
+					childImageSharp {
+						original {
+							src
+						}
+					}
+				}
+			}
+		}
+		site {
+			siteMetadata {
+				siteUrl
 			}
 		}
 	}
 `
 
-const Post = ({data: {mdx}}) => (
+function generateSEOImage(mdx, site) {
+	const src = mdx?.frontmatter?.featureImg?.childImageSharp?.original.src
+	if (!src) return // default to wizard image
+	const {siteUrl} = site.siteMetadata
+	return siteUrl + src
+}
+
+const Post = ({data: {site, mdx}}) => (
 	<Layout>
 		<SEO 
 			title={mdx.frontmatter.title} 
 			description={mdx.frontmatter.description}
+			img={generateSEOImage(mdx, site)}
+			canonical={site.siteMetadata.siteUrl + mdx.frontmatter.path}
 		/>
 		<article>
 			<h1 className="py-2 text-5xl text-center">{mdx.frontmatter.title}</h1>

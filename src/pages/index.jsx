@@ -11,7 +11,7 @@ import TwitterActivity from "../components/TwitterActivity"
 
 export const pageQuery = graphql`
 	query PageContentQuery {
-		allMdx(limit: 4, filter: {frontmatter: {type: {eq: "blog"}}}, sort: {fields: frontmatter___date, order: DESC}) {
+		allMdx(limit: 4, filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
 			edges {
 				node {
 					id

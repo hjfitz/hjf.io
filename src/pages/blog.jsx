@@ -8,7 +8,7 @@ import PostSummary from '../components/PostSummary'
 
 export const pageQuery = graphql`
 query BlogContentQuery {
-  allMdx(filter: {frontmatter: {type: {eq: "blog"}}}, sort: {fields: frontmatter___date, order: DESC}) {
+  allMdx(filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
     edges {
       node {
         id
@@ -17,6 +17,7 @@ query BlogContentQuery {
           path
           title
           date
+          draft
           description
           featureImg {
             childImageSharp {

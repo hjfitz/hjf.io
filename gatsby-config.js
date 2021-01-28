@@ -3,6 +3,7 @@ module.exports = {
 		title: "Harry's Code and Bugs",
 		description: "Harry's code, bugs and quick hacks",
 		author: '@__hjf',
+		siteUrl: process.env.SITE_URL || 'https://hjf.io/'
 	},
 	plugins: [
 		'gatsby-plugin-react-helmet',
@@ -42,15 +43,17 @@ module.exports = {
 		{
 			resolve: 'gatsby-plugin-manifest',
 			options: {
-				name: 'gatsby-starter-default',
-				short_name: 'starter',
+				name: "Harry's Code and Bugs",
+				short_name: 'hjf.io',
 				start_url: '/',
-				background_color: '#663399',
-				theme_color: '#663399',
+				background_color: '#000',
+				theme_color: '#000',
 				display: 'minimal-ui',
 				icon: 'src/components/wizard.webp', // This path is relative to the root of the site.
 			},
 		},
+		'gatsby-plugin-sitemap',
+		'gatsby-plugin-robots-txt',
 		// this (optional) plugin enables Progressive Web App + Offline functionality
 		// To learn more, visit: https://gatsby.dev/offline
 		// 'gatsby-plugin-offline',

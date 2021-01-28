@@ -10,7 +10,7 @@ import PropTypes from "prop-types"
 import { Helmet } from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
 
-function SEO({ description, lang, meta, title }) {
+function SEO({description, lang, meta, title, img, canonical}) {
 	const { site } = useStaticQuery(
 		graphql`
 			query {
@@ -19,11 +19,16 @@ function SEO({ description, lang, meta, title }) {
 						title
 						description
 						author
+						siteUrl
 					}
 				}
 			}
 		`
 	)
+
+	const seoImg = img || (site.siteMetadata.url + '/public/wiz.png')
+
+	const canon = canonical || site.siteMetadata.siteUrl
 
 	const metaDescription = description || site.siteMetadata.description
 	const defaultTitle = site.siteMetadata?.title
@@ -39,6 +44,10 @@ function SEO({ description, lang, meta, title }) {
 					content: metaDescription,
 				},
 				{
+					name: 'canonical',
+					content: canon,
+				},
+				{
 					property: 'og:title',
 					content: title,
 				},
@@ -51,8 +60,16 @@ function SEO({ description, lang, meta, title }) {
 					content: 'website',
 				},
 				{
+					property: 'og:image',
+					content: seoImg,
+				},
+				{
 					name: 'twitter:card',
-					content: 'summary',
+					content: 'summary_large_image',
+				},
+				{
+					name: 'twitter:image',
+					content: seoImg,
 				},
 				{
 					name: 'twitter:creator',
