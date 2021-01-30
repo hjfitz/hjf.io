@@ -1,5 +1,8 @@
 module.exports = {
-	purge: [],
+	purge: [
+		'./src/**/*.jsx',
+		'./gatsby-browser.js',
+	],
 	darkMode: 'media', 
 	theme: {
 		borderWidth: {

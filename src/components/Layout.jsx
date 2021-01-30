@@ -5,10 +5,11 @@ import SEO from './SEO';
 import '../styles/main.scss';
 import { Link } from 'gatsby';
 
+// todo: potentially move this to gatsby-browser.js
 const Layout = ({ children }) => (
 	<>
 		<SEO />
-		<div className="min-h-full border-black border-16">
+		<div className="min-h-full text-black bg-white border-black border-16 dark:bg-gray-900 dark:text-gray-50">
 			<main className="container p-8 mx-auto">
 				<section className="pt-4 pb-8 text-center">
 					<header className="pb-8">hjf.io</header>
@@ -17,12 +18,12 @@ const Layout = ({ children }) => (
 						<Link to="/about">About</Link>
 						<Link to="/blog">Blog</Link>
 						<Link to="/uses">/uses</Link>
-  </nav>
-  </section>
+					</nav>
+				 </section>
 				{children}
-  </main>
-  </div>
-  </>
+			</main>
+		</div>
+	</>
 );
 
 export default Layout;
