@@ -45,6 +45,15 @@ pre[class*="language-"] {
 	display: inline!important;
 }
 
+nav rect {
+}
+
+@media (prefers-color-scheme: dark) {
+	nav rect {
+		fill: rgb(249, 250, 251);
+	}
+}
+
 @media screen and (max-width: 640px) {
 	.container {
 
