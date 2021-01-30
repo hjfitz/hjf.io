@@ -148,28 +148,34 @@ const ChatApp = () => {
 					conn.on('open', () => setPartner(conn))
 				})
 			})
+			return () => stream.getTracks().forEach(track => track.stop())
 		}
 	}, [stream])
 
 	return (
 		<main className="pt-3">
 			<div>
-				<p className="h-12">
-					<span className="px-4 py-2 text-sm whitespace-no-wrap bg-gray-300 border-2 border-r-0 rounded-l">Your ID:</span>
+				<div className="h-12">
+					<span 
+						className="px-4 py-2 text-sm whitespace-no-wrap bg-gray-300 border-2 border-r-0 rounded-l dark:border-black dark:bg-gray-700"
+					>
+						Your ID:
+					</span>
 					<span
-						className="w-full px-4 py-2 bg-white border-2 rounded-r cursor-pointer" 
+						className="px-4 py-2 text-sm bg-white border-2 rounded-r cursor-pointer dark:border-black dark:bg-gray-400" 
 						onClick={copyID}
 					>
 							{id.current}
 					</span>
-				</p>
+				</div>
+
 				<div className="flex">
-					<span className="px-4 py-2 text-sm whitespace-no-wrap bg-gray-300 border-2 border-r-0 rounded-l">Partner ID:</span>
+					<span className="px-4 py-2 text-sm whitespace-no-wrap bg-gray-300 border-2 border-r-0 rounded-l dark:border-black dark:bg-gray-700 dark:text-white-50">Partner ID:</span>
 					<input 
 						ref={idIn}
 						onKeyUp={tryCall} 
 						name="field_name" 
-						className="px-4 py-2 border-2 rounded-r" 
+						className="px-4 py-2 border-2 rounded-r dark:bg-gray-400 dark:border-black" 
 						type="text" 
 						placeholder="Enter your partner's ID" 
 					/>
@@ -179,46 +185,22 @@ const ChatApp = () => {
 
 
 			<div className="my-4 grid grid-cols-10 grid-rows-2 gap-8">
-				<section className={`${showChat ? 'col-span-4' : 'col-span-5'} bg-white shadow`}>
-						<video muted ref={video} className="us" />
+				<section className='bg-white shadow col-span-5 dark:bg-gray-700'>
+					<video muted ref={video} className="us" />
 					<div className="flex flex-wrap justify-between px-4 py-2 sm:flex-nowrap">
-							<button type="button" onClick={mute}>Mute (muted: {muted.toString()})</button>
-							<button type="button" onClick={share}>Share screen</button>
-						{/*<button type="button" onClick={toggleChat}>{showChat ? 'hide' : 'show'} chat</button> */}
-						</div>
+						<button type="button" onClick={mute}>Mute (muted: {muted.toString()})</button>
+						<button type="button" onClick={share}>Share screen</button>
+					</div>
+				</section>
 
-					</section>
+				<section className='bg-white shadow col-span-5 dark:bg-gray-700'>
+					<h2 className="py-2 text-center">Your Partner</h2>
+					<video ref={them} />
+				</section>
 
-					<section className={`${showChat ? 'col-span-4' : 'col-span-5'} bg-white shadow`}>
-						<h2 className="py-2 text-center">Your Partner</h2>
-						<video ref={them} />
-					</section>
-
-				{/*			<section className={`${showChat || 'hidden'} col-span-2 ${sharing && 'row-span-2'} flex flex-col justify-between shadow bg-white`}>
-						<h2 className="py-2 text-center">Chat</h2>
-						<div className="flex-1 px-2 break-words">
-							{messages.map(message => (
-								<div className={`message ${message.from}`}>
-									<div key={message.id}>
-										<p>{message.text}</p>
-									</div>
-								</div>
-							))}
-						</div>
-						<div className="flex border-t-2">
-							<input 
-								onKeyUp={sendMessage} 
-								name="field_name" 
-								className="w-full px-4 py-2" 
-								type="text" 
-								placeholder="" 
-							/>
-						</div>
-					</section> */}
-
-				<section className={`${showChat ? 'col-span-8' : 'col-span-10'}`}>
-						<video ref={theirScreen} />
-					</section>
+				<section className='col-span-10'>
+					<video ref={theirScreen} />
+				</section>
 			</div>
 
 		</main>
