@@ -3,7 +3,7 @@ module.exports = {
 		'./src/**/*.jsx',
 		'./gatsby-browser.js',
 	],
-	darkMode: 'media', 
+	darkMode: 'class', 
 	theme: {
 		borderWidth: {
 			DEFAULT: '1px',
