@@ -4,6 +4,7 @@
   "description": "my personal web sight",
   "version": "0.1.0",
   "author": "Harry F <hfitz83@gmail.com>",
+  "browserslist": ["last 2 versions"],
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
@@ -14,6 +15,7 @@
     "browser-monads": "^1.0.0",
     "date-fns": "^2.16.1",
     "dotenv-flow": "^3.2.0",
+    "face-api.js": "^0.22.2",
     "gatsby": "^2.26.1",
     "gatsby-image": "^2.5.0",
     "gatsby-plugin-manifest": "^2.6.1",
