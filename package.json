@@ -4,12 +4,14 @@
   "description": "my personal web sight",
   "version": "0.1.0",
   "author": "Harry F <hfitz83@gmail.com>",
-  "browserslist": ["last 2 versions"],
+  "browserslist": [
+    "last 2 versions"
+  ],
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@tailwindcss/custom-forms": "^0.2.1",
-    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat",
     "autoprefixer": "^9",
     "axios": "^0.21.1",
     "browser-monads": "^1.0.0",

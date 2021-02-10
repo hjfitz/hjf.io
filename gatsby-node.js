@@ -2,10 +2,13 @@ const path = require('path')
 const {getGithubActivity} = require('./src/build-tools/get-github-info')
 const {getTwitterTweets} = require('./src/build-tools/get-twitter-tweets')
 
-const mdxTemplate = path.resolve(__dirname, 'src', 'templates', 'mdx.template.jsx')
+const templatesDir = path.resolve(__dirname, 'src', 'templates')
+const mdxTemplate = path.resolve(templatesDir, 'mdx.template.jsx')
+const paginatedBlogTemplate = path.resolve(templatesDir, 'blog.template.jsx')
 
 
 async function createPages({graphql, actions: { createPage }}) {
+	// create all pages from mdx
 	const result = await graphql(`
 		query MyQuery {
 			allMdx {
@@ -26,7 +29,7 @@ async function createPages({graphql, actions: { createPage }}) {
 	const posts = result.data.allMdx.edges
 
 	// We'll call `createPage` for each result
-	posts.forEach(({ node }, index) => {
+	posts.forEach(({ node }) => {
 		if (node.frontmatter.draft) return
 
 		console.log(`creating ${node.frontmatter.path}`)
@@ -38,6 +41,67 @@ async function createPages({graphql, actions: { createPage }}) {
 			// our page layout component
 			context: node,
 		})
+	})
+
+	// create the blog pages - paginated
+	const PER_PAGE = 5
+	const blogResult = await graphql(`
+		query BlogContentQuery {
+		  allMdx(filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
+			edges {
+			  node {
+				id
+				timeToRead
+				frontmatter {
+				  path
+				  title
+				  date
+				  draft
+				  description
+				  featureImg {
+					childImageSharp {
+					  fluid(maxWidth: 400) {
+					    base64
+						aspectRatio
+						src
+						srcSet
+						srcWebp
+						srcSetWebp
+						sizes
+					  }
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	`)
+
+	const chunked = blogResult.data.allMdx.edges.reduce((acc, cur, idx) => {
+	  if (idx % 5 === 0) acc.push([])
+	  acc[acc.length - 1].push(cur)
+	  return acc
+	}, [])
+
+
+	chunked.forEach((chunk, idx) => {
+		const page = ++idx
+
+		const path = `/blog/${page}`
+
+		const pageParams = {
+			path,
+			context: {chunk, page},
+			component: paginatedBlogTemplate,
+		}
+
+		console.log(`creating blog page ${page}`)
+
+		createPage(pageParams)
+
+		// have a nice blog landing page
+		if (page === 1) createPage({...pageParams, path: '/blog'})
 	})
 
 }
