@@ -7,14 +7,13 @@ import PostSummary from '../components/PostSummary'
 
 
 const Blog = (props) => {
-	const {chunk, page} = props.pageResources.json.pageContext
+	const {chunk, page} = props.pageContext
 	// because gatsby serialises arrays poorly
-	const edges = Object.values(chunk)
 	return (
 		<Layout>
 			<SEO title={`Blog - Page ${page}`} />
 			<section className="grid gap-4 grid-cols-1">
-				{edges.map(edge => (
+				{chunk.map(edge => (
 					<PostSummary 
 						key={edge.id}
 						post={edge.node.frontmatter}
