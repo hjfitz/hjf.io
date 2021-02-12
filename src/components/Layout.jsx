@@ -6,6 +6,7 @@ import SEO from './SEO'
 import Nav from './Nav'
 
 import '../styles/main.scss'
+import Footer from './Footer'
 
 const Layout = ({ children }) => {
 	useEffect(() => {
@@ -24,6 +25,7 @@ const Layout = ({ children }) => {
 					</section>
 					{children}
 				</main>
+				<Footer />
 			</div>
 		</>
 	);
