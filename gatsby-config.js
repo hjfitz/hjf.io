@@ -52,6 +52,59 @@ module.exports = {
 				icon: 'src/components/wizard.webp', // This path is relative to the root of the site.
 			},
 		},
+		{
+			  resolve: `gatsby-plugin-feed`,
+			  options: {
+				query: `
+				  {
+					site {
+					  siteMetadata {
+						title
+						description
+						siteUrl
+						author
+					  }
+					}
+				  }
+				`,
+				feeds: [
+				  {
+					serialize: ({ query: { site, allMdx } }) => {
+						return allMdx.edges.map(edge => ({
+								...edge.node.frontmatter, 
+								...{
+									description: edge.node.frontmatter.description,
+									date: edge.node.frontmatter.date,
+									url: site.siteMetadata.siteUrl + edge.node.frontmatter.path,
+									guid: site.siteMetadata.siteUrl + edge.node.frontmatter.path,
+								},
+							})
+						)
+					},
+					query: `
+						query BlogContentQuery {
+						  allMdx(filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
+							edges {
+							  node {
+								frontmatter {
+								  path
+								  title
+								  date
+								  draft
+								  description
+								}
+							  }
+							}
+						  }
+						}
+
+					`,
+					output: "/rss.xml",
+					title: "hjf's feed",
+				  },
+				],
+			  },
+			},
 		'gatsby-plugin-sitemap',
 		'gatsby-plugin-robots-txt',
 		// this (optional) plugin enables Progressive Web App + Offline functionality

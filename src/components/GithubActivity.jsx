@@ -30,12 +30,11 @@ const ColourfulDiv = () => (
 )
 
 const GithubActivity = ({events}) => {
-	events.splice(5, events.length)
 	return (
 		<div className="mx-auto md:mx-0">
 			<h1 className="text-lg text-center"><ColourfulDiv /> slung</h1>
 			<div>
-				{events.map(event => (
+				{events.slice(0, 5).map(event => (
 					<GithubEvent event={event} key={event.id} />
 				))}
 			</div>

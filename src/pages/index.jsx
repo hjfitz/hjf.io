@@ -59,7 +59,7 @@ const IndexPage = ({pageContext, data: {allMdx: {edges}}}) => {
 		<Layout>
 			<SEO title="Home" />
 			<div className="gap-16 lg:gap-32 grid grid-cols-1 md:grid-cols-3 grid-rows-2 md:grid-rows-1">
-				<section className="grid auto-rows-max gap-4 grid-cols-1 row-start-2 md:row-start-1">
+				<section className="col-span-2 md:col-span-1 grid auto-rows-max gap-4 grid-cols-1 row-start-2 md:row-start-1">
 					<GithubActivity events={ghActivity} />
 					<TwitterActivity tweets={tweets} />
 				</section>
