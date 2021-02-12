@@ -1,0 +1,153 @@
+---
+title: "Paginating /blog"
+date: "2021-02-12T19:28:00.000Z"
+type: blog
+draft: false
+path: "/paginating-blog/"
+category: ""
+tags:
+  - "Code"
+  - "Gatsby"
+description: "Paginating my /blog. It's great how easily you can do this in Gatsby - as long as you understand the nuances with Fragments and gatsby-node.js"
+featureImg: "./feature.png"
+---
+
+## 🤖 Why?
+
+The time has come. I've enjoyed writing about code here - though I still need to add some kind of tag when a page has a live demo.
+
+I don't want to list every single post on (/blog)[/blog] - More data transferred === slower load time. Slower load time === bad. Paginating is the 'art' of splitting out one page in to multiple pages - if you didn't already know.
+
+So, how do we do it?
+
+Let's look at the original blog page and see how we can change this. The OG page used the filesystem routing api and fell under `src/pages/blog.jsx`.
+
+```javascriptreact
+import React from 'react'
+import { Link, graphql } from 'gatsby'
+
+import Layout from '../components/Layout'
+import SEO from '../components/SEO'
+import PostSummary from '../components/PostSummary'
+
+// query redacted for brevity
+
+export const pageQuery = graphql`
+query BlogContentQuery {}
+`
+
+const Blog = ({data: {allMdx: {edges}}}) => {
+	return (/* some vdom */)
+}
+
+export default Blog
+```
+
+I've redacted some of the gumpf: We export some graphql for the Gatsby build and shove that in to the blog component. I've left a few imports in so that you can assert what the page might have looked like.
+
+This is fine for a page - and we can re-use a lot of it when we paginate.
+
+Unfortunately, we can't use the filesystem API (unless we hardcode the number of pages). Let's look at `gatsby-node.js` - we can declaritively create pages here. Ideal.
+
+We need to do one extra thing: Move our Blog page to where our templates live. For me, this is `src/templates`.
+
+## 📚 Paginating
+
+Let's open up `gatsby-node.js`. The idea here is that we:
+
+1. Resolve the path to our template - we'll pass this to `createPage()`.
+2. Structure our query a little differently (I'll get on to this in a moment).
+3. Chunk the query result so that we can loop and create pages.
+4. ???
+5. Profit.
+
+There's one thing that I've eluded to in 2) - We need to change our query. Only slightly. It turns out that **fragments do not work in gatsby-node.js**. I spent *ages* chasing this down. If you're using all of the hip Gatsby plugins - you probably use `gatsby-image` which has a nice fragment for those fancy progressive images -- `...GatsbyImageSharpFluid`. 
+
+We can simply unfurl this. From:
+
+```graphql
+query BrokenImagequery {
+  childImageSharp {
+    fluid(maxWidth: 400) {
+      ...GatsbyImageSharpFluid
+    }
+  }
+}
+```
+
+To:
+
+```graphql
+query WorkingImageQuery {
+  childImageSharp {
+    fluid(maxWidth: 400) {
+      base64
+      aspectRatio
+      src
+      srcSet
+      srcWebp
+      srcSetWebp
+      sizes
+    }
+  }
+}
+```
+
+And we're good to go.
+
+Let's look at chunking. I'd normally reach for lodash here, but wanted to see how simple chunking is. It turns out that `Array.reduce` is like god mode. Let's see how easily we can hack this out:
+
+```javascript
+function chunk(arr, per_page = 5) {
+  return arr.reduce((acc, cur, idx) => {
+    if (idx % per_page === 0) acc.push([])
+    acc[acc.length - 1].push(cur)
+    return acc
+  }, [])
+}
+```
+
+Nice! Let's string this together. I'll redact the query for brevity...
+
+```javascript
+async function createPages({graphql, actions: {createPage}}) {
+  const component = path.resolve(__dirname, 'src/templates/blog.template.jsx')
+  const blogResult = await graphql(myQuery)
+  const chunked = chunk(blogResult.data.allMdx.edges)
+  chunked.forEach((chunk, idx) => {
+    const page = (idx + 1)
+    const path = `/blog/${page}`
+    const params = {path, context: {page, chunk}, component}
+    createPage(params)
+    if (page === 1) createPage({...params, path: '/blog'})
+  })
+}
+```
+
+That's come together nicely. Note that I also like to put the initial page on `/blog`: purely for vanity.
+
+## 🖌 Finishing Touches
+
+Finally, there's the case of accessing the data in the Blog template. We can change the parameter destructure slightly.
+
+From:
+```javascript
+const Blog = ({data: {allMdx: {edges}}}) => {}
+```
+
+To:
+```javascript
+const Blog = ({pageContext: {chunk, page}}) => {}
+```
+
+Nicely does it. Let's add some simple next/prev controls, too. Only show `prev` when we aren't on the first page. We can show next whenever. Eventually I'll pass `lastPage` to `pageContext` so that we can also hide the next button.
+
+```javascript
+<section className="flex justify-around py-4">
+    {page !== 1 && <Link to={`/blog/${page - 1}`}>Prev</Link>}
+    <Link to={`/blog/${page + 1}`}>Next</Link>
+</section>
+```
+
+And that's it! It's pretty simple - and would be easier if Gatsby allowed for fragments in `gatsby-node`.
+
