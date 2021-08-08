@@ -13,9 +13,7 @@ module.exports = {
 				gatsbyRemarkPlugins: [
 					{
 						resolve: 'gatsby-remark-images',
-						options: {
-							maxWidth: 960,
-						},
+						options: {maxWidth: 960},
 					},
 					'gatsby-remark-prismjs',
 					'gatsby-remark-smartypants',
@@ -27,15 +25,6 @@ module.exports = {
 			options: {
 				name: 'posts',
 				path: `${__dirname}/src/`,
-			},
-		},
-		{
-			resolve: 'gatsby-plugin-sass',
-			options: {
-				postCssPlugins: [
-					require('tailwindcss'),
-					require('./tailwind.config.js'),
-				],
 			},
 		},
 		'gatsby-transformer-sharp',
@@ -53,23 +42,23 @@ module.exports = {
 			},
 		},
 		{
-			  resolve: 'gatsby-plugin-feed',
-			  options: {
+			resolve: 'gatsby-plugin-feed',
+			options: {
 				query: `
-				  {
+					{
 					site {
-					  siteMetadata {
+						siteMetadata {
 						title
 						description
 						siteUrl
 						author
-					  }
+						}
 					}
-				  }
+					}
 				`,
 				feeds: [
-				  {
-						serialize: ({ query: { site, allMdx } }) => allMdx.edges.map((edge) => ({
+					{
+						serialize: ({query: {site, allMdx}}) => allMdx.edges.map((edge) => ({
 							...edge.node.frontmatter,
 							...{
 								description: edge.node.frontmatter.description,
@@ -80,29 +69,31 @@ module.exports = {
 						})),
 						query: `
 						query BlogContentQuery {
-						  allMdx(filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
+							allMdx(filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
 							edges {
-							  node {
+								node {
 								frontmatter {
-								  path
-								  title
-								  date
-								  draft
-								  description
+									path
+									title
+									date
+									draft
+									description
 								}
-							  }
+								}
 							}
-						  }
+							}
 						}
 
 					`,
 						output: '/rss.xml',
 						title: "hjf's feed",
-				  },
+					},
 				],
-			  },
+			},
 		},
 		'gatsby-plugin-sitemap',
+		'gatsby-plugin-postcss',
+		'gatsby-plugin-sass',
 		'gatsby-plugin-robots-txt',
 		{
 			resolve: '@sentry/gatsby',
@@ -112,4 +103,4 @@ module.exports = {
 			},
 		},
 	],
-};
+}

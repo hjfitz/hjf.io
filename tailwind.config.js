@@ -1,25 +1,23 @@
 module.exports = {
 	purge: [
-		'./src/**/*.jsx',
+		'./src/**/*.{j,t}sx',
 		'./gatsby-browser.js',
 	],
-	darkMode: 'media', 
+	darkMode: 'media',
 	theme: {
 		borderWidth: {
 			DEFAULT: '1px',
-			'0': '0',
-			'2': '2px',
-			'3': '3px',
-			'4': '4px',
-			'6': '6px',
-			'8': '8px',
-			'16': '1rem',
+			0: '0',
+			2: '2px',
+			3: '3px',
+			4: '4px',
+			6: '6px',
+			8: '8px',
+			16: '1rem',
 		},
 		extend: {},
 	},
-	variants: {
-		extend: {},
-	},
+	variants: {extend: {}},
 	plugins: [
 	],
 }

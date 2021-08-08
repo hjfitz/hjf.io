@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from "react"
-import { Link, graphql } from "gatsby"
-import Img from 'gatsby-image'
+import React, {useEffect, useState} from 'react'
+import {graphql} from 'gatsby'
 
-import Layout from "../components/Layout"
-import SEO from "../components/SEO"
+import Layout from '../components/Layout'
+import SEO from '../components/SEO'
 import PostSummary from '../components/PostSummary'
 import GithubActivity from '../components/GithubActivity'
-import {getGithubActivity} from "../build-tools/get-github-info"
-import TwitterActivity from "../components/TwitterActivity"
+import BioFetch from '../components/BioFetch'
+import {getGithubActivity} from '../build-tools/get-github-info'
 
 export const pageQuery = graphql`
 	query PageContentQuery {
-		allMdx(limit: 4, filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
+		allMdx(limit: 8, filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
 			edges {
 				node {
 					id
@@ -40,11 +39,10 @@ function useLiveData(context) {
 	useEffect(() => {
 		// refresh github and twitter data
 		async function refresh() {
-			const [ghActivity, tweets] = await Promise.all([
+			const [ghActivity] = await Promise.all([
 				getGithubActivity(),
-				fetch('/.netlify/functions/twitter').then(r => r.json())
 			])
-			setTwithubData({ghActivity, tweets})
+			setTwithubData({ghActivity})
 		}
 
 		refresh()
@@ -52,26 +50,27 @@ function useLiveData(context) {
 	return twithubData
 }
 
-
 const IndexPage = ({pageContext, data: {allMdx: {edges}}}) => {
-	const {ghActivity, tweets} = useLiveData(pageContext)
+	const {ghActivity} = useLiveData(pageContext)
 	return (
 		<Layout>
 			<SEO title="Home" />
-			<div className="gap-16 lg:gap-32 grid grid-cols-1 md:grid-cols-3 grid-rows-1">
-				<section className="col-span-2 md:col-span-1 grid auto-rows-max gap-4 grid-cols-1 row-start-2 md:row-start-1">
-					<GithubActivity events={ghActivity} />
-					<TwitterActivity tweets={tweets} />
-				</section>
-				<section className="grid gap-4 grid-cols-1 col-span-2">
-					<h1 className="text-lg text-center">Recent Blogs</h1>
-					{edges.map(edge => (
-						<PostSummary 
-							post={edge.node.frontmatter} 
+			<div className="gap-16 lg:gap-32 grid grid-cols-1 md:grid-cols-3 auto-rows-auto">
+				<section className="grid gap-4 col-span-3">
+					{edges.map((edge) => (
+						<PostSummary
+							post={edge.node.frontmatter}
 							key={edge.node.id}
 						/>
 					))}
 				</section>
+				<section className="col-span-2 md:col-span-3">
+					<BioFetch />
+				</section>
+				<section className="col-span-2">
+					<GithubActivity events={ghActivity} />
+				</section>
+				<section />
 			</div>
 		</Layout>
 	)

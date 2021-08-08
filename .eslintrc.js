@@ -22,5 +22,10 @@ module.exports = {
 		indent: ['error', 'tab'],
 		'no-tabs': 0,
 		'react/jsx-indent': [1, 'tab'],
+		semi: ['error', 'never'],
+		'object-curly-spacing': ['error', 'never'],
+		'react/jsx-indent-props': [2, 'tab'],
+		'react/jsx-one-expression-per-line': 0,
+		'object-curly-newline': ['error', {multiline: true}],
 	},
-};
+}

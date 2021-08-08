@@ -6,8 +6,7 @@ const templatesDir = path.resolve(__dirname, 'src', 'templates')
 const mdxTemplate = path.resolve(templatesDir, 'mdx.template.jsx')
 const paginatedBlogTemplate = path.resolve(templatesDir, 'blog.template.jsx')
 
-
-async function createPages({graphql, actions: { createPage }}) {
+async function createPages({graphql, actions: {createPage}}) {
 	// create all pages from mdx
 	const result = await graphql(`
 		query MyQuery {
@@ -29,7 +28,7 @@ async function createPages({graphql, actions: { createPage }}) {
 	const posts = result.data.allMdx.edges
 
 	// We'll call `createPage` for each result
-	posts.forEach(({ node }) => {
+	posts.forEach(({node}) => {
 		if (node.frontmatter.draft) return
 
 		console.log(`creating ${node.frontmatter.path}`)
@@ -84,7 +83,6 @@ async function createPages({graphql, actions: { createPage }}) {
 	  return acc
 	}, [])
 
-
 	chunked.forEach((chunk, idx) => {
 		const page = ++idx
 
@@ -103,25 +101,22 @@ async function createPages({graphql, actions: { createPage }}) {
 		// have a nice blog landing page
 		if (page === 1) createPage({...pageParams, path: '/blog'})
 	})
-
 }
 
-function onCreateNode({ node, actions: {createNodeField}, getNode }) {
+function onCreateNode({node, actions: {createNodeField}, getNode}) {
 	if (node.internal.type !== 'Mdx') return
 	createNodeField({
-		name: "slug",
+		name: 'slug',
 		value: node.frontmatter.path,
 		node,
 	})
 }
 
-
 async function onCreatePage({page, actions: {createPage, deletePage}}) {
 	if (page.path === '/') {
 		console.log('modifying home page')
-		const [ghActivity, tweets] = await Promise.all([
+		const [ghActivity] = await Promise.all([
 			getGithubActivity(),
-			getTwitterTweets(),
 		])
 
 		deletePage(page)
@@ -131,15 +126,18 @@ async function onCreatePage({page, actions: {createPage, deletePage}}) {
 			context: {
 				...page.context,
 				ghActivity,
-				tweets,
-
-			}
+			},
 		})
 	}
+}
+
+function onCreateWebpackConfig({actions}) {
+	actions.setWebpackConfig({resolve: {fallback: {fs: false}}})
 }
 
 module.exports = {
 	createPages,
 	onCreateNode,
 	onCreatePage,
+	onCreateWebpackConfig,
 }

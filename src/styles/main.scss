@@ -31,7 +31,6 @@ body {
 
 :not(pre) > code[class*="language-"] {
 	padding: 0 0.5rem!important;
-	font-size: 1rem!important;
 	line-height: 1.5rem!important;
 }
 
@@ -84,4 +83,15 @@ nav rect {
 	}
 }
 
+// homepage bits
+div {
+	dt, dd {
+		@apply inline
+	}
+}
 
+
+// prism overrides
+code[class*="language-"], pre[class*="language-"] {
+	@apply text-sm #{!important};
+}
