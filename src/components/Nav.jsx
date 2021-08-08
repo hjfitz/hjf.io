@@ -12,7 +12,7 @@ const Links = ({noHome}) => (
 )
 
 const Burger = () => (
-	<svg className="inline pl-4" viewBox="0 0 100 80" width="40" height="40">
+	<svg className="inline pr-2" viewBox="0 0 100 80" width="30" height="30">
 		<rect width="100" height="12" />
 		<rect y="30" width="100" height="12" />
 		<rect y="60" width="100" height="12" />
@@ -30,10 +30,10 @@ const Nav = () => {
 			</nav>
 
 			{/* mobile */}
-			<nav className="items-center text-4xl sm:hidden gap-4 grid">
-				<div className="mx-auto my-0 cursor-pointer" role="button" onClick={toggleNav}>
-					<Link to="/">Home</Link>
+			<nav className="text-xl sm:hidden gap-4 grid">
+				<div className="my-0 cursor-pointer" role="button" onClick={toggleNav}>
 					<Burger />
+					<Link to="/">Home</Link>
 				</div>
 				{hidden || <Links noHome />}
 			</nav>

@@ -8,7 +8,7 @@ const PostSummary = ({post}) => {
 		<div className="flex flex-col justify-center">
 			<header>
 				<h2>
-					<Link className="text-2xl underline post-link" to={path}>
+					<Link className="text-2xl underline post-link " to={path}>
 						{title}
 					</Link>
 				</h2>
@@ -16,7 +16,7 @@ const PostSummary = ({post}) => {
 			<small className="text-gray-500">
 				Committed on {format(new Date(date), 'do MMM, yyyy')}
 			</small>
-			<p className="text-sm text-gray-800">{description}</p>
+			<p className="text-sm text-gray-800 dark:text-gray-400">{description}</p>
 		</div>
 	)
 }

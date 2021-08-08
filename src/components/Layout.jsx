@@ -18,7 +18,7 @@ const Layout = ({children}) => {
 	return (
 		<>
 			<SEO />
-			<div className="min-h-full text-black bg-white dark:bg-gray-900 dark:text-gray-50">
+			<div className="min-h-full text-black bg-white dark:bg-gray-800 dark:text-gray-300">
 				<main className="container p-2 mx-auto md:py-8 md:px-16">
 					<section className="pt-4 pb-8">
 						<header className="pb-1 text-yellow-500"><Link to="/">hjf.io</Link></header>

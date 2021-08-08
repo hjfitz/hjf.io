@@ -56,6 +56,9 @@ const IndexPage = ({pageContext, data: {allMdx: {edges}}}) => {
 		<Layout>
 			<SEO title="Home" />
 			<div className="gap-16 lg:gap-32 grid grid-cols-1 md:grid-cols-3 auto-rows-auto">
+				<section className="hidden md:block col-span-2 md:col-span-3">
+					<BioFetch />
+				</section>
 				<section className="grid gap-4 col-span-3">
 					{edges.map((edge) => (
 						<PostSummary
@@ -63,9 +66,6 @@ const IndexPage = ({pageContext, data: {allMdx: {edges}}}) => {
 							key={edge.node.id}
 						/>
 					))}
-				</section>
-				<section className="col-span-2 md:col-span-3">
-					<BioFetch />
 				</section>
 				<section className="col-span-2">
 					<GithubActivity events={ghActivity} />
