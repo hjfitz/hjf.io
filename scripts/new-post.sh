@@ -40,7 +40,7 @@ if [[ -z $create || "$create" =~ 'n' ]]; then
 	exit 0
 fi
 
-new_contents=$(echo "$skel_file" | sed "s/{{title}}/$title/g" | sed "s/{{date}}/$now/g" | sed "s/{{slug}}/$slug/g")
+new_contents=$(echo "$skel_file" | sed "s/{{title}}/"$title"/g" | sed "s/{{date}}/"$now"/g" | sed "s/{{slug}}/"$slug"/g")
 mkdir $next_foldername
 echo "$new_contents" > "$next_foldername/index.mdx"
 cp $SKEL_ROOT/feature.jpeg $next_foldername/feature.jpeg
