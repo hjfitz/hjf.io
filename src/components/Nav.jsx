@@ -5,9 +5,15 @@ import {Link} from 'gatsby'
 const Links = ({noHome}) => (
 	<>
 		{noHome || <Link to="/">Home</Link>}
-		<Link className="mx-2" to="/about">About</Link>
-		<Link className="mx-2" to="/blog">Blog</Link>
-		<Link className="mx-2" to="/uses">/uses</Link>
+		<Link className="mx-2" to="/about">
+			About
+		</Link>
+		<Link className="mx-2" to="/blog">
+			Blog
+		</Link>
+		<Link className="mx-2" to="/uses">
+			/uses
+		</Link>
 	</>
 )
 
@@ -21,11 +27,11 @@ const Burger = () => (
 
 const Nav = () => {
 	const [hidden, setHidden] = useState(true)
-	const toggleNav = () => setHidden((hidden) => !hidden)
+	const toggleNav = () => setHidden((h) => !h)
 	return (
 		<>
 			{/* deskop */}
-			<nav className="hidden text-xl text-gray-800 sm:flex">
+			<nav className="hidden text-xl text-gray-800 dark:text-gray-300 sm:flex">
 				<Links />
 			</nav>
 
