@@ -13,7 +13,7 @@ featureImg: "./feature.png"
 
 import {FaceApiInit, ShowElement} from './src/index.jsx'
 
-## I Have No Idea What I'm Doing
+# I Have No Idea What I'm Doing
 
 Like practically every developer, I find AI interesting. Like *most* developers, I have no idea how to write code in such an area. Fortunately, we live in a world where things like [Left Pad](https://qz.com/646467/how-one-programmer-broke-the-internet-by-deleting-a-tiny-piece-of-code/) and [is-thirteen](https://github.com/jezen/is-thirteen) actually exist.
 
@@ -29,7 +29,7 @@ Face-api.js appears to let us:
 Per their docs:
 ![face api's docs](https://user-images.githubusercontent.com/31125521/57297736-b5603380-70d0-11e9-873d-8b6c7243eb64.jpg)
 
-## 📦 Setup
+# 📦 Setup
 
 Now, my setup **will** be different than yours. The code we'll execute is React. Wrapped by MDX. Rendered by React. Statically rendered by Gatsby. If I can get this working: you, the reader, are in good shape...
 
@@ -75,7 +75,7 @@ function useTiny() {
 }
 ```
 
-## 🤖 Detecting our Face
+# 🤖 Detecting our Face
 Now, we'll load our webcam in to a canvas element. This is so we can show what's actually happening. This should be somewhat straightforward; onload, get the video and update the state. After the state updates, pipe the stream in to the video and paint that on the canvas.
 
 The canvas is important here: I'd like to paint the outputs over it.
@@ -136,7 +136,7 @@ Calling this after we've painted the canvas, we get the following:
 }
 ```
 
-## 🚗 Performance Problems
+# 🚗 Performance Problems
 
 Now... This is in the `displayFrame` loop. We lag. This is likely due to my hardware, though I'm rocking a 3rd gen i7.
 
@@ -161,7 +161,7 @@ At this point, we've got a detection. with my debugging efforts, we can see:
 
 ![My and my detected face](./progress.png)
 
-## 🎨 Drawing on Us
+# 🎨 Drawing on Us
 
 Let's try to draw an element. Maybe we can cover my face. Let's create a ref and point it to an element.
 
@@ -193,7 +193,7 @@ I'll plonk a demo below for you to see what's going on!
 
 Enjoy! There's more that we can do. I won't write the code here - but I'll leave some thoughts.
 
-## 🤔 Thoughts
+# 🤔 Thoughts
 
 With less than 100 LoC, we can detect a face, determine it's gender and infer that face's mode with a degree of accuracy.
 

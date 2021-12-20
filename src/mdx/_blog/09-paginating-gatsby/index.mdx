@@ -12,7 +12,7 @@ description: "Too much content! Gatsby doesn't easily let you paginate given it'
 featureImg: "./feature.png"
 ---
 
-## 🤖 Why?
+# 🤖 Why?
 
 The time has come. I've enjoyed writing about code here - though I still need to add some kind of tag when a page has a live demo.
 
@@ -51,7 +51,7 @@ Unfortunately, we can't use the filesystem API (unless we hardcode the number of
 
 We need to do one extra thing: Move our Blog page to where our templates live. For me, this is `src/templates`.
 
-## 📚 Paginating
+# 📚 Paginating
 
 Let's open up `gatsby-node.js`. The idea here is that we:
 
@@ -126,7 +126,7 @@ async function createPages({graphql, actions: {createPage}}) {
 
 That's come together nicely. Note that I also like to put the initial page on `/blog`: purely for vanity.
 
-## 🖌 Finishing Touches
+# 🖌 Finishing Touches
 
 Finally, there's the case of accessing the data in the Blog template. We can change the parameter destructure slightly.
 

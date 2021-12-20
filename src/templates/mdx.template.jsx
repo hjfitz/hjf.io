@@ -11,30 +11,30 @@ import Link from '../components/Link'
 import 'prism-themes/themes/prism-material-oceanic.css'
 
 export const pageQuery = graphql`
-	query BlogPostQuery($id: String) {
-		mdx(id: {eq: $id}) {
-			id
-			body
-			frontmatter {
-				title
-				description
-				date
-				path
-				featureImg {
-					childImageSharp {
-						original {
-							src
-						}
-					}
-				}
-			}
-		}
-		site {
-			siteMetadata {
-				siteUrl
-			}
-		}
-	}
+  query BlogPostQuery($id: String) {
+    mdx(id: { eq: $id }) {
+      id
+      body
+      frontmatter {
+        title
+        description
+        date
+        path
+        featureImg {
+          childImageSharp {
+            original {
+              src
+            }
+          }
+        }
+      }
+    }
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
+  }
 `
 
 function generateSEOImage(mdx, site) {
@@ -57,17 +57,24 @@ const Post = ({data: {site, mdx}}) => (
 			<small>{format(new Date(mdx.frontmatter.date), 'do MMM - yyyy')}</small>
 			<MDXProvider
 				components={{
-					h2: (props) => <h2 {...props} className="pt-4 text-xl" />,
-					h3: (props) => <h3 {...props} className="pt-3 text" />,
+					// be awkward and hoist headings down a level for ease of writing
+					h1: (props) => <h2 {...props} className="pt-4 text-xl" />,
+					h2: (props) => <h3 {...props} className="pt-3 text-lg" />,
+					h3: (props) => <h4 {...props} className="pt-2 text" />,
 					p: (props) => <p {...props} className="py-3 text-sm" />,
 					a: (props) => <Link {...props} className="text-blue-400" />,
-					li: (props) => <li {...props} className="list-disc list-inside" />,
-					code: (props) => <code {...props} className={`${props.className} text-sm inline-block`} />,
+					li: (props) => (
+						<li {...props} className="list-disc text-sm list-inside" />
+					),
+					code: (props) => (
+						<code
+							{...props}
+							className={`${props.className} text-xs inline-block`}
+						/>
+					),
 				}}
 			>
-				<MDXRenderer className="">
-					{mdx.body}
-				</MDXRenderer>
+				<MDXRenderer className="">{mdx.body}</MDXRenderer>
 			</MDXProvider>
 		</article>
 	</Layout>

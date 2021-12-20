@@ -32,7 +32,7 @@ The stack for this website is:
 I don't have a pretty architecture diagram for you. Else, I'd have spent my time making a powerpoint and not doing anything productive.
 
 
-## ⚛️ Gatsby Config
+# ⚛️ Gatsby Config
 
 To start I picked up the default Gatsby starter. This is the aptly named `gatsby-starter-default`.
 
@@ -83,7 +83,7 @@ Configure `gatsby-plugin-filesystem` and point it to your mdx files!
 
 Once I'd configured my plugins, I set out to create one template (for now), as well as a page for [home](/), [blog posts](/blog) and [quick hacks](/hacks) (these are [cool](/hacks)). My [about](/about) and [/uses](/uses) both use mdx.
 
-## 💀 MDX Skel
+# 💀 MDX Skel
 
 Finally, I wanted to make pages easy to modify. Ease of editing with Markdown. Custom configuration with Frontmatter. Added functionality with React. MDX provides all of these (Frontmatter is afforded via `gatsby-plugin-mdx`).
 
@@ -96,7 +96,7 @@ For the uninitiated, Frontmatter adds some bonus YAML (ew) to the header of any 
 * Feature Image: Ooh shiney!
 
 
-## 🐦 TailwindCSS 
+# 🐦 TailwindCSS 
 
 At the time of writing, Tailwind has just hit 2.0. This is great, but `gatsby-plugin-sass` uses PostCSS 7, which isn't compatible. I had to pull in [a compabitility build](https://tailwindcss.com/docs/installation#post-css-7-compatibility-build)
 
@@ -105,7 +105,7 @@ npm uninstall tailwindcss postcss autoprefixer
 npm install tailwindcss@npm:@tailwindcss/postcss7-compat @tailwindcss/postcss7-compat postcss@^7 autoprefixer@^9
 ```
 
-## 🏡 Homepage
+# 🏡 Homepage
 I'm pretty proud of the [homepage](/). As well as the 4 most recent blog posts, it shows my most recent (public) commits on [Github](https://github.com/hjfitz) and my most recent [Tweets](https://twitter.com/__hjf). Each of these modules work differently.
 
 There's some basic logic to the blog posts: do it the gatsby way, fetch the posts via graphql. I'll chat more about frontmatter later.
@@ -144,7 +144,7 @@ The Github functionality calls the same function that gets called in the page bu
 
 The other pages, Blog and Hacks just pull in all mdx pages where their type === the page type. There's not much interesting there.
 
-## 🎁 Wrap-up
+# 🎁 Wrap-up
 
 And that's it! I just started coding from there, threw a few deployment errors, struggled with DNS. We got this thing hosted.
 
