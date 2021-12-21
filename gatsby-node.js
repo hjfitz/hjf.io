@@ -9,22 +9,22 @@ const paginatedBlogTemplate = path.resolve(templatesDir, 'blog.template.jsx')
 async function createPages({graphql, actions: {createPage}}) {
 	// create all pages from mdx
 	const result = await graphql(`
-		query MyQuery {
-			allMdx {
-				edges {
-					node {
-					id
-						frontmatter {
-							path
-							title
-							date
-							draft
-						}
-					}
-				}
-			}
-		}
-	`)
+    query MyQuery {
+      allMdx {
+        edges {
+          node {
+            id
+            frontmatter {
+              path
+              title
+              date
+              draft
+            }
+          }
+        }
+      }
+    }
+  `)
 	const posts = result.data.allMdx.edges
 
 	// We'll call `createPage` for each result
@@ -45,42 +45,45 @@ async function createPages({graphql, actions: {createPage}}) {
 	// create the blog pages - paginated
 	const PER_PAGE = 5
 	const blogResult = await graphql(`
-		query BlogContentQuery {
-		  allMdx(filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
-			edges {
-			  node {
-				id
-				timeToRead
-				frontmatter {
-				  path
-				  title
-				  date
-				  draft
-				  description
-				  featureImg {
-					childImageSharp {
-					  fluid(maxWidth: 400) {
-					    base64
-						aspectRatio
-						src
-						srcSet
-						srcWebp
-						srcSetWebp
-						sizes
-					  }
-					}
-				  }
-				}
-			  }
-			}
-		  }
-		}
-	`)
+    query BlogContentQuery {
+      allMdx(
+        filter: { frontmatter: { type: { eq: "blog" }, draft: { eq: false } } }
+        sort: { fields: frontmatter___date, order: DESC }
+      ) {
+        edges {
+          node {
+            id
+            timeToRead
+            frontmatter {
+              path
+              title
+              date
+              draft
+              description
+              featureImg {
+                childImageSharp {
+                  fluid(maxWidth: 400) {
+                    base64
+                    aspectRatio
+                    src
+                    srcSet
+                    srcWebp
+                    srcSetWebp
+                    sizes
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `)
 
 	const chunked = blogResult.data.allMdx.edges.reduce((acc, cur, idx) => {
-	  if (idx % 5 === 0) acc.push([])
-	  acc[acc.length - 1].push(cur)
-	  return acc
+		if (idx % 5 === 0) acc.push([])
+		acc[acc.length - 1].push(cur)
+		return acc
 	}, [])
 
 	chunked.forEach((chunk, idx) => {
@@ -103,7 +106,9 @@ async function createPages({graphql, actions: {createPage}}) {
 	})
 }
 
-function onCreateNode({node, actions: {createNodeField}, getNode}) {
+function onCreateNode({
+	node, actions: {createNodeField}, getNode,
+}) {
 	if (node.internal.type !== 'Mdx') return
 	createNodeField({
 		name: 'slug',
@@ -115,9 +120,7 @@ function onCreateNode({node, actions: {createNodeField}, getNode}) {
 async function onCreatePage({page, actions: {createPage, deletePage}}) {
 	if (page.path === '/') {
 		console.log('modifying home page')
-		const [ghActivity] = await Promise.all([
-			getGithubActivity(),
-		])
+		const [ghActivity] = await Promise.all([getGithubActivity()])
 
 		deletePage(page)
 
