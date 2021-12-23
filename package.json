@@ -58,6 +58,7 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "gatsby-plugin-feed": "^4.4.0",
+    "gatsby-plugin-google-gtag": "^4.4.0",
     "gatsby-plugin-postcss": "^5.4.0",
     "gatsby-plugin-robots-txt": "^1.6.8",
     "gatsby-plugin-sitemap": "^5.4.0",
