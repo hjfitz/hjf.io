@@ -1,6 +1,8 @@
 // todo: potentially move this to gatsby-browser.js
 import React, { useEffect } from "react";
 import { Link } from "gatsby";
+import LogRocket from "logrocket";
+import * as Sentry from "@sentry/gatsby";
 
 import SEO from "./SEO";
 import Nav from "./Nav";
@@ -15,6 +17,24 @@ console.log("%c https://github.com/hjfitz?tab=repositories", "color: #1e3a8a");
 
 interface LayoutProps {
   children: React.ReactNode;
+}
+
+let hasInitialized = false;
+export function useErrorTracking() {
+  useEffect(() => {
+    if (hasInitialized) return;
+    LogRocket.init("8ydpeu/hjfio");
+    Sentry.init({
+      dsn: "https://7b1e3179a9d045eeb04665283af84a3d@o877428.ingest.sentry.io/5836807",
+      sampleRate: 1.0,
+    });
+    hasInitialized = true;
+    LogRocket.getSessionURL((sessionURL) => {
+      Sentry.configureScope((scope) => {
+        scope.setExtra("sessionURL", sessionURL);
+      });
+    });
+  }, []);
 }
 
 const Layout = ({ children }: LayoutProps) => (

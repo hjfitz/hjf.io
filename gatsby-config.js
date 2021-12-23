@@ -96,13 +96,13 @@ module.exports = {
     "gatsby-plugin-postcss",
     "gatsby-plugin-sass",
     "gatsby-plugin-robots-txt",
-    {
-      resolve: "@sentry/gatsby",
-      options: {
-        dsn: "https://7b1e3179a9d045eeb04665283af84a3d@o877428.ingest.sentry.io/5836807",
-        sampleRate: 1.0,
-      },
-    },
+    //    {
+    //      resolve: "@sentry/gatsby",
+    //      options: {
+    //        dsn: "https://7b1e3179a9d045eeb04665283af84a3d@o877428.ingest.sentry.io/5836807",
+    //        sampleRate: 1.0,
+    //      },
+    //    },
     {
       resolve: `gatsby-plugin-typescript`,
       options: {
