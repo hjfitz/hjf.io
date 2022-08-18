@@ -1,0 +1,63 @@
+---
+title: "🏃‍♂️ 4 Seconds to Deploy"
+date: "2022-03-07T11:36:38+0000"
+type: blog
+draft: true
+path: "/4-seconds-to-deploy"
+category: ""
+tags:
+  - "Code"
+description: "Modern web development vs the modern web is not just a huge difference in practice, but a huge difference in deployment time, too"
+featureImg: "./feature.jpeg"
+---
+
+Modern web development is pretty good - but has some quirks. Take a look at your package.json - what do you have in your `dependencies` and `devDependencies`? How many `*.config.js` files do you have? How much time have you spent configuring Webpack or Rollup, scouring the web because you can’t resolve some import?
+
+I think that it’s safe to say that people seldom build for the web without any additional packages. We dart straight for tooling - most of us have project boilerplates/scaffolds that we reach for to get started. Not to say that’s a bad thing: build-tools, frameworks, style libraries are _very_ good nowadays.
+
+React, coupled with Next makes writing maintainable frontend components a breeze. Want to make it safer? Throw in some TypeScript. Want it to look great? Tailwind comes on top. Oh, you’ll need to configure PostCSS, your TS compiler. Add some plugins to Next.
+
+It’s good, and it’s second nature to us. The pain of configuring Webpack and maintaining a mountain of `*.config.js` files is almost always worth it.
+
+However, it’s important to note that the web has come a long way since we started our first Webpack config.
+
+I’ve been struggling with my attention span recently, so I build a Pomodoro app with some focal music - [https://focus.hjf.io/](https://focus.hjf.io/). It’s hosted on Netlify. With the exception of `eslint`, there’s no project config and there’s no dependencies in the `package.json`. YAML hardly counts, right? 😉
+
+**It turns out that the modern web is pretty good.**
+
+I wanted to throw this thing up as a set of static files. I didn’t want to waste any time messing about with config, worrying about builds failing. I wanted a HTML skeleton, with some JavaScript along the way.
+
+My focus app takes only 4 seconds to deploy because _it doesn’t build_. We’re just moving files around.
+
+There’s a HTML file, which looks something like:
+
+```html
+<!DOCTYPE html>
+<head>
+  <title>Focus App</title>
+  <script defer src="https://www.youtube.com/iframe_api"></script>
+  <script type="module" defer src="/main.js"></script>
+</head>
+<body>
+  <main>
+    <section><!-- some dom --></section>
+    <section><!-- some more dom --></section>
+  </main>
+</body>
+```
+
+The file pulls in a YouTube iFrame library, which is then globally available in my script. It also pulls in my script. ES Modules have been around in the browser [for a while now](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#browser_support). I’ve split my code out in to a few other files. `main.js` just imports those. It just _works_.
+
+In order to get up and running, I just:
+
+- Created a HTML file, which imports my script.
+- Defined a basic UI in HTML.
+- Wrote my code
+
+The only things I’m missing? Typed code and a hot-reload server.
+
+There _are_ packages for that: I just like grinning at my empty `package.json` too much to get invested in to adding more. Less is more: I like this developer experience. I _love_ these build times.
+
+Importing code from files without the use of build tools feels like magic to me. I always felt like we as web developers were confined to module resolvers doing this for us and panic-googling at 16:55 on a Friday afternoon because Parcel is kicking off about some import.
+
+Sure, there is plenty of value in using libraries and configuring them. React and Svelte are is a powerful UI frameworks; Tailwind can make even the worst website look great. Types are cool. We stand on the shoulders of giants, but mustn’t forget how we got there.
