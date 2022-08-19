@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react'
-import {graphql} from 'gatsby'
+import React from 'react'
+import { graphql } from 'gatsby'
 
 import Layout from '../components/Layout'
 import SEO from '../components/SEO'
 import PostSummary from '../components/PostSummary'
-import {getGithubActivity} from '../build-tools/get-github-info'
 
 export const pageQuery = graphql`
   query PageContentQuery {
@@ -36,24 +35,9 @@ export const pageQuery = graphql`
   }
 `
 
-function useLiveData(context) {
-	const [twithubData, setTwithubData] = useState(context)
-	useEffect(() => {
-		// refresh github and twitter data
-		async function refresh() {
-			const [ghActivity] = await Promise.all([getGithubActivity()])
-			setTwithubData({ghActivity})
-		}
-		refresh()
-	}, [])
-	return twithubData
-}
-
-const IndexPage = function ({
-	pageContext,
-	data: {allMdx: {edges}},
+const IndexPage = function({
+	data: { allMdx: { edges } },
 }) {
-	const {ghActivity} = useLiveData(pageContext)
 	return (
 		<Layout>
 			<SEO title="Home" />
@@ -63,11 +47,6 @@ const IndexPage = function ({
 						<PostSummary post={edge.node.frontmatter} key={edge.node.id} />
 					))}
 				</section>
-				{/*
-				<section className="col-span-2">
-					<GithubActivity events={ghActivity} />
-				</section>
-				*/}
 			</div>
 		</Layout>
 	)

@@ -54,14 +54,14 @@ const Post = function({ data: { site, mdx } }) {
 				canonical={site.siteMetadata.siteUrl + mdx.frontmatter.path}
 			/>
 			<article>
-				<h1 className="pt-2 text-4xl font-header">{mdx.frontmatter.title}</h1>
+				<h1 className="pt-2 text-4xl font-header font-semibold">{mdx.frontmatter.title}</h1>
 				<small className="text-gray-500">{format(new Date(mdx.frontmatter.date), 'do MMM - yyyy')}</small>
 				<MDXProvider
 					components={{
 						// be awkward and hoist headings down a level for ease of writing
-						h1: (props: any) => <h2 {...props} className="pt-4 text-3xl font-header" />,
-						h2: (props: any) => <h3 {...props} className="pt-3 text-2xl font-header" />,
-						h3: (props: any) => <h4 {...props} className="pt-2 text-xl font-header" />,
+						h1: (props: any) => <h2 {...props} className="pt-4 text-3xl font-header font-semibold" />,
+						h2: (props: any) => <h3 {...props} className="pt-3 text-2xl font-header font-semibold" />,
+						h3: (props: any) => <h4 {...props} className="pt-2 text-xl font-header font-semibold" />,
 						h4: (props: any) => <h4 {...props} className="pt-2 text-lg font-header" />,
 						p: (props: any) => <p {...props} className="py-3 text-sm font-print" />,
 						a: (props: any) => <Link {...props} className="text-blue-400" />,

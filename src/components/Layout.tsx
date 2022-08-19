@@ -39,9 +39,9 @@ const Layout = ({ children }: LayoutProps) => {
 		<>
 			<SEO />
 			<div className="min-h-full text-black bg-white">
-				<main className="container p-2 mx-auto md:py-8 md:px-16">
-					<section className="pt-4 pb-8">
-						<header className="pb-1 text-yellow-500">
+				<main className="container p-2 mx-auto md:py-8 md:px-16 px-8">
+					<section className="pt-4 pb-8 text-xl font-header">
+						<header className="pb-1 text-yellow-500 inline-block mr-2">
 							<Link to="/">hjf.io</Link>
 						</header>
 						<Nav />
