@@ -13,7 +13,7 @@ module.exports = {
 				gatsbyRemarkPlugins: [
 					{
 						resolve: 'gatsby-remark-images',
-						options: {maxWidth: 960},
+						options: { maxWidth: 960 },
 					},
 					'gatsby-remark-prismjs',
 					'gatsby-remark-smartypants',
@@ -58,7 +58,7 @@ module.exports = {
 				`,
 				feeds: [
 					{
-						serialize: ({query: {site, allMdx}}) => allMdx.edges.map((edge) => ({
+						serialize: ({ query: { site, allMdx } }) => allMdx.edges.map((edge) => ({
 							...edge.node.frontmatter,
 							...{
 								description: edge.node.frontmatter.description,
