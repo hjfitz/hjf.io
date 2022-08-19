@@ -6,29 +6,28 @@
  */
 
 import React from "react";
-import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { useStaticQuery, graphql } from "gatsby";
 
 interface SEOProps {
-  description: string;
-  lang: string;
-  meta: string;
-  img: string;
-  canonical: string;
-  title: string;
+	description?: string;
+	lang?: string;
+	meta?: Record<string, string>[];
+	img?: string;
+	canonical?: string;
+	title?: string;
 }
 
 function SEO({
-  description,
-  lang,
-  meta,
-  title,
-  img,
-  canonical,
+	description,
+	lang,
+	meta = [],
+	title,
+	img,
+	canonical,
 }: SEOProps): React.ReactElement {
-  const { site } = useStaticQuery(
-    graphql`
+	const { site } = useStaticQuery(
+		graphql`
       query {
         site {
           siteMetadata {
@@ -40,80 +39,69 @@ function SEO({
         }
       }
     `
-  );
+	);
 
-  const seoImg = img || site.siteMetadata.url + "/static/wiz.png";
+	const seoImg = img || site.siteMetadata.url + "/static/wiz.png";
 
-  const canon = canonical || site.siteMetadata.siteUrl;
+	const canon = canonical || site.siteMetadata.siteUrl;
 
-  const metaDescription = description || site.siteMetadata.description;
-  const defaultTitle = site.siteMetadata?.title;
+	const metaDescription = description || site.siteMetadata.description;
+	const defaultTitle = site.siteMetadata?.title;
 
-  return (
-    <Helmet
-      htmlAttributes={{ lang }}
-      title={title}
-      titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : null}
-      meta={[
-        {
-          name: "description",
-          content: metaDescription,
-        },
-        {
-          name: "canonical",
-          content: canon,
-        },
-        {
-          property: "og:title",
-          content: title,
-        },
-        {
-          property: "og:description",
-          content: metaDescription,
-        },
-        {
-          property: "og:type",
-          content: "website",
-        },
-        {
-          property: "og:image",
-          content: seoImg,
-        },
-        {
-          name: "twitter:card",
-          content: "summary_large_image",
-        },
-        {
-          name: "twitter:image",
-          content: seoImg,
-        },
-        {
-          name: "twitter:creator",
-          content: site.siteMetadata?.author || "",
-        },
-        {
-          name: "twitter:title",
-          content: title,
-        },
-        {
-          name: "twitter:description",
-          content: metaDescription,
-        },
-      ].concat(meta)}
-    />
-  );
+
+	return (
+		<Helmet
+			htmlAttributes={{ lang }}
+			title={title}
+			titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : null}
+			meta={[
+				{
+					name: "description",
+					content: metaDescription,
+				},
+				{
+					name: "canonical",
+					content: canon,
+				},
+				{
+					property: "og:title",
+					content: title,
+				},
+				{
+					property: "og:description",
+					content: metaDescription,
+				},
+				{
+					property: "og:type",
+					content: "website",
+				},
+				{
+					property: "og:image",
+					content: seoImg,
+				},
+				{
+					name: "twitter:card",
+					content: "summary_large_image",
+				},
+				{
+					name: "twitter:image",
+					content: seoImg,
+				},
+				{
+					name: "twitter:creator",
+					content: site.siteMetadata?.author || "",
+				},
+				{
+					name: "twitter:title",
+					content: title,
+				},
+				{
+					name: "twitter:description",
+					content: metaDescription,
+				},
+			].concat(meta)}
+		/>
+	);
 }
-
-SEO.defaultProps = {
-  lang: "en",
-  meta: [],
-  description: "",
-};
-
-SEO.propTypes = {
-  description: PropTypes.string,
-  lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-};
 
 export default SEO;

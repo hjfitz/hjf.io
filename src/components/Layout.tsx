@@ -16,42 +16,42 @@ console.log("Poking about? Check my code on GitHub!");
 console.log("%c https://github.com/hjfitz?tab=repositories", "color: #1e3a8a");
 
 interface LayoutProps {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }
 
 let hasInitialized = false;
 export function useErrorTracking() {
-  useEffect(() => {
-    if (hasInitialized) return;
-    LogRocket.init("8ydpeu/hjfio");
-    LogRocket.getSessionURL((sessionURL) => {
-      Sentry.configureScope((scope) => {
-        scope.setExtra("sessionURL", sessionURL);
-      });
-    });
-    hasInitialized = true;
-  }, []);
+	useEffect(() => {
+		if (hasInitialized) return;
+		LogRocket.init("8ydpeu/hjfio");
+		LogRocket.getSessionURL((sessionURL) => {
+			Sentry.configureScope((scope) => {
+				scope.setExtra("sessionURL", sessionURL);
+			});
+		});
+		hasInitialized = true;
+	}, []);
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  useErrorTracking();
-  return (
-    <>
-      <SEO />
-      <div className="min-h-full text-black bg-white dark:bg-gray-800 dark:text-gray-300">
-        <main className="container p-2 mx-auto md:py-8 md:px-16">
-          <section className="pt-4 pb-8">
-            <header className="pb-1 text-yellow-500">
-              <Link to="/">hjf.io</Link>
-            </header>
-            <Nav />
-          </section>
-          {children}
-        </main>
-        <Footer />
-      </div>
-    </>
-  );
+	useErrorTracking();
+	return (
+		<>
+			<SEO />
+			<div className="min-h-full text-black bg-white">
+				<main className="container p-2 mx-auto md:py-8 md:px-16">
+					<section className="pt-4 pb-8">
+						<header className="pb-1 text-yellow-500">
+							<Link to="/">hjf.io</Link>
+						</header>
+						<Nav />
+					</section>
+					{children}
+				</main>
+				<Footer />
+			</div>
+		</>
+	);
 };
 
 export default Layout;

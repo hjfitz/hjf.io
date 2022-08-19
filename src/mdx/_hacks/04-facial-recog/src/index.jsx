@@ -1,4 +1,6 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {
+	useState, useEffect, useRef,
+} from 'react'
 import * as faceapi from 'face-api.js'
 
 function useTiny() {
@@ -11,7 +13,7 @@ function useTiny() {
 	return loaded
 }
 
-export const FaceApiBoiler = () => {
+export var FaceApiBoiler = function () {
 	const video = useRef(null)
 	const canvas = useRef(null)
 
@@ -23,7 +25,7 @@ export const FaceApiBoiler = () => {
 		if (!stream) {
 			navigator.mediaDevices
 				.getUserMedia({video: true})
-				.then(stream => setStream(stream))
+				.then((stream) => setStream(stream))
 		} else {
 			const {current: vid} = video
 			const {current: canv} = canvas
@@ -53,7 +55,7 @@ export const FaceApiBoiler = () => {
 	)
 }
 
-export const FaceApiInit = () => {
+export var FaceApiInit = function () {
 	const video = useRef(null)
 	const detecting = useRef(false)
 	const frame = useRef(null)
@@ -64,23 +66,23 @@ export const FaceApiInit = () => {
 
 	const toggleDetection = (ev) => {
 		ev.preventDefault()
-		setDetecting(state => !state)
+		setDetecting((state) => !state)
 	}
-	
+
 	// awful hack
 	useEffect(() => {
 		detecting.current = allowDetection
 	}, [allowDetection])
 
 	useEffect(() => {
-		if (!curDetection) return;
+		if (!curDetection) return
 		const {current: fme} = frame
 		const {current: vid} = video
 		// move thingy
 		const {_x, _y} = curDetection._box
 		const {x, y} = vid.getBoundingClientRect()
-		fme.style.left = (_x + x) + 'px'
-		fme.style.top = (_y + y) + 'px'
+		fme.style.left = `${_x + x}px`
+		fme.style.top = `${_y + y}px`
 	}, [curDetection])
 
 	const isLoaded = useTiny()
@@ -89,7 +91,7 @@ export const FaceApiInit = () => {
 		if (!stream) {
 			navigator.mediaDevices
 				.getUserMedia({video: true})
-				.then(stream => setStream(stream))
+				.then((stream) => setStream(stream))
 		} else {
 			const {current: vid} = video
 			vid.srcObject = stream
@@ -101,12 +103,12 @@ export const FaceApiInit = () => {
 					const opts = new faceapi.TinyFaceDetectorOptions()
 					const detection = faceapi
 						.detectSingleFace(vid, opts)
-						.then(detection => {
+						.then((detection) => {
 							if (!detection) return
 							const {width, height} = vid.getBoundingClientRect()
 							const detectionsForSize = faceapi.resizeResults(detection, {
 								height,
-								width, 
+								width,
 							})
 							console.log(JSON.stringify({detection, detectionsForSize}, null, 2))
 							setDetection(detectionsForSize)
@@ -124,43 +126,41 @@ export const FaceApiInit = () => {
 				</pre>
 				<pre className="my-0 col-span-6 language-javascript">
 					<code className="inline-block language-javascript">
-						{curDetection && JSON.stringify(curDetection, null, 2)
-						}
+						{curDetection && JSON.stringify(curDetection, null, 2)}
 					</code>
 				</pre>
 			</div>
 			<div className="my-4 text-center">
-				<a 
+				<a
 					onClick={toggleDetection}
-					className="inline px-4 py-2 m-2 text-gray-700 bg-gray-700 border border-gray-700 cursor-pointer select-none dark:border-gray-200 dark:bg-gray-200 rounded-md transition duration-500 ease hover:bg-gray-300 focus:outline-none focus:shadow-outline"
+					className="inline px-4 py-2 m-2 text-gray-700 bg-gray-700 border border-gray-700 cursor-pointer select-none rounded-md transition duration-500 ease hover:bg-gray-300 focus:outline-none focus:shadow-outline"
 				>
 					{allowDetection ? 'Stop detecting' : 'Start detecting'}
 				</a>
 			</div>
-			{//curDetection && 
-				<div 
+			{// curDetection &&
+				<div
 					ref={frame}
-					style={{position: 'fixed'}} 
-					className="w-24 h-24 border-4" 
+					style={{position: 'fixed'}}
+					className="w-24 h-24 border-4"
 				/>
 			}
 		</>
 	)
 }
 
-export const ShowElement = ({children}) => {
+export var ShowElement = function ({children}) {
 	const [show, setShow] = useState(false)
 	if (show) return children
 	return (
 		<div className="mt-2 text-center">
 
-			<p 
+			<p
 				onClick={() => setShow(true)}
-				className="inline px-4 py-2 m-2 text-gray-700 bg-gray-700 border border-gray-700 cursor-pointer select-none dark:border-gray-200 dark:bg-gray-200 rounded-md transition duration-500 ease hover:bg-gray-300 focus:outline-none focus:shadow-outline"
+				className="inline px-4 py-2 m-2 text-gray-700 bg-gray-700 border border-gray-700 cursor-pointer select-none rounded-md transition duration-500 ease hover:bg-gray-300 focus:outline-none focus:shadow-outline"
 			>
 				Show Video
 			</p>
 		</div>
 	)
 }
-

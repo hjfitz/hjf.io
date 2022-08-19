@@ -3,7 +3,7 @@ const {getGithubActivity} = require('./src/build-tools/get-github-info')
 const {getTwitterTweets} = require('./src/build-tools/get-twitter-tweets')
 
 const templatesDir = path.resolve(__dirname, 'src', 'templates')
-const mdxTemplate = path.resolve(templatesDir, 'mdx.template.jsx')
+const mdxTemplate = path.resolve(templatesDir, 'mdx.template.tsx')
 const paginatedBlogTemplate = path.resolve(templatesDir, 'blog.template.jsx')
 
 async function createPages({graphql, actions: {createPage}}) {
@@ -43,7 +43,6 @@ async function createPages({graphql, actions: {createPage}}) {
 	})
 
 	// create the blog pages - paginated
-	const PER_PAGE = 5
 	const blogResult = await graphql(`
     query BlogContentQuery {
       allMdx(
