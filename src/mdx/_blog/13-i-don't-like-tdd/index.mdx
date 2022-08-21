@@ -1,0 +1,29 @@
+---
+title: "I don't like TDD"
+date: "2022-08-21T15:09:41+0100"
+type: blog 
+draft: true
+path: "i-dont-like-tdd"
+category: ""
+tags:
+  - "Code"
+description: ""
+featureImg: "./feature.jpeg"
+---
+
+Test Driven Development, or TDD, is the practice of writing unit tests for a piece of functionality before actually writing your functionality. Moreover, it can be split in to N phases:
+
+1. **Write** a set of basic unit tests that describe an aspect of your system
+2. **Run** the test, which fails
+3. **Write** the code to cover the pass the test
+4. **Refactor** the code and tests until it hits your acceptance criteria
+
+This can be a good route in to a well-tested, highly covered system. You could integrate this in to your workflow to bring integration tests too.
+
+I like a well-tested system. The kind where you can perform a major refactor or release with confidence, because your tests pass fine. The kind of system where tests don’t care about implementation details, or where you don’t have to mock out everything.
+
+I don’t like TDD. I feel like TDD strongly influences architecture and overall design of your code to be well testable, instead of being *scalable and maintainable*. Have you ever worked on a feature and thought “Why the fuck is this designed in the way it is?”, only to find that every part of it is  well tested, so you can’t really refactor it in to something sensical?
+
+There are, of course, good reasons to follow TDD. It makes you think about what you’re going to produce, and by proxy, utilise some good principles when creating some code. It’s useful when you’re new to the world designing good software as it does afford some scalability. At some point, you need to throw it out and start to think about what you’re producing, rather than blindly closing out tickets.
+
+TDD has a significant influence on your architecture - so I don’t like or follow TDD. I write my code and then write my unit and integration tests. To produce quality software I prefer to follow a strong set of principles (like SOLID), have my code peer-reviewed and rely on my own ever-improving ability.
