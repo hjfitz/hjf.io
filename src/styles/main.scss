@@ -67,3 +67,11 @@ div {
 code[class*="language-"], pre[class*="language-"] {
 	@apply text-sm #{!important};
 }
+
+
+li {
+	@apply mb-2;
+	p {
+		@apply inline leading-6;
+	}
+}

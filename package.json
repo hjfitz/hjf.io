@@ -13,7 +13,7 @@
     "@sentry/gatsby": "^6.11.0",
     "@tailwindcss/custom-forms": "^0.2.1",
     "autoprefixer": "^10.3.1",
-    "axios": "^0.24.0",
+    "axios": "^0.27.2",
     "browser-monads": "^1.0.0",
     "dart-sass": "^1.25.0",
     "date-fns": "^2.16.1",
@@ -48,11 +48,16 @@
     "twitter": "^1.7.1"
   },
   "devDependencies": {
+    "@types/dotenv-flow": "^3.2.0",
+    "@types/mime-types": "^2.1.1",
     "@types/node": "^17.0.2",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/react-helmet": "^6.1.4",
-    "eslint": "^8.5.0",
+    "@types/yaml": "^1.9.7",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "eslint": "^8.24.0",
     "eslint-config-airbnb": "^19.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -64,8 +69,14 @@
     "gatsby-plugin-robots-txt": "^1.6.8",
     "gatsby-plugin-sitemap": "^5.4.0",
     "gatsby-plugin-typescript": "^4.4.0",
+    "mime-types": "^2.1.35",
     "netlify-cli": "^8.2.4",
-    "prettier": "2.5.1"
+    "npm": "^8.19.2",
+    "prettier": "2.5.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3",
+    "uuid": "^9.0.0",
+    "yaml": "^2.1.1"
   },
   "scripts": {
     "build": "gatsby build",
@@ -73,7 +84,8 @@
     "dev": "netlify dev",
     "start": "yarn develop",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+	"scrape:notion": "ts-node scripts/notion"
   },
   "repository": {
     "type": "git",

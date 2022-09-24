@@ -3,29 +3,38 @@ env:
   es2020: true
   node: true
 extends:
-- plugin:react/recommended
-- airbnb
+  - plugin:react/recommended
+  - plugin:@typescript-eslint/recommended
+  - airbnb
+parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaFeatures:
     jsx: true
   ecmaVersion: 12
   sourceType: module
 plugins:
-- react
+  - react
+  - '@typescript-eslint'
 rules:
+  no-tabs: 0
+  no-empty-function: 
+    - error 
+    - allow: 
+      - constructors
   indent:
   - error
   - tab
-  no-tabs: 0
   react/jsx-indent:
-  - 1
-  - tab
+    - 1
+    - tab
   semi:
-  - error
-  - never
+    - error
+    - never
   object-curly-spacing:
-  - error
-  - never
+    - error
+    - never
+  no-console:
+    - off
   react/jsx-indent-props:
   - 2
   - tab
