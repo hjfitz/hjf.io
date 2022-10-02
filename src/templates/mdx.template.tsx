@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
 import format from 'date-fns/format'
 import {graphql} from 'gatsby'
 import {MDXProvider} from '@mdx-js/react'
@@ -45,10 +45,22 @@ function generateSEOImage(mdx, site): string {
 	return siteUrl + src
 }
 
-const Post = function ({data: {site, mdx}}) {
-	return (
-		<Layout>
-			<Helmet>
+function Post({data: {site, mdx}}) {
+	const utterances = useRef<HTMLElement>()
+	useEffect(() => {
+		if (typeof window === 'undefined' || !utterances) {
+			return
+		}
+		const s = document.createElement('script')
+		s.src = 'https://utteranc.es/client.js'
+		s.setAttribute('repo', 'hjfitz/hjf.io')
+		s.setAttribute('issue-term', 'title')
+		s.setAttribute('label', 'discussion')
+		s.crossOrigin = 'anonymous'
+		s.async = true
+		utterances.current && utterances.current.appendChild(s)
+		/*
+		utterances.current.innerHTML = `
 				<script
 					src="https://utteranc.es/client.js"
 					repo="hjfitz/hjf.io"
@@ -58,7 +70,11 @@ const Post = function ({data: {site, mdx}}) {
 					crossOrigin="anonymous"
 					async
 				/>
-			</Helmet>
+		`
+				*/
+	}, [])
+	return (
+		<Layout>
 			<SEO
 				title={mdx.frontmatter.title}
 				description={mdx.frontmatter.description}
@@ -91,7 +107,7 @@ const Post = function ({data: {site, mdx}}) {
 					<MDXRenderer className="">{mdx.body}</MDXRenderer>
 				</MDXProvider>
 			</article>
-			<section className="utterances" />
+			<section ref={utterances} />
 		</Layout>
 	)
 }
