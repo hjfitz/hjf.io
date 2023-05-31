@@ -1,12 +1,12 @@
 ---
 title: 🦃 Nest.js for AWS Lambda with Bundling
-date: 2023-05-31T15:55:48.354Z
+date: 2023-05-31T16:01:41.180Z
 type: blog
 draft: false
 path: /nest-js-for-aws-lambda-with-bundling/
 category: ""
 tags: []
-description: ""
+description: Nest is an excellent, stable API framework for Node. Designed for general backends, it can be a challenge cramming everything in to a Lambda.
 featureImg: feature.jpeg
 
 ---
@@ -20,7 +20,31 @@ However, for an enterprise that’s constantly hitting a lambda, it’s importan
 Nest is known to drop connections when using Express on a lambda. Fastify is more performant and the AWS Lambda adaptor is officially supported. Below is your adaptor code:
 
 ```typescript
-undefined
+import { NestFactory } from "@nestjs/core";
+import { APIGatewayProxyEvent, Callback, Context, Handler } from "aws-lambda";
+import serverlessFastify from "@fastify/aws-lambda";
+import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
+
+import { AppModule } from "./app.module";
+
+let cachedHandler: Handler;
+
+async function initFastify(): Promise<Handler> {
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter()
+  );
+  await app.init();
+
+  const fastifyApp = app.getHttpAdapter().getInstance();
+
+  return serverlessFastify(fastifyApp);
+}
+
+export const handler = async (event: APIGatewayProxyEvent, context: Context, callback: Callback) => {
+  cachedHandler = cachedHandler ?? (await initFastify());
+  return cachedHandler(event, context, callback);
+};
 ```
 
 Note how we cache the handler for some bonus performance.
@@ -30,19 +54,90 @@ Note how we cache the handler for some bonus performance.
 Webpack isn’t well documented for Nest, for the reasons discussed above. You can build your code with `nest build --webpack`, but you’ll find that there are some errors:
 
 ```typescript
-undefined
+~ $ npx nest build --webpack
+ERROR in main
+Module not found: Error: Can't resolve '/home/dev/nest-fastify/src/main.ts' in '/home/dev/nest-fastify'
+resolve '/home/dev/nest-fastify/src/main.ts' in '/home/dev/nest-fastify'
+  using description file: /home/dev/nest-fastify/package.json (relative path: .)
+    root path /home/dev/nest-fastify
+      using description file: /home/dev/nest-fastify/package.json (relative path: ./home/dev/nest-fastify/src/main.ts)
+        no extension
+          /home/dev/nest-fastify/home/dev/nest-fastify/src/main.ts doesn't exist
+        .tsx
+          /home/dev/nest-fastify/home/dev/nest-fastify/src/main.ts.tsx doesn't exist
+        .ts
+          /home/dev/nest-fastify/home/dev/nest-fastify/src/main.ts.ts doesn't exist
+        .js
+          /home/dev/nest-fastify/home/dev/nest-fastify/src/main.ts.js doesn't exist
+        as directory
+          /home/dev/nest-fastify/home/dev/nest-fastify/src/main.ts doesn't exist
+    using description file: /home/dev/nest-fastify/package.json (relative path: ./src/main.ts)
+      no extension
+        /home/dev/nest-fastify/src/main.ts doesn't exist
+      .tsx
+        /home/dev/nest-fastify/src/main.ts.tsx doesn't exist
+      .ts
+        /home/dev/nest-fastify/src/main.ts.ts doesn't exist
+      .js
+        /home/dev/nest-fastify/src/main.ts.js doesn't exist
+      as directory
+        /home/dev/nest-fastify/src/main.ts doesn't exist
+
+webpack 5.80.0 compiled with 1 error in 1653 ms
 ```
 
 The Nest docs gloss over this, but there are peer dependencies that aren’t really needed for our case. Nest gives a sample Webpack config:
 
 ```typescript
-undefined
+const mode = process.env.NODE_ENV === 'production' ? 'production' : 'dev'
+module.exports = (options, webpack) => {
+  const lazyImports = [
+    "@nestjs/microservices/microservices-module",
+    "@nestjs/websockets/socket-module",
+  ];
+
+  return {
+    ...options,
+    mode,
+    externals: [],
+    module: {
+      ...options.module,
+      rules: [
+        {
+          test: /\.(t|j)s$/,
+          loader: "unlazy-loader",
+        },
+        ...(options.module?.rules ?? []),
+      ],
+    },
+    plugins: [
+      ...options.plugins,
+      new webpack.IgnorePlugin({
+        checkResource(resource) {
+          if (lazyImports.includes(resource)) {
+            try {
+              require.resolve(resource);
+            } catch (err) {
+              return true;
+            }
+          }
+          return false;
+        },
+      }),
+    ],
+  };
+};
 ```
 
-And we can add a couple of lazy imports for Fastify peer dependencies:
+Note the `lazyImports` array. Nest (and associated libraries) make use of peer dependencies. In these cases, Webpack can’t determine if you need them or not. So it crashes. Be sensible here, and you can either ignore them in an error, or add them to your project with yarn.
+
+Fastify does this. We can add a couple of lazy imports for Fastify peer dependencies:
 
 ```typescript
-undefined
+[
+  "@fastify/view",
+  "@fastify/static",
+]
 ```
 
 However, we’re also looking to export a handler. When bundling, Webpack removes these - because why would we want to export anything if we’re deploying a bundled executable? 
@@ -50,9 +145,73 @@ However, we’re also looking to export a handler. When bundling, Webpack remove
 Webpack allows you to name exports, if you’re building a library. Here, we name our `handler` export, which will be picked up by AWS when we deploy our code. This goes in the root or our `webpack.config.json`.
 
 ```typescript
-undefined
+{
+	output: {
+	  ...options.output,
+	  library: {
+	    name: "handler",
+	    type: "umd",
+	  },
+	},
+}
 ```
 
 ## Conclusion
 
-In some informal testing, I’ve noticed the *cold-start* time reduction of up to 800ms, which is pretty profound. The bundle size is also significantly smaller then deploying the code + node_modules; a reduction of ~600mb to ~4mb. You can take this even further with minification and some tree shaking!
+In some informal testing, I’ve noticed the *cold-start* time reduction of up to 800ms, which is pretty profound. 
+
+The bundle size is also significantly smaller then deploying the code + node_modules. This is a reduction of ~600mb to ~4mb. You can take this even further with minification and some tree shaking to about 2mb!
+
+## Appendices
+
+Our final `webpack.config.js`
+
+```typescript
+const mode = process.env.NODE_ENV === 'production' ? 'production' : 'dev'
+module.exports = (options, webpack) => {
+  const lazyImports = [
+    "@nestjs/microservices/microservices-module",
+    "@nestjs/websockets/socket-module",
+	  "@fastify/view",
+	  "@fastify/static",
+  ];
+
+  return {
+    ...options,
+    mode,
+		output: {
+		  ...options.output,
+		  library: {
+		    name: "handler",
+		    type: "umd",
+		  },
+		},
+    externals: [],
+    module: {
+      ...options.module,
+      rules: [
+        {
+          test: /\.(t|j)s$/,
+          loader: "unlazy-loader",
+        },
+        ...(options.module?.rules ?? []),
+      ],
+    },
+    plugins: [
+      ...options.plugins,
+      new webpack.IgnorePlugin({
+        checkResource(resource) {
+          if (lazyImports.includes(resource)) {
+            try {
+              require.resolve(resource);
+            } catch (err) {
+              return true;
+            }
+          }
+          return false;
+        },
+      }),
+    ],
+  };
+};
+```

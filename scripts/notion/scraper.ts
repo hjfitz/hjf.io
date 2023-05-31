@@ -84,7 +84,7 @@ export default class NotionPage {
 				return `${mdToken}${content}`
 			}
 			case 'code': {
-				return `\`\`\`${block.code.language}\n${block.code.rich_text.content}\n\`\`\``
+				return `\`\`\`${block.code.language}\n${block.code.rich_text[0].text.content}\n\`\`\``
 			}
 			case 'image': {
 			// todo: fetch and save
