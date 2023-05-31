@@ -117,7 +117,7 @@ function onCreateNode({
 }
 
 async function onCreatePage({page, actions: {createPage, deletePage}}) {
-	if (page.path === '/') {
+	if (page.path === '//////') {
 		console.log('modifying home page')
 		const [ghActivity] = await Promise.all([getGithubActivity()])
 
