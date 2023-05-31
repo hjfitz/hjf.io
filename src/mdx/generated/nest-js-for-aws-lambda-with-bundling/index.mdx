@@ -1,6 +1,6 @@
 ---
 title: 🦃 Nest.js for AWS Lambda with Bundling
-date: 2023-05-31T15:16:29.021Z
+date: 2023-05-31T15:55:48.354Z
 type: blog
 draft: false
 path: /nest-js-for-aws-lambda-with-bundling/
@@ -19,7 +19,9 @@ However, for an enterprise that’s constantly hitting a lambda, it’s importan
 
 Nest is known to drop connections when using Express on a lambda. Fastify is more performant and the AWS Lambda adaptor is officially supported. Below is your adaptor code:
 
-
+```typescript
+undefined
+```
 
 Note how we cache the handler for some bonus performance.
 
@@ -27,21 +29,29 @@ Note how we cache the handler for some bonus performance.
 
 Webpack isn’t well documented for Nest, for the reasons discussed above. You can build your code with `nest build --webpack`, but you’ll find that there are some errors:
 
-
+```typescript
+undefined
+```
 
 The Nest docs gloss over this, but there are peer dependencies that aren’t really needed for our case. Nest gives a sample Webpack config:
 
-
+```typescript
+undefined
+```
 
 And we can add a couple of lazy imports for Fastify peer dependencies:
 
-
+```typescript
+undefined
+```
 
 However, we’re also looking to export a handler. When bundling, Webpack removes these - because why would we want to export anything if we’re deploying a bundled executable? 
 
 Webpack allows you to name exports, if you’re building a library. Here, we name our `handler` export, which will be picked up by AWS when we deploy our code. This goes in the root or our `webpack.config.json`.
 
-
+```typescript
+undefined
+```
 
 ## Conclusion
 

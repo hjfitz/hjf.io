@@ -83,6 +83,9 @@ export default class NotionPage {
 
 				return `${mdToken}${content}`
 			}
+			case 'code': {
+				return `\`\`\`${block.code.language}\n${block.code.rich_text.content}\n\`\`\``
+			}
 			case 'image': {
 			// todo: fetch and save
 				const src = await this.resolveImage(block.image.file.url)
