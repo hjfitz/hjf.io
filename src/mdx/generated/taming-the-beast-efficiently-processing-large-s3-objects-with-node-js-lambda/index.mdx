@@ -1,6 +1,6 @@
 ---
 title: "Taming the Beast: Efficiently Processing Large S3 Objects with Node.js Lambda"
-date: 2024-02-26T14:08:36.034Z
+date: 2024-02-26T14:20:57.780Z
 type: blog
 draft: false
 path: /taming-the-beast-efficiently-processing-large-s3-objects-with-node-js-lambda/
@@ -28,6 +28,8 @@ import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
 
 export const handler = async (event) => {
 	const client = new S3Client({ region: process.env.AWS_REGION })
+
+	const record = event.Record[0]
   
   const bucket = record.s3.bucket.name
   const { key } = record.s3.object
@@ -63,9 +65,9 @@ export const handler = async (event) => {
 	let buffer = ''
 
 	response.Body.on('chunk', async (chunk) => {
-	  buffer += chunk.toString();
-	  const records = buffer.split(DELIM);
-	  buffer = records.pop();
+	  buffer += chunk.toString()
+	  const records = buffer.split(DELIM)
+	  buffer = records.pop()
 		await doSomethingWithLines(records)
 	})
 	
@@ -151,9 +153,9 @@ export const handler = async (event) => {
 	}
 
 	response.Body.on('chunk', async (chunk) => {
-	  buffer += chunk.toString();
-	  const records = buffer.split(DELIM);
-	  buffer = records.pop();
+	  buffer += chunk.toString()
+	  const records = buffer.split(DELIM)
+	  buffer = records.pop()
 		await process(records)
 	})
 	
