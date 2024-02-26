@@ -1,6 +1,6 @@
 ---
 title: "Taming the Beast: Efficiently Processing Large S3 Objects with Node.js Lambda"
-date: 2024-02-26T14:20:57.780Z
+date: 2024-02-26T14:36:33.181Z
 type: blog
 draft: false
 path: /taming-the-beast-efficiently-processing-large-s3-objects-with-node-js-lambda/
@@ -28,20 +28,20 @@ import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
 
 export const handler = async (event) => {
 	const client = new S3Client({ region: process.env.AWS_REGION })
-
+	
 	const record = event.Record[0]
-  
-  const bucket = record.s3.bucket.name
-  const { key } = record.s3.object
+	
+	const bucket = record.s3.bucket.name
+	const { key } = record.s3.object
 	
 	const response = await client.send(
 		new GetObjectCommand({ bucket, key }),
-  )
-
+	)
+	
 	const file = await response.Body.transformToString()
-
+	
 	await doSomethingWithFile(file)
-
+	
 	return {
 		statusCode: 201,
 		body: 'Created',
@@ -63,11 +63,11 @@ export const handler = async (event) => {
 	const response = await client.send(command)
 	
 	let buffer = ''
-
+	
 	response.Body.on('chunk', async (chunk) => {
-	  buffer += chunk.toString()
-	  const records = buffer.split(DELIM)
-	  buffer = records.pop()
+		buffer += chunk.toString()
+		const records = buffer.split(DELIM)
+		buffer = records.pop()
 		await doSomethingWithLines(records)
 	})
 	
@@ -75,7 +75,7 @@ export const handler = async (event) => {
 		if (buffer.length) 
 			await doSomethingWithLines(records)
 	})
-
+	
 	return {
 		statusCode: 201,
 		body: 'Created',
@@ -105,27 +105,27 @@ Firstly, we need waitgroups. Let’s create a contrived class for it:
 
 ```typescript
 export class Waitgroup {
-  constructor() {
-    this.delta = 0
-  }
-
-  add() {
+	constructor() {
+		this.delta = 0
+	}
+	
+	add() {
 		this.delta += 1
-  }
-
-  done() {
-    this.delta -= 1
-  }
-
-  wait() {
-    return new Promise((res) => {
-      const interval = setInterval(() => {
-        if (this.delta !== 0) return
+	}
+	
+	done() {
+		this.delta -= 1
+	}
+	
+	wait() {
+		return new Promise((res) => {
+			const interval = setInterval(() => {
+				if (this.delta !== 0) return
 				clearInterval(interval)
-        res(null)
-      }, 100)
-    })
-  }
+				res(null)
+			}, 100)
+		})
+	}
 }
 ```
 
@@ -141,33 +141,33 @@ export const handler = async (event) => {
 	// request code omitted for brevity
 	
 	const response = await client.send(command)
-  const wg = new Waitgroup()
+	const wg = new Waitgroup()
 	wg.add()
 	
 	let buffer = ''
-
+	
 	async function process(records) {
 		wg.add()
 		await doSomethingWithLines(records)
 		wg.done()
 	}
-
+	
 	response.Body.on('chunk', async (chunk) => {
-	  buffer += chunk.toString()
-	  const records = buffer.split(DELIM)
-	  buffer = records.pop()
+		buffer += chunk.toString()
+		const records = buffer.split(DELIM)
+		buffer = records.pop()
 		await process(records)
 	})
 	
 	response.Body.on('end', async () => {
 		if (buffer.length)
 			await process(records)
-
+	
 		wg.done()
 	})
 	
 	await wg.wait()
-
+	
 	return {
 		statusCode: 201,
 		body: 'Created',
