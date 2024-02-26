@@ -126,8 +126,8 @@ export default class NotionPage {
 		if (existsSync(this.root)) {
 			// instead, unlink and rewrite because lazy
 			console.log('dir exists. skipping')
-			await rm(this.root, {force: true, recursive: true})
-			// return
+			return
+			//await rm(this.root, {force: true, recursive: true})
 		}
 		await mkdir(this.root)
 		// const contents = await this.parseBlocks()
