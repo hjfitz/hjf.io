@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #___gatsby, #gatsby-focus-wrapper {
+	@apply h-full;
+}
+
+code.language-text {
+	padding: 0 0.25rem!important;
+	line-height: 1.5rem!important;
+	@apply text-red-500 bg-yellow-50 border-yellow-300 border #{!important};
+}
+
+pre[class*="language-"] {
+	font-size: 0.75rem!important;
+	line-height: 1rem!important;
+}
+
+.token.table {
+	display: inline!important;
+}
+
+@media screen and (max-width: 640px) {
+	.container {
+
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.container {
+	
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	.container {
+		max-width: 800px;
+	}
+}
+
+@media screen and (max-width: 1280px) {
+	.container {
+	
+	}
+}
+
+@media screen and (max-width: 1536px) {
+	.container {
+	
+	}
+}
+
+div {
+	dt, dd {
+		@apply inline
+	}
+}
+
+
+code[class*="language-"], pre[class*="language-"] {
+	@apply text-sm #{!important};
+}
+
+
+li {
+	@apply mb-2;
+	p {
+		@apply inline leading-6;
+	}
+}
