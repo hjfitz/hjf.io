@@ -1,12 +1,12 @@
-import { Container, Footer, Header } from "@/components";
+import { Footer, Header } from "@/components";
 
-export default function Home() {
+const Home = () => {
 		return (
-				<Container>
 						<>
 								<Header />
 								<Footer />
 						</>
-				</Container>
 		);
-}
+		}
+
+export default Home
