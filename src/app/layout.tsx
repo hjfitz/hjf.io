@@ -8,8 +8,6 @@ import "./globals.scss";
 
 type LayoutProps = Readonly<{
 		children: React.ReactNode
-		params: { slug: string }
-		frontmatter: any
 }>
 
 export const metadata = { 
