@@ -9,5 +9,5 @@ export const Container = ({children}: PostContainerProps) => {
 						{children}
 				</main>
 		</div>
-		)
+	)
 }
