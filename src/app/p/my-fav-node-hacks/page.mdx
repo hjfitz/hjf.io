@@ -1,0 +1,126 @@
+---
+title: "My Favorite Node Hacks"
+date: "2021-01-27T20:23:00.000Z"
+type: blog
+draft: true
+path: "/my-fav-node-hacks/"
+category: "Some cool, less known ways to hack things together in code"
+tags:
+  - "Code"
+description: ""
+featureImg: "./feature.jpeg"
+---
+
+Node is the most 'human' language. That is, we've built it as a community. If there's something new we want, we [can create a proposal](https://github.com/tc39/proposals). If we're impatient, we can hack what we want in to [Babel and transpile](https://babeljs.io/docs/en/babel-preset-stage-0). Types? There's a [thing for that](https://www.typescriptlang.org/). More Pythonic? [Got u fam](https://coffeescript.org/). Any program in 6 chars? [https://badacadabra.github.io/Understanding-JSFuck/](Not a fucking problem).
+
+It's a mad world. It's a mad language and even if you cry *"I'm using ES6!"*, you're not using all of it.
+
+Over my years of ~professional software development~ hacking things together as a security engineer, I've picked up a lot. These are my favourite hacks that I've picked up.
+
+# Easy Arrays/Pythonic Range
+
+If, for whatever reason, you need an array of length `n`, what would you do? Loop to `n` and populate an array?
+
+Everything inherits from `Object` in JS: `Array.from()` can interpret an object as an array-list structure:
+
+```js
+const range = num => Array.from({length: num})
+```
+
+Every array-list structure will have keys 0 - n, and a `length`. Array.from will take these and attempt to convert the parameter in to a pure array.
+
+**Relevant MDN:** https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+
+# Destructuring and Getting the Array Tail
+
+Pulling the last item from an array is a hassle. We all know the drill:
+
+```js
+const arr = [0, 1, 2, 3]
+const tail = arr[arr.length - 1]
+console.log(`tail: ${tail}`) // tail: 3
+```
+
+It's not awful, but if you're dealing with big variable names then it doesn't look great either.
+
+Through the magic of [*destructuring*](https://developer.mozilla.org/en-us/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment), we can pull this more "easily".
+
+I wouldn't advise this for a production codebase, but it's a cool hack no less. I'll explain this one, too.
+
+```js
+const arr = [0, 1, 2, 3]
+const {length, [length - 1]: tail} = arr
+console.log(`tail: ${tail}`) // tail: 3
+```
+
+We use a couple of bits of destructuring here -
+
+```js
+const {length} = arr
+```
+
+Does what we'd expect: pull the key `length` from `arr`.
+
+Next, we use a [computed property key](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#computed_property_names) to pull a value from key `[length - 1]` - the tail item from our array.
+
+Cool, right?
+
+Just don't use it in production, *please*.
+
+# Array of Objects to an Object with Arrays
+
+I find myself using this one more than I want to. I like to take a weird sort-of-data-driven approach to programming. First, figure out how the data will flow through the program; fetch it; display it.
+
+Sometimes I work better with data in certain formats - which is why I come to this frequently.
+
+Enter `Array.reduce()`. I prefer to think of in the same way that I was taught about this in Haskell: Instead of reducing the array, you're folding it: you're using a function to fold each item in the array to a final value.
+
+A simple example, summing numbers in an array:
+
+```js
+[1, 1, 2, 3, 5].reduce((accumulator, current) => accumulator + current, 0)
+```
+
+Where `accumulator` is the value we're "folding" the `current` values in to.
+
+On to the magic: We want to convert:
+
+```js
+const myArr = [
+  {
+    name: "hjf",
+    operatingSystem: "gentoo",
+  },
+  {
+    name: "guy",
+    operatingSystem: "macos",
+  },
+  {
+    name: "sam",
+    operatingSystem: "macos",
+  }
+]
+```
+
+in to:
+
+```js
+const myObj = {
+  name: ["harry", "guy", "sam"],
+  operatingSystem: ["gentoo", "macos", "macos"]
+}
+```
+
+It's a bit contrived - but we can achieve this with `Array.reduce`:
+
+```js
+const myObj = myArr.reduce((acc, cur) => {
+  Object.keys(cur).forEach(key => {
+    if (!(key in acc)) acc[key] = [cur]
+    else acc[key].push(cur)
+  })
+  return acc
+}, {})
+```
+
+Reduce is immensely powerful. Use it where you can!

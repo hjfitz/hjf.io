@@ -1,0 +1,100 @@
+---
+title: "🧙‍♂️ Netlify DevEx is Seriously Underrated: Local Serverless Development"
+date: "2021-01-04T20:32:00.000Z"
+type: blog 
+draft: false
+path: "/local-netlify/"
+category: "Code"
+tags:
+  - "Code"
+  - "Serverless"
+description: "How to locally develop netlify serverless functions - with Gatsby!"
+featureImg: "./netlify-fn-feature.png"
+featureAlt: "The Netlify logo"
+---
+
+Functions as a Service. FaaS. An API without the server. *A little slurp of backend*. Functions are a great way to get a bit of free hosting with minimal development - and effort.
+
+I use Netlify because it just *works*. No faff. No DevOps pipelines. It's great.
+
+Their docs, however, don't cover everything. They don't even tell you the cool bits. 
+
+I'm want to cover two things now:
+1. How to write and develop a basic Netlify function, locally.
+2. How this integrated with Gatsby (other JavaScript platforms are available).
+
+There's some sick stuff in Netlify - they just don't advertise it well.
+
+
+# 🚀 Local Development
+
+To start, start a project as you would normally. Pull in the Netlify cli, too.
+
+```bash
+yarn init -y 
+yarn add --dev netlify-cli
+mkdir api/
+```
+
+Create a `netlify.toml` file.
+
+I'm **very** happy that this isn't yaml like the other hip providers. I don't like yaml, at all. toml feels far nicer and more organised than yaml, JSON or even JSON5.
+
+We'll use our glorious `netlify.toml` to tell the Netlify CLI where our functions live. For this, I'll put functions in `./api`. Here's our `netlify.toml`:
+
+```toml
+[build]
+  functions = "api/"
+  base      = "./"
+```
+
+You'll want to create a JS file in `./api` to host your functionality too -
+
+```js
+// api/my-function.js
+const doSomething = require('./local-file')
+
+exports.handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({hello: 'world'}),
+  }
+}
+```
+
+You'll note that our function is in a file called `my-function.js`. This means you will make your request to `http://localhost:8888/.netlify/functions/my-function`.
+
+To run, simple call `npx netlify dev`. When you deploy your code (I like to use the Netlify/Github integration), `netlify.toml` will tell the site where to find your serverless code. 
+
+That's it!
+
+# ⚛️ Gatsby Integration
+
+So this is where the docs don't big themselves up enough. This is ***awesome***. You can host both your Gatsby site and your Function with `netlify dev`, on the same port. When they deploy, they'll have the same URL. In code, you can do something like -
+
+```js
+const {data} = await axios.get('./netlify/functions/my-function')
+```
+
+And it'll translate over both local and prod. Far nicer than setting `process.env.GATSBY_API_BASE`!
+
+How, do you ask?
+
+Simple. Add more to your `netlify.toml`. I'll add my full one. It configures deployment for me, too.
+
+```toml
+[build]
+	functions = "api/"
+	base = "./"
+	command = "yarn build"
+	publish = "./public"
+
+[dev]
+	framework = "#auto"
+```
+
+The thing that makes this work is `framework = "#auto"`. Does what it says on the tin. Guesses which framework you use. I'm assuming that this will find things like Next, too!
+
+`base`, `command` and `publish` are all deployment commands. You can infer what they do!
+
+The cool thing here is that your `gatsby develop` will be running on the same port as your function. HMR remains for Gatsby. It's a brilliant experience.

@@ -1,0 +1,166 @@
+---
+title: "🐙 Extending Your Github Actions for a Monorepo"
+date: "2021-11-29T15:56:48.0000Z"
+type: blog 
+draft: false
+path: "/gha-monorepo-extension/"
+category: ""
+tags:
+  - "Code"
+  - "DevOps"
+description: "Github actions have a 'local' option with plenty of potential. This post illustrates how I added them to a monorepo"
+featureImg: "./feature.png"
+---
+
+# 🎵 Tech Debt: The Musical
+
+It was finally that time. The time that every developer looks forward to: the great ~~resignation~~ refactor.
+
+I'd been leading a project for 6 months at this point and it had grown to facilitate a number of different features. There was:
+
+- A CLI
+- A React component library
+- A set of tools that were used to interface with our headless content management system (Kentico Kontent).
+
+This was all in one (internal) npm package.
+
+Now, the project had been moving pretty quickly at this point. The team were sprinting well, but the requirements just kept coming. The window was broken, the building was crumbling. Then, we had it. A 4 week gap where we could stop listening for features and work on the quality of the codebase itself. Refactoring how *it* works as well as how it was packaged.
+
+# 🤼 Monorepos
+
+I took the decision at that time re-architect it in to a monorepo. If you're not familiar with a monorepo, that's fine. You can check the codebases for [React](https://github.com/facebook/react) and [Next.js](https://github.com/vercel/next.js/) if you want to see one in action.
+
+In short: a monorepo is a single GitHub repo that houses multiple projects. In our case we split in to packages. One for CLI, one for Components and one for Core functionality. The repo structure looked akin to something like:
+
+```jsx
+monorepo/
+├- packages/
+|  ├- core/
+|  |  ├- package.json
+|  |  └- lib/
+|  ├- components/
+|  |  ├- package.json
+|  |  └- lib/
+|  └- cli/
+|     ├- package.json
+|     └- lib/
+├- package.json
+├- tsconfig.root.json
+├- jest.config.ts
+├- README.md
+└- ...
+```
+
+# 🐙 Composite Actions
+
+So, we had our new monorepo. We were using Actions - but they were broken. Like a good team, we wanted to ensure that the actions were consistent between all 3 packages. We wanted to ensure that any new checks were added to each package (following DRY). We also didn't want 3x of the same `.github/workflows/$repo-$action.yml` either.
+
+Enter composite actions. Composite actions are, well, composite. You read the title, you know why you're here. 
+
+We're interested in using a file in the same repo/branch. For that reason, the docs for [creating a composite action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) are pretty much useless
+
+The documentation *seems* to be fairly straight-foward. Simply:
+
+```yaml
+jobs:
+  my-local-shared-action:
+    steps:
+      - name: Check out repo
+        uses: 'actions/checkout@v2'
+      - name: Do something
+        run: 'echo "this is another line"'
+      - name: Use local action
+        uses: './.github/actions/my-cool-action'
+        with:
+          project_name: core
+```
+
+There are a few important things to note!
+
+## 💀 Why Does it Keep Crashing?
+
+Github has been bought by Microsoft. This is old news, but it's apparent when you look at their documentation: It's comprehensive, but somehow leaves a lot to be desired.
+
+With that in mind, there are some hidden rules of local-composite actions that we need to keep in mind
+
+### 🙁 They are Very Limited
+
+When reusing a local action, you're limited in a few ways.
+
+- **You can only use script steps:** A local file will only work with script steps. You can pass in some input, but you're limited to Bash or Powershell.
+    - As you'll see, you must specify the shell for *every* step in the action.
+- **The output is awful:** When writing a local, composite action, If any step in that action fails, you will just see that the action itself has failed. There's a lot of output to trawl through to figure out ***why*** the action failed.
+    - This makes sense, if you think about it. Because it's a single action in the workflow, only that action can fail.
+
+### 🗒️ Where is my Action!?
+
+When we say `uses: './.github/actions/my-cool-action'`, we would assume that the runner looks for `~/.github/actions/my-cool-action.yml`. 
+
+This isn't the case. It actually treats `my-cool-action` as a directory and looks *inside* of that directory for a file called `action.yml`. 
+
+Thus, adding `uses: './.github/actions/my-cool-action'` to your workflow means that the runner will look for `~/.github/actions/my-cool-action/action.yml`
+
+*My inner TypeScript developer couldn't comprehend why this isn't `index.yml` for quite some time.*
+
+---
+
+## 🤖 Local Action Syntax
+
+With those odd cases in mind, let's have a look at the anatomy of our `action.yml`:
+
+```yaml
+name: Name of your composite action
+description: Make sure that this is something useful!
+inputs: # At least, we can pass in inputs.
+  project_name:
+    description: Which project to run the action against
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - run: 'yarn --workspace ${{ inputs.project_name }} install'
+      shell: bash
+    - run: 'yarn --workspace ${{ inputs.project_name }} valitate:lint'
+      shell: bash
+    - run: 'yarn --workspace ${{ inputs.project_name }} validate:test'
+      shell: bash
+    - run: 'yarn --workspace ${{ inputs.project_name }} validate:sec'
+      shell: bash
+    - run: 'yarn --workspace ${{ inputs.project_name }} build:noout'
+      shell: bash
+```
+
+# 🚙 Rolling Out to the Mono-Repo
+
+I appreciate that this post is centred around 'how to use a local action', and you're about to close your 100+ tabs as you've just found the solution, but the completionist in me wants to wrap-up with how we implemented local actions.
+
+We'd ended up implementing 2 local actions:
+
+- **Pull request checks:** When a pull request goes in to the `develop` branch, we perform various checks. This is similar to the snippet under *Local Action Syntax*.
+- **Continuous Deployment to Prod:** Once `develop` is merged in to `main`, code for a package is built and deployed to our Github Package Registry.
+
+We still ended with a bunch of yaml. I don't like the stuff, but it's the easier of the other markup languages to read.
+
+There were 3 actions files for both CD and PR checks, delegating the functionality to our local actions. For fun, I'll include the triggers.
+
+```yaml
+name: Deploy Core
+
+on:
+  push:
+    branches: ['main']
+    paths: ['packages/core/**/*']
+
+# the remainder of the workflow is left as an exercise to the reader
+```
+
+I appreciate that we could have added some conditionals, but for readability and maintainability, this seemed the better route.
+
+# 🚀 Thoughts
+
+I like actions. I think that there's a lot of potential to make the development experience even better. I like that you can encapsulate a number of steps in to something re-usable and due to the nature of it, perform some good version control. 
+
+This has the potential to have a net positive effect on an organisation. Whilst we wait for  private organisational actions to roll out, we can use these as submodules and roll them out to repos.
+
+With this in mind though, I may have been better off writing a shell script to handle the steps that I wanted for the packages. The output would have been better, there would have been less edge cases and it would have been easier to pick up.

@@ -1,0 +1,78 @@
+---
+title: '📞 Phone a Friend - Building Zoom in less than 100 LoC'
+date: "2021-01-26T18:37:00.000Z"
+type: blog
+draft: false
+path: "/world-says-hello-back/"
+category: "hack"
+tags:
+  - "Code"
+description: "I used WebRTC (Peer.js) to develop a small, distributed alternative to Zoom (for two participants). We can call, video chat and share screens."
+featureImg: "./feature.png"
+---
+
+import ChatApp from './src/'
+
+
+Being cheap has been an adventure with this blog. I **love** the constraints that this puts what you can do. Currently, I host it for free on Netlify. I've got this idea of 'hacks' on the blog: Small SPAs to flex my technical ability and show off to everybody else what I can do.
+
+Recently, I've been very interested with sending video and audio over the web. Historically I would have used a websocket connection and shared frames of a video (though I've still no idea about audio). That was, until I found out about Peer.js.
+
+Before I continue chatting about Peer.js - a note on WebRTC. It is a Web API that allows for Peer to Peer communication over the web. There are STUN and TURN servers that are used to co-ordinate, but I don't know much about those - because Peer.js.
+
+This library makes it **easy** to do anything via WebRTC. It handles signalling and coordination. In fact, it handles it so well that I've implemented audio/video sharing, chat and screen sharing.
+
+Here's how easy it is to make and answer call:
+
+```js
+async function call(id) {
+  const opts = {audio: true, video: true}
+  const stream = await navigator.mediaDevices.getUserMedia(opts)
+  const call = peer.call(id, stream)
+  call.on('stream', remote => {
+    const vid = document.querySelector('video')
+    vid.srcObject = remote
+  })
+}
+
+// answer a call
+peer.on('call', async dial => {
+  const opts = {audio: true, video: true}
+  const stream = await navigator.mediaDevices.getUserMedia(opts)
+  dial.answer(stream)
+  dial.on('stream', remote => 
+    const vid = document.querySelector('video')
+    vid.srcObject = remote
+  })
+})
+
+```
+
+Of course, you need an `id` to pass in to `call()`. You set this when you instantiate a new peer: `const peer = new Peer(myID)`. After this, it's *magic*.
+
+You can also create a data connection. I've used this for chat:
+
+```js
+function getDataConn(id) {
+  return new Promise(res => {
+    const conn = peer.connect(id)
+    conn.on('open', () => res(conn))
+  })
+}
+
+const conn = await getDataConn(id)
+conn.send('some message')
+```
+
+We can also get a handle on the screen - this is a MediaStream, which we can pass to `peer.on('call')`
+
+```js
+const opts = {video: {cursor: 'always'}, audio: false}
+const capture = await navigator.mediaDevices.getDisplayMedia(opts)
+```
+
+With this in mind, we can build a chat app. And I did! It's below. If you don't want to share this page with a friend, I've hosted it at [phone.hjf.io](https://phone.hjf.io). I've disabled chat here, because it works better with a larger screen (and I can't figure out how to bundle my css with mdx...).
+
+To call: put your partner's ID in the box and hit enter.
+
+<ChatApp />

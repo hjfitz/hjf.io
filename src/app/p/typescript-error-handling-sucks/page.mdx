@@ -1,0 +1,165 @@
+---
+title: "🚨 TypeScript Error Handling Sucks"
+date: "2022-06-26T22:41:49+0100"
+type: blog 
+draft: false 
+path: "/typescript-error-handling-sucks/"
+tags:
+  - "Code"
+  - "TypeScript"
+description: "Typed errors can be a pain in TypeScript. We can draw a bit of inspiration from Rust (and not Java!) to make expected errors easier to work with."
+featureImg: "./feature.jpg"
+---
+
+## Errors Suck on the Web
+
+Errors in TypeScript suck. Native ones, at least. If you’ve ever written a service class or some kind of http adapter layer, you’ve probably seen a pattern like this:
+
+```tsx
+class SomeService {
+	constructor(private readonly adapterService) {}
+
+	public async runThing<T>(resource: string): Promise<T | null> {
+		try {
+	    const resp = await this.adapterService.fetchResource<T>(resource);
+			return processResponse<T>(resp)
+		} catch (err) {
+			const e = err as Error
+			if (isAxiosError(e)) {
+				console.error(`There was an error making the request (status (${e.status})`)
+			}
+			console.error("There was an error:", e.message)
+			return null;
+		}
+	}
+}
+```
+
+As your codebase scales (poorly), you might see things like `const e = error as Error`, or other typecasting. The above is a contrived example, but shows a few casts for `e`.
+
+Generally, this can get pretty ugly. Before I throw my thoughts at you, let’s talk about the line `const e = err as Error`. Why is this necessary? Didn’t we just catch an error?
+
+## Playing Catch
+
+Although a `new Error()` declaration can throw, it’s not the only thing that can be thrown. Because JavaScript is *too human;* you can throw anything. 
+
+You can extend `Error` and  throw that. You can throw an unrelated class. You can throw primitives and even `null`. Go ahead, open the console and try it out. The [mdn docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw) main example shows a `string` being thrown.
+
+You can try to type an error in TypeScript:
+
+```tsx
+try {
+	somethingThatThrows();
+} catch (e: AxiosError) {
+//       ^^^^^^^^^^^^^ 🚨🚨🚨
+}
+```
+
+As such, the TypeScript compiler will throw a “**TS1196**” error: Caught errors must be annotated as `any` or `unknown`. The compiler won’t compute what the error caught could be, so we need to make that assertion.
+
+## Discriminated Union Types
+
+I want to touch on a different approach to error handling, but there’s a bit of admin and background to get over first. Trust me, it’ll make sense and you’ll learn something cool.
+
+Let’s jump straight in to an example. If you’re skim-reading this, it’ll help with your parsing. If you’re reading this normally, you don’t need contrived examples anymore.
+
+```tsx
+interface Success<T> {
+	success: true
+	data: T
+}
+
+interface Failure<T> {
+	success: false,
+	error: T
+}
+
+type Result<T, U> = Success<T> | Failure<U>
+```
+
+The above type `result` is a discriminated union type. It’s a union type, but you can discriminate between the types it could be by the `success` property.
+
+This ideas draws from [Rust](https://doc.rust-lang.org/std/result/), but we also draw from Go.
+
+Let’s look at a larger, worked example
+
+```tsx
+interface HTTPError {
+	code: number
+	reason: string
+}
+
+class AdapterService {
+	public async fetchResource<T>(path: string): Result<T, HTTPError> {
+		try {
+			const resp = await axios.get<T>(path)
+			return {
+				success: true,
+				data: resp.data,
+			}
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				return {
+					success: false,
+					error: {
+						code: err.code,
+						reason: err.response.body,
+					}
+				}
+			} 
+			return {
+				success: false,
+				error: {
+					code: -1,
+					reason: 'An unknown error occurred',
+				}
+			}
+		}
+	}
+}
+
+class SomeService {
+	constructor(private readonly adapterService) {}
+
+	public async runThing<T>(resource: string): Promise<T | null> {
+    const result = await this.adapterService.fetchResource<T>(resource);
+		if (result.success) {
+			return result.data
+		}
+		if (result.code >= 500) {
+			return backoff(this.runThing<T>(resource))
+		}
+		console.error(`There was an error making the request (status (${e.status})`)
+		return null		
+	}
+}
+```
+
+There is, admittedly, some admin at our lowest level or abstraction. It’s still a mess. With that said, we’ve got a nice refactor on our higher levels. We know with confidence the structure of the error. We stand on the shoulders of giants, and our codebase can scale thusly. 
+
+## Pros and Cons
+
+Knowing the structure of the error isn’t just the main advantage from this. We don’t blindly cast errors either. If we’re using different internal errors, but the structure of the call changes, we’re not casting blindly throughout the project - just on our lowest abstractions.
+
+We’re also forced to address the error, like in Go and Rust. We know there’s an error, we know there’s an error body. We should do something for it.
+
+```tsx
+if (result.success) {
+	return result.data
+}
+// we need to do something with result.error!
+```
+
+It makes refactoring in the case of `!result.success` easier. There’s a lower barrier to entry here.
+
+There are some cons to this approach. You could end up propagating `T` or `null` up through your project’s layers. Don’t be lazy here. This scales horribly and I know this from first-hand experience. There’s still some error casting to handle, too. It’s a nice pattern, and languages like Rust wouldn’t have this as the defacto approach if it wasn’t useful!
+
+## Exceptions are Exceptional
+
+If you’re interacting with different APIs or services, the calls can fail. There are two types of failure though. Expected failure and *exceptional failure.* 
+
+There’s a difference: an expected failure is something like validation failures on a request body, or a user might not be authorized to perform an action. These errors tell no lies: you should handle these properly. You *know* that this behaviour is possible in your application.
+
+An exceptional failure is, exceptional. It’s something that you don’t expect to happen. These are the things that you want to propagate to the top of your application. This could be something like a missing connection string for your data store, or the user is on an unsupported platform (using Internet Explorer in 2022 is ***exceptional***).
+
+Keep this in mind if you want to give this a go. What do you want to handle? What don’t you want to handle?
