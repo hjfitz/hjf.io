@@ -1,29 +1,29 @@
-import { Container, Footer, Header } from "@/components";
-import "./globals.scss";
 import React from 'react';
+import { Container, Footer, Header } from '@/components';
+import './globals.scss';
 
 type LayoutProps = Readonly<{
-		children: React.ReactNode
-}>
+  children: React.ReactNode;
+}>;
 
-export const metadata = { 
-		title: {
-				default: "Harry's Code and Bugs",
-				template: "%s | Harry's Code and Bugs",
-		}
-}
+export const metadata = {
+  title: {
+    default: "Harry's Code and Bugs",
+    template: "%s | Harry's Code and Bugs",
+  },
+};
 
-const RootLayout = async ({ children }: LayoutProps) => {
-		return (
-				<html lang="en">
-					<body>
-						<Container>
-								<Header />
-								{children}
-								<Footer />
-						</Container>
-				</body>
-				</html>
-		);
+function RootLayout({ children }: LayoutProps): JSX.Element {
+  return (
+    <html lang="en">
+      <body>
+        <Container>
+          <Header />
+          {children}
+          <Footer />
+        </Container>
+      </body>
+    </html>
+  );
 }
- export default RootLayout
+export default RootLayout;
