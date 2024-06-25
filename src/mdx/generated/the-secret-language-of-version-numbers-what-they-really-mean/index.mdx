@@ -1,0 +1,72 @@
+---
+title: "The Secret Language of Version Numbers: What They Really Mean"
+date: 2024-06-25T15:49:36.802Z
+type: blog
+draft: false
+path: /the-secret-language-of-version-numbers-what-they-really-mean/
+category: ""
+tags: []
+description: "Software version numbers: it’s not just semantic versioning. We
+  look at the different schemes used to track code changes and releases"
+featureImg: feature.jpeg
+
+---
+
+# Intro
+
+Software versioning is a weirdly interesting topic. It’s not that the numbers themselves are enticing, but it’s that everybody has an opinionated way of giving their carefully crafted code a kind of milestone. 
+
+We tend to see a lot of semantic versioning out there and it’s easy to think that this is the only way to go. After all, npm, crates.io and PyPi all tend towards it, so why shouldn’t we? 
+
+I want to spend some time looking at this, without the agonising detail. I want to have a brief chat about when we might want, and might not want, to use some way of versioning.
+
+# Semantic Versioning
+
+I’ve already established that Semantic Versioning (semver) is pretty popular with some of the major programming languages (sorry, Java!). Let’s take a look at how that works first.
+
+A semantic version looks like this: `major.minor.patch`. For example, `1.14.3` would be a semver. When we think about majors, minors and patches for version `1.14.3`, what we’re saying is:
+
+- This is the second major version. We’ve added some breaking changes since `0.x.x`.
+
+- There have been 14 features added without breaking backwards compatibility
+
+- We’ve had 3 bugfixes pushed since the 14th feature was added.
+
+You see when we increment a version, we are able to semantically indicate what the new version has. When we push a new version, those “lesser” versions are reset to 0.
+
+Semantic versions are great for package versioning because of this fact. We know that if we’re using `@nestjs/core` at version `14.3.5` and `15.0.0` is released, we may want to check the migration guide and perform some additional testing along the way. If it’s a update to `14.4.0`, we’re less concerned.
+
+# Release Naming
+
+Now that we’ve covered semantic versioning, let’s take a look at release naming. These are pretty useful if we’re going to be talking about the software in question. If we look at MacOS for example, all of the versions are named after a thing (and more recently, a place). 
+
+This is pretty advantageous: if you’re supporting somebody that’s troubleshooting an issue, you can get them to open their preferences and see if they’re “running Big Sur”. If this is the case, you know they’re running MacOS 11 and can help them out with that knowledge.
+
+I use release naming in the context of some software that I maintain at work. I ship a few CI pipeline templates to keep CI pipelines cleaner and standardised. They’re named after beers in descending alphabetical order. The next release is probably going to be Guiness. Again, if somebody needs support, I can ask them which template they’re running and discuss any nuances that might pop up.
+
+A challenge here could be any bugs or security issues that pop up. If a vulnerability pops up in a package that’s following semantic versioning, you have a range of minor and patch versions to use. This isn’t true for release naming, and you’ve likely got to wait for a security patch to be shipped your way.
+
+# Calendar Versioning
+
+Still in the realm of operating systems, we turn to look at trusty Ubuntu. Although Ubuntu uses release naming, that’s just there to make it seem friendlier. At the time of writing, the current version of Ubuntu is "Noble Numbat”.
+
+Alongside this, Ubuntu have a date-based version number, known as Calendar Versioning or CalVer. Right now, the latest is `24.04`. There’s instantly some information here: This version was released in April (04) of 2024 (24). Alternatives takes on this could use a name like “`Discord 20231201”, or a Git hash followed by the date in unix - like `ae1f3ed.1719330117`
+
+Again this is useful information, because we can understand roughly how old a users version of the software is and how  long they will have support for. This does require some knowledge about Ubuntu versioning numbers, and it also falls in to the same issue that release naming falls in to: it’s challenging to move backwards to a secure version. Fortunately in something as complex as Ubuntu, we’re able to install whatever version of package within the Distro that we want.
+
+In the case of hash-based CalVer this has a definite pointer to when the software was released as well as the hash from which the release was created. It’s incredibly useful if you’re doing some internal debugging, but I think it’s otherwise fairly useless.
+
+# Useless Versioning
+
+Finally, we can look at discuss useless versioning. Namely Windows versions and versions of ChatGPT. These are essentially versions of release-naming, but they don’t really convey anything useful and the people that came up with them should be shot.
+
+# Summary
+
+To summarise:
+
+- **Semantic Versioning** has a lot of information and works well for packages that a software might consume
+
+- **Release Naming**, when done right, is useful for more general consumers
+
+- **Calendar Versioning** can convey some useful, but this is generally more useful if you’re shipping something and you’d like some traceability.
+
