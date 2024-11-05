@@ -1,0 +1,50 @@
+---
+title: On Code Reviews
+date: 2024-11-05T16:27:25.728Z
+type: blog
+draft: false
+path: /on-code-reviews/
+category: ""
+tags: []
+description: "Remote code reviews bring a unique challenge: how to deliver
+  feedback that’s constructive without losing warmth. This post explores an
+  approach that combines clarity and empathy to make code reviews feel
+  supportive, not critical."
+featureImg: feature.jpeg
+
+---
+
+How you communicate is interesting, and it’s pretty different whether you’re in person, in a call, or using slack. When you’re in person, I find that how you approach work as an individual has focus on it. Are you making eye contact? Are changing your words appropriately for your audience? 
+
+There’s a lot of energy that goes in to how you compose yourself when you’re in person, but when people work from home, there’s not enough consideration. It’s just as important: you’re doing the same skill, but the skillset does differ and so it’s important to make an effort.
+
+ One thing you’ll always do async, via text, as a software engineer is review code. You *can* hop on a call and learn a bit, but you’ll never be able to review it properly: there’s just too much logic to stack in to your head.
+
+A while back, I learned about “conventional comments”: a structured way of giving feedback during a code review. If you’re familiar with semantic commits, it’s a similar concept. You provide context for each comment. For example: 
+
+- `query: do you think there's a more efficient way that you can do this?"`
+
+- `nit: this might be better named as X`. 
+
+These are both examples of a conventional comment. There’s also the concept of a blocking, or non-blocking comment. You mark these as `query(non-blocking):` or `suggestion(blocking):`. On the surface, this kind of framing makes logical sense. You help load your thought process in to the review-ee’s brain and better get the point across.
+
+Code reviews aren’t surface level. They’re often deeply personal: software engineers are people. They come with all sorts of complex emotions. 
+
+I often equate coding to cooking and this is one of those points where the metaphor really works. You wouldn’t eat someone’s food and text them `suggestion(blocking): use butter instead of oil to sear your steak for a better finish`. You’d hurt their feelings! There are better ways give this kind of feedback. 
+
+The same is true of code. Putting your branch up for a review can be deeply personal. You’re opening yourself up to feedback and making yourself vulnerable. Criticism can land differently for different people: it might not land, but it might topple any confidence that you’ve built.
+
+Having worked remote for almost half a decade, I’ve learned that some things just don’t work over a message. The first thing you learn is that sarcasm definitely doesn’t work. Emotional tone generally doesn’t, unless you learn somebody very well. 
+
+This actually came to a head with a junior member of the team: using conventional comments with them just made them feel like I was attacking what they’d created where in actuality where in actuality, my intentions were good and I wanted to support them. Unfortunately, this was one of those situations where the engineer let it boil up, rather than say something.
+
+I did manage to grab them for a chat though, which helped me better understand what it’s like being on the other side of that style of code review - and think that bringing a bit of that emotional warmth back to code review is important. 
+
+Those labels don’t really do much, but remove that warmth. I can’t put my finger on it, it’s just not the move for me. I still think that there’s a bit that we can take away from conventional comments. My code review style has evolved to incorporate some adaptations. Specifically -
+
+- Whether something is a nit or not: I’m still keen on helping the review-ee load my logic in to their head, and this helps minimise distraction. I almost think of these types of comments as the lowest priority
+
+- Whether something is blocking or not. Depending on the diff, that is: whether there are a lot of blocking comments, or non-blocking comments, I’ll label this. This lets the person under review get in to the higher-priority-to-them feedback and consider the other thoughts later.
+
+This approach is something that I’ve been using for about a year now. It’s made a good impact to the junior engineer and the team as a whole. Overall I think that as a reviewer, I’ve been able to be more pragmatic when looking at merge requests. For me, a balance of warmth and clarity has helped my reviews land with more understanding; it’s helped build a stronger working relationship with my team, too. 
+
