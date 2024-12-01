@@ -80,7 +80,7 @@ async function createPages({graphql, actions: {createPage}}) {
   `)
 
 	const chunked = blogResult.data.allMdx.edges.reduce((acc, cur, idx) => {
-		if (idx % 5 === 0) acc.push([])
+		if (idx % 10 === 0) acc.push([])
 		acc[acc.length - 1].push(cur)
 		return acc
 	}, [])

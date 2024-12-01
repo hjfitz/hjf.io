@@ -1,20 +1,19 @@
 import React from 'react'
-import {Link} from "gatsby"
+import {Link} from 'gatsby'
 
-import Layout from "../components/Layout"
-import SEO from "../components/SEO"
+import Layout from '../components/Layout'
+import SEO from '../components/SEO'
 import PostSummary from '../components/PostSummary'
 
-
-const Blog = (props) => {
+function Blog(props) {
 	const {chunk, page} = props.pageContext
 	// because gatsby serialises arrays poorly
 	return (
 		<Layout>
 			<SEO title={`Blog - Page ${page}`} />
 			<section className="grid gap-4 grid-cols-1">
-				{chunk.map(edge => (
-					<PostSummary 
+				{chunk.map((edge) => (
+					<PostSummary
 						key={edge.id}
 						post={edge.node.frontmatter}
 					/>

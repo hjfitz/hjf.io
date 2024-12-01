@@ -1,5 +1,5 @@
 import React from 'react'
-import { graphql } from 'gatsby'
+import {graphql, Link} from 'gatsby'
 
 import Layout from '../components/Layout'
 import SEO from '../components/SEO'
@@ -35,9 +35,7 @@ export const pageQuery = graphql`
   }
 `
 
-const IndexPage = function({
-	data: { allMdx: { edges } },
-}) {
+const IndexPage = function ({data: {allMdx: {edges}}}) {
 	return (
 		<Layout>
 			<SEO title="Home" />
@@ -46,6 +44,7 @@ const IndexPage = function({
 					{edges.map((edge) => (
 						<PostSummary post={edge.node.frontmatter} key={edge.node.id} />
 					))}
+					<Link to="/blog" className="text-center text-gray-500 text-sm">More</Link>
 				</section>
 			</div>
 		</Layout>
