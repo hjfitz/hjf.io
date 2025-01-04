@@ -5,6 +5,7 @@ const {getTwitterTweets} = require('./src/build-tools/get-twitter-tweets')
 const templatesDir = path.resolve(__dirname, 'src', 'templates')
 const mdxTemplate = path.resolve(templatesDir, 'mdx.template.tsx')
 const paginatedBlogTemplate = path.resolve(templatesDir, 'blog.template.jsx')
+const paginatedHomepageTemplate = path.resolve(templatesDir, 'index.template.tsx')
 
 async function createPages({graphql, actions: {createPage}}) {
 	// create all pages from mdx
@@ -88,15 +89,23 @@ async function createPages({graphql, actions: {createPage}}) {
 	chunked.forEach((chunk, idx) => {
 		const page = ++idx
 
-		const path = `/blog/${page}`
+	    // const path = `/blog/${page}`
+	    let path
+	    if (page === 1) {
+			path = '/'
+	    } else {
+			path = `/${page}`
+	    }
 
 		const pageParams = {
 			path,
 			context: {chunk, page},
-			component: paginatedBlogTemplate,
+		    // component: paginatedBlogTemplate,
+		    component: paginatedHomepageTemplate,
 		}
 
 		console.log(`creating blog page ${page}`)
+	    console.log(pageParams.path)
 
 		createPage(pageParams)
 

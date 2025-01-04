@@ -40,7 +40,7 @@ const IndexPage = function ({data: {allMdx: {edges}}}) {
 		<Layout>
 			<SEO title="Home" />
 			<div className="gap-16 lg:gap-32 grid grid-cols-1 md:grid-cols-3 auto-rows-auto">
-				<section className="grid gap-4 col-span-3">
+				<section className="grid gap-8 col-span-3 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 					{edges.map((edge) => (
 						<PostSummary post={edge.node.frontmatter} key={edge.node.id} />
 					))}

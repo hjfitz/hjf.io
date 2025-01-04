@@ -1,24 +1,24 @@
-import React from "react";
-import { Link } from "gatsby";
+import React from 'react'
+import {Link} from 'gatsby'
 
-
-const Nav = () => {
+function NavItem({to, children}) {
 	return (
-		<nav className="text-gray-800 inline-block">
-			<Link className="mx-2 hover:text-blue-600" to="/">
-				Home
-			</Link>
-			<Link className="mx-2 hover:text-blue-600" to="/about">
-				About
-			</Link>
-			<Link className="mx-2 hover:text-blue-600" to="/blog">
-				Blog
-			</Link>
-			<Link className="mx-2 hover:text-blue-600" to="/uses">
-				/uses
-			</Link>
-		</nav>
-	);
-};
+		<Link className="hover:text-blue-600 mr-4" to={to}>
+			{children}
+		</Link>
+	)
+}
 
-export default Nav;
+function Nav({children}) {
+	return (
+		<nav className="text-gray-800 inline-block flex">
+			{children}
+			<NavItem to="/">Home</NavItem>
+			<NavItem to="/about">About</NavItem>
+			{/* <NavItem to="/blog">Blog</NavItem> */}
+			<NavItem to="/uses">/uses</NavItem>
+		</nav>
+	)
+}
+
+export default Nav
