@@ -1,4 +1,5 @@
-const path = require('path')
+import { CreatePagesArgs } from 'gatsby'
+import path from 'node:path'
 
 const templatesDir = path.resolve(__dirname, 'src', 'templates')
 const mdxTemplate = path.resolve(templatesDir, 'mdx.template.tsx')
@@ -7,7 +8,10 @@ const paginatedHomepageTemplate = path.resolve(
     'index.template.tsx'
 )
 
-async function createPages({ graphql, actions: { createPage } }) {
+export const createPages = async ({
+    graphql,
+    actions: { createPage },
+}: CreatePagesArgs) => {
     const completeResult = await graphql(`
         query PagesQuery {
             allMdx {
@@ -83,7 +87,7 @@ async function createPages({ graphql, actions: { createPage } }) {
     chunked.forEach((chunk, idx) => {
         const page = ++idx
 
-        let path = page === 1 ? '/' : `/${page}`
+        const path = page === 1 ? '/' : `/${page}`
 
         const pageParams = {
             path,
@@ -97,7 +101,7 @@ async function createPages({ graphql, actions: { createPage } }) {
     })
 }
 
-function onCreateNode({ node, actions: { createNodeField } }) {
+export function onCreateNode({ node, actions: { createNodeField } }) {
     if (node.internal.type !== 'Mdx') return
     createNodeField({
         name: 'slug',
@@ -106,12 +110,6 @@ function onCreateNode({ node, actions: { createNodeField } }) {
     })
 }
 
-function onCreateWebpackConfig({ actions }) {
+export function onCreateWebpackConfig({ actions }) {
     actions.setWebpackConfig({ resolve: { fallback: { fs: false } } })
-}
-
-module.exports = {
-    createPages,
-    onCreateNode,
-    onCreateWebpackConfig,
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { HTMLAttributes, useEffect, useRef } from 'react'
 import format from 'date-fns/format'
 import { graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
@@ -35,32 +35,22 @@ export const pageQuery = graphql`
     }
 `
 
-type MdxFrontmatter = {
-    frontmatter: {
-        featureImg: {
-            childImageSharp: {
-                original: {
-                    src: string
-                }
-            }
-        }
-    }
-}
-
-type Site = {
-    siteMetadata: {
-        siteUrl: string
-    }
-}
-
-function generateSEOImage(mdx: MdxFrontmatter, site: Site): string | undefined {
-    const src = mdx?.frontmatter?.featureImg?.childImageSharp?.original.src
+function generateSEOImage(
+    mdx: PostProps['data']['mdx'],
+    site: PostProps['data']['site']
+): string | undefined {
+    const src = mdx?.frontmatter?.featureImg?.childImageSharp?.original?.src
     if (!src) return // default to wizard image
-    const { siteUrl } = site.siteMetadata
+    const siteUrl = site?.siteMetadata?.siteUrl ?? 'https://hjf.io'
     return siteUrl + src
 }
 
-const Post = ({ children, data: { site, mdx } }) => {
+type PostProps = {
+    children: React.ReactNode
+    data: Queries.BlogPostQueryQuery
+}
+
+function useUtterances(): React.LegacyRef<HTMLElement> | undefined {
     const utterances = useRef<HTMLElement>()
     useEffect(() => {
         if (typeof window === 'undefined' || !utterances) {
@@ -75,61 +65,83 @@ const Post = ({ children, data: { site, mdx } }) => {
         s.async = true
         utterances?.current?.appendChild(s)
     }, [])
+    // @ts-expect-error needs beer
+    return utterances
+}
+
+function deriveCanonicalUrl(
+    siteUrl?: string | null,
+    pathname?: string | null
+): string {
+    if (siteUrl && pathname) return [siteUrl, pathname].join('')
+    return 'https://hjf.io/404'
+}
+
+const Post = ({ children, data: { site, mdx } }: PostProps) => {
+    const utterances = useUtterances()
+    const title = mdx?.frontmatter?.title ?? 'Untitled Post'
+    const description = mdx?.frontmatter?.description ?? 'Undescribed post'
+    const date = new Date(mdx?.frontmatter?.date ?? 0)
+    const canonicalUrl = deriveCanonicalUrl(
+        site?.siteMetadata?.siteUrl,
+        mdx?.frontmatter?.path
+    )
     return (
         <Layout>
             <SEO
-                title={mdx.frontmatter.title}
-                description={mdx.frontmatter.description}
+                title={title}
+                description={description}
                 img={generateSEOImage(mdx, site)}
-                canonical={site.siteMetadata.siteUrl + mdx.frontmatter.path}
+                canonical={canonicalUrl}
             />
             <article>
                 <h1 className="pt-2 text-4xl font-semibold font-header">
-                    {mdx.frontmatter.title}
+                    {title}
                 </h1>
                 <small className="text-gray-500">
-                    {format(new Date(mdx.frontmatter.date), 'do MMM - yyyy')}
+                    {format(date, 'do MMM - yyyy')}
                 </small>
                 <MDXProvider
                     components={{
                         // be awkward and hoist headings down a level for ease of writing
-                        h1: (props: any) => (
+                        h1: (props: HTMLAttributes<HTMLHeadElement>) => (
                             <h2
                                 {...props}
                                 className="pt-4 text-3xl font-semibold font-header"
                             />
                         ),
-                        h2: (props: any) => (
+                        h2: (props: HTMLAttributes<HTMLHeadElement>) => (
                             <h3
                                 {...props}
                                 className="pt-3 text-2xl font-semibold font-header"
                             />
                         ),
-                        h3: (props: any) => (
+                        h3: (props: HTMLAttributes<HTMLHeadElement>) => (
                             <h4
                                 {...props}
                                 className="pt-2 text-xl font-semibold font-header"
                             />
                         ),
-                        h4: (props: any) => (
+                        h4: (props: HTMLAttributes<HTMLHeadElement>) => (
                             <h4
                                 {...props}
                                 className="pt-2 text-lg font-header"
                             />
                         ),
-                        p: (props: any) => (
+                        p: (props: HTMLAttributes<HTMLParagraphElement>) => (
                             <p {...props} className="py-3 text-sm font-print" />
                         ),
-                        a: (props: any) => (
+                        a: (props: HTMLAttributes<HTMLAnchorElement>) => (
+                            // @ts-expect-error yah
                             <Link {...props} className="text-blue-400" />
                         ),
-                        li: (props: any) => (
+                        li: (props: HTMLAttributes<HTMLElement>) => (
                             <li
                                 {...props}
                                 className="text-sm list-disc list-inside font-print"
                             />
                         ),
-                        code: (props: any) => (
+                        code: (props: HTMLAttributes<HTMLElement>) => (
                             <code
                                 {...props}
                                 className={`${props.className} text-xs inline-block`}
@@ -137,8 +149,8 @@ const Post = ({ children, data: { site, mdx } }) => {
                         ),
                     }}
                 >
+                    {/* @ts-expect-error mdx things */}
                     {children}
-                    {/*<MDXRenderer className="">{mdx.body}</MDXRenderer>*/}
                 </MDXProvider>
             </article>
             <section ref={utterances} />

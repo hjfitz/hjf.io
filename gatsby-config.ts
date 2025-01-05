@@ -1,11 +1,19 @@
-module.exports = {
+import type { GatsbyConfig } from 'gatsby'
+
+const config: GatsbyConfig = {
     siteMetadata: {
         title: "Harry's Code and Bugs",
         description: "Harry's code, bugs and quick hacks",
         author: '@__hjf',
         siteUrl: 'https://hjf.io/',
     },
+    graphqlTypegen: {
+        typesOutputPath: `gatsby-types.d.ts`,
+        generateOnBuild: false,
+        documentSearchPaths: [`./gatsby-node.ts`],
+    },
     trailingSlash: `always`,
+
     plugins: [
         'gatsby-plugin-react-helmet',
         {
@@ -157,3 +165,5 @@ module.exports = {
         },
     ],
 }
+
+export default config

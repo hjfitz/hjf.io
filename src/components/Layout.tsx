@@ -23,6 +23,13 @@ let hasInitialized = false
 export function useErrorTracking() {
     useEffect(() => {
         if (hasInitialized) return
+        Sentry.init({
+            dsn: '__PUBLIC_DSN__',
+            integrations: [
+                Sentry.browserTracingIntegration(),
+                Sentry.replayIntegration(),
+            ],
+        })
         LogRocket.init('8ydpeu/hjfio')
         LogRocket.getSessionURL((sessionURL) => {
             Sentry.configureScope((scope) => {
