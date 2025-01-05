@@ -3,17 +3,16 @@
 // harris-benedict
 // const bmr = mult.overall + (mult.weight * weight) + (mult.height * height) - (mult.age * age)
 export const multipliers = {
-	female: {
-		overall: 447.593,
-		height: 3.098,
-		weight: 9.247,
-		age: 4.330,
-	},
-	male: {
-		overall: 88.362,
-		height: 4.799,
-		weight: 13.397,
-		age: 5.677,
-	},
+    female: {
+        overall: 447.593,
+        height: 3.098,
+        weight: 9.247,
+        age: 4.33,
+    },
+    male: {
+        overall: 88.362,
+        height: 4.799,
+        weight: 13.397,
+        age: 5.677,
+    },
 }
-
