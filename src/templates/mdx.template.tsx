@@ -9,7 +9,6 @@ import Layout from '../components/Layout'
 import Link from '../components/Link'
 
 import 'prism-themes/themes/prism-material-oceanic.css'
-import { string } from 'prop-types'
 
 export const pageQuery = graphql`
     query BlogPostQuery($id: String) {
