@@ -1,7 +1,7 @@
 [build]
 	functions = "api/"
 	base = "./"
-	command = "yarn build"
+	command = "npm run build"
 	publish = "./public"
 
 [dev]
