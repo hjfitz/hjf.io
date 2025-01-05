@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 import format from 'date-fns/format'
 import { graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
-//import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import SEO from '../components/SEO'
 import Layout from '../components/Layout'
