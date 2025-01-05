@@ -9,7 +9,7 @@ import Layout from '../components/Layout'
 import Link from '../components/Link'
 
 import 'prism-themes/themes/prism-material-oceanic.css'
-import { Helmet } from 'react-helmet'
+import { string } from 'prop-types'
 
 export const pageQuery = graphql`
     query BlogPostQuery($id: String) {
@@ -38,7 +38,25 @@ export const pageQuery = graphql`
     }
 `
 
-function generateSEOImage(mdx, site): string {
+type MdxFrontmatter = {
+    frontmatter: {
+        featureImg: {
+            childImageSharp: {
+                original: {
+                    src: string
+                }
+            }
+        }
+    }
+}
+
+type Site = {
+    siteMetadata: {
+        siteUrl: string
+    }
+}
+
+function generateSEOImage(mdx: MdxFrontmatter, site: Site): string | undefined {
     const src = mdx?.frontmatter?.featureImg?.childImageSharp?.original.src
     if (!src) return // default to wizard image
     const { siteUrl } = site.siteMetadata
@@ -58,20 +76,7 @@ function Post({ data: { site, mdx } }) {
         s.setAttribute('label', 'discussion')
         s.crossOrigin = 'anonymous'
         s.async = true
-        utterances.current && utterances.current.appendChild(s)
-        /*
-		utterances.current.innerHTML = `
-				<script
-					src="https://utteranc.es/client.js"
-					repo="hjfitz/hjf.io"
-					issue-term="title"
-					label="discussion"
-					theme="preferred-color-scheme"
-					crossOrigin="anonymous"
-					async
-				/>
-		`
-				*/
+        utterances?.current?.appendChild(s)
     }, [])
     return (
         <Layout>
