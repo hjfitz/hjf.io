@@ -8,35 +8,36 @@ const paginatedHomepageTemplate = path.resolve(
 )
 
 async function createPages({ graphql, actions: { createPage } }) {
-    // create all pages from mdx
-    const result = await graphql(`
-        query MyQuery {
+    const completeResult = await graphql(`
+        query PagesQuery {
             allMdx {
-                edges {
-                    node {
-                        id
-                        frontmatter {
-                            path
-                            title
-                            date
-                            draft
-                        }
+                nodes {
+                    id
+                    frontmatter {
+                        path
+                        title
+                        date
+                        draft
+                    }
+                    internal {
+                        contentFilePath
                     }
                 }
             }
         }
     `)
-    const posts = result.data.allMdx.edges
+    const posts = completeResult.data.allMdx.nodes
 
     // We'll call `createPage` for each result
-    posts.forEach(({ node }) => {
+    posts.forEach((node) => {
         if (node.frontmatter.draft) return
 
         console.log(`creating ${node.frontmatter.path}`)
         createPage({
             path: node.frontmatter.path,
             // This component will wrap our MDX content
-            component: mdxTemplate,
+            //component: mdxTemplate,
+            component: `${mdxTemplate}?__contentFilePath=${node.internal.contentFilePath}`,
             // We can use the values in this context in
             // our page layout component
             context: node,
@@ -50,12 +51,11 @@ async function createPages({ graphql, actions: { createPage } }) {
                 filter: {
                     frontmatter: { type: { eq: "blog" }, draft: { eq: false } }
                 }
-                sort: { fields: frontmatter___date, order: DESC }
+                sort: { frontmatter: { date: DESC } }
             ) {
                 edges {
                     node {
                         id
-                        timeToRead
                         frontmatter {
                             path
                             title
@@ -82,7 +82,7 @@ async function createPages({ graphql, actions: { createPage } }) {
         }
     `)
 
-    const chunked = blogResult.data.allMdx.edges.reduce((acc, cur, idx) => {
+    const chunked = blogResult.data?.allMdx.edges.reduce((acc, cur, idx) => {
         if (idx % 10 === 0) acc.push([])
         acc[acc.length - 1].push(cur)
         return acc

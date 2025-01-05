@@ -9,7 +9,6 @@ import type { IndexPageProps } from '../types/index-template'
 
 const IndexPage = (props: IndexPageProps) => {
     const { chunk, page } = props.pageContext
-    console.log(JSON.stringify(props, null, 2))
     const prevLink =
         page === 2 ? (
             <Link to="/">Prev</Link>

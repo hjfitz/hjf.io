@@ -4,7 +4,7 @@ import Img from 'gatsby-image'
 import format from 'date-fns/format'
 
 interface Post {
-    date: string
+    date: string | numer
     description: string
     title: string
     path: string
@@ -21,6 +21,7 @@ interface PostSummaryProps {
 
 function PostSummary({ post }: PostSummaryProps) {
     const { path, title, date, featureImg } = post
+
     return (
         <div className="flex justify-center my-2">
             <Link

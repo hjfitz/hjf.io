@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import format from 'date-fns/format'
 import { graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
+//import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import SEO from '../components/SEO'
 import Layout from '../components/Layout'
@@ -14,7 +14,6 @@ export const pageQuery = graphql`
     query BlogPostQuery($id: String) {
         mdx(id: { eq: $id }) {
             id
-            body
             frontmatter {
                 title
                 description
@@ -62,7 +61,7 @@ function generateSEOImage(mdx: MdxFrontmatter, site: Site): string | undefined {
     return siteUrl + src
 }
 
-function Post({ data: { site, mdx } }) {
+const Post = ({ children, data: { site, mdx } }) => {
     const utterances = useRef<HTMLElement>()
     useEffect(() => {
         if (typeof window === 'undefined' || !utterances) {
@@ -139,7 +138,8 @@ function Post({ data: { site, mdx } }) {
                         ),
                     }}
                 >
-                    <MDXRenderer className="">{mdx.body}</MDXRenderer>
+                    {children}
+                    {/*<MDXRenderer className="">{mdx.body}</MDXRenderer>*/}
                 </MDXProvider>
             </article>
             <section ref={utterances} />

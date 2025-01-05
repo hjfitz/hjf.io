@@ -12,4 +12,10 @@ export default [
     ...tseslint.configs.recommended,
     pluginReact.configs.flat.recommended,
     eslintPluginPrettierRecommended,
+    {
+        rules: {
+            'react-hooks/rules-of-hooks': 'off',
+            'no-restricted-globals': 'off',
+        },
+    },
 ]

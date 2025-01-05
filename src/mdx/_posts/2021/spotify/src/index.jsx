@@ -1,10 +1,10 @@
+/* eslint react-hooks/rules-of-hooks: off, no-restricted-globals off */
 import React, { useEffect, useState } from 'react'
-import { render } from 'react-dom'
 
 import PopularTracks from './PopularTracks'
 import PopularArtists from './PopularArtists'
 import { loginUrl, makeSpotifyRequest } from './spotify'
-import { capitalise, titleify } from './util'
+import { titleify } from './util'
 
 const App = () => {
     if (typeof window === 'undefined') return ''
@@ -21,8 +21,6 @@ const App = () => {
     const [token, setToken] = useState(tokenState)
 
     const [data, setData] = useState(null)
-    // todo: handle
-    const [error, setError] = useState(null)
     const [playing, setPlaying] = useState(null)
 
     const termLookup = { short_term: '4 Weeks', long_term: 'All Time' }
@@ -49,12 +47,11 @@ const App = () => {
 
         if ('error' in response) {
             console.log('there was an error!')
-            setError(response.error)
             return
         }
 
         if (!('access_token' in response)) {
-            setError('No access token found!')
+            console.error('No access token found!')
             return
         }
 

@@ -3,8 +3,9 @@ module.exports = {
         title: "Harry's Code and Bugs",
         description: "Harry's code, bugs and quick hacks",
         author: '@__hjf',
-        siteUrl: process.env.SITE_URL || 'https://hjf.io/',
+        siteUrl: 'https://hjf.io/',
     },
+    trailingSlash: `always`,
     plugins: [
         'gatsby-plugin-react-helmet',
         {
@@ -73,24 +74,24 @@ module.exports = {
                                         edge.node.frontmatter.path,
                                 },
                             })),
-                        query: `
-						query BlogContentQuery {
-							allMdx(filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}, sort: {fields: frontmatter___date, order: DESC}) {
-							edges {
-								node {
-								frontmatter {
-									path
-									title
-									date
-									draft
-									description
-								}
-								}
-							}
-							}
-						}
-
-					`,
+                        query: `query BlogContentQuery {
+  allMdx(
+    filter: {frontmatter: {type: {eq: "blog"}, draft: {eq: false}}}
+    sort: {frontmatter: {date: DESC}}
+  ) {
+    edges {
+      node {
+        frontmatter {
+          path
+          title
+          date
+          draft
+          description
+        }
+      }
+    }
+  }
+}`,
                         output: '/rss.xml',
                         title: "hjf's feed",
                     },
