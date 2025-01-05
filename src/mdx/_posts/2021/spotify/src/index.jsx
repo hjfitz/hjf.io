@@ -1,4 +1,4 @@
-/* eslint react-hooks/rules-of-hooks: off, no-restricted-globals off */
+/* eslint-disable react-hooks/rules-of-hooks, no-restricted-globals */
 import React, { useEffect, useState } from 'react'
 
 import PopularTracks from './PopularTracks'

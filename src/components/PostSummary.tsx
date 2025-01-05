@@ -1,16 +1,16 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import Img from 'gatsby-image'
+import { GatsbyImage } from 'gatsby-plugin-image'
 import format from 'date-fns/format'
 
 interface Post {
-    date: string | numer
+    date: string | number
     description: string
     title: string
     path: string
     featureImg: {
         childImageSharp: {
-            fluid: unknown
+            gatsbyImageData: unknown
         }
     }
 }
@@ -28,9 +28,10 @@ function PostSummary({ post }: PostSummaryProps) {
                 className="w-full hover:text-blue-500 transition ease-all"
                 to={path}
             >
-                <Img
+                <GatsbyImage
                     className="h-64 mb-4"
-                    fluid={featureImg.childImageSharp.fluid}
+                    alt=""
+                    image={featureImg.childImageSharp.gatsbyImageData}
                 />
                 <header>
                     <h2 className="text-2xl font-semibold post-link font-header">

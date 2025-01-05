@@ -64,15 +64,7 @@ async function createPages({ graphql, actions: { createPage } }) {
                             description
                             featureImg {
                                 childImageSharp {
-                                    fluid(maxWidth: 400) {
-                                        base64
-                                        aspectRatio
-                                        src
-                                        srcSet
-                                        srcWebp
-                                        srcSetWebp
-                                        sizes
-                                    }
+                                    gatsbyImageData
                                 }
                             }
                         }
