@@ -1,6 +1,7 @@
-import type { GatsbyConfig } from 'gatsby'
-
-const config: GatsbyConfig = {
+/**
+ * @type {import('gatsby').GatsbyConfig}
+ */
+const config = {
     siteMetadata: {
         title: "Harry's Code and Bugs",
         description: "Harry's code, bugs and quick hacks",
@@ -166,4 +167,4 @@ const config: GatsbyConfig = {
     ],
 }
 
-export default config
+module.exports = config
