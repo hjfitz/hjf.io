@@ -94,12 +94,12 @@ const Post = ({ children, data: { site, mdx } }: PostProps) => {
                 img={generateSEOImage(mdx, site)}
                 canonical={canonicalUrl}
             />
-            <article>
+            <article className="container mx-auto">
                 <h1 className="pt-2 text-4xl font-semibold font-header">
                     {title}
                 </h1>
                 <small className="text-gray-500">
-                    {format(date, 'do MMM - yyyy')}
+                    Published on {format(date, 'd MMMM yyyy')}
                 </small>
                 <MDXProvider
                     components={{

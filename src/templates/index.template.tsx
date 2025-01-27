@@ -23,6 +23,7 @@ const IndexPage = (props: IndexPageProps) => {
                     {chunk.map((edge) => (
                         <PostSummary
                             post={edge.node.frontmatter}
+                            timeToReadMinutes={edge.timeToReadMinutes}
                             key={edge.node.id}
                         />
                     ))}

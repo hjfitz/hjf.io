@@ -21,7 +21,7 @@ export type IndexPageProps = {
                 chunk: Array<{
                     node: {
                         id: string
-                        timeToRead: number
+                        timeToReadMinutes: number
                         frontmatter: {
                             path: string
                             title: string
@@ -60,7 +60,7 @@ export type IndexPageProps = {
         chunk: Array<{
             node: {
                 id: string
-                timeToRead: number
+                timeToReadMinutes: number
                 frontmatter: {
                     path: string
                     title: string

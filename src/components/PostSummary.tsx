@@ -3,23 +3,21 @@ import { Link } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import format from 'date-fns/format'
 
-interface Post {
-    date: string | number
-    description: string
-    title: string
-    path: string
-    featureImg: {
-        childImageSharp: {
-            gatsbyImageData: unknown
+type PostSummaryProps = {
+    post: {
+        date: string | number
+        description: string
+        title: string
+        path: string
+        featureImg: {
+            childImageSharp: {
+                gatsbyImageData: unknown
+            }
         }
     }
 }
 
-interface PostSummaryProps {
-    post: Post
-}
-
-function PostSummary({ post }: PostSummaryProps) {
+const PostSummary = ({ post, timeToReadMinutes }: PostSummaryProps) => {
     const { path, title, date, featureImg } = post
 
     return (
@@ -29,7 +27,7 @@ function PostSummary({ post }: PostSummaryProps) {
                 to={path}
             >
                 <GatsbyImage
-                    className="h-64 mb-4"
+                    className="h-64 mb-4 rounded-lg"
                     alt=""
                     image={featureImg.childImageSharp.gatsbyImageData}
                 />
@@ -39,7 +37,8 @@ function PostSummary({ post }: PostSummaryProps) {
                     </h2>
                 </header>
                 <small className="text-gray-500">
-                    {format(new Date(date), 'do MMM, yyyy')}
+                    {format(new Date(date), 'do MMM, yyyy')} •{' '}
+                    {timeToReadMinutes} min
                 </small>
                 <p className="text-blue-500 hover:underline">Read More »</p>
             </Link>

@@ -60,6 +60,7 @@ export const createPages = async ({
                 edges {
                     node {
                         id
+                        body
                         frontmatter {
                             path
                             title
@@ -80,7 +81,14 @@ export const createPages = async ({
 
     const chunked = blogResult.data?.allMdx.edges.reduce((acc, cur, idx) => {
         if (idx % 10 === 0) acc.push([])
-        acc[acc.length - 1].push(cur)
+
+        const { body, ...postMetadata } = cur.node
+
+        const words = body.split(/\s*/)
+
+        const timeToReadMinutes = ~~(words.length / 238)
+
+        acc[acc.length - 1].push({ timeToReadMinutes, ...cur })
         return acc
     }, [])
 

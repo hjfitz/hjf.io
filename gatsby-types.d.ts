@@ -2649,7 +2649,7 @@ type PagesQueryQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<{ read
 type BlogContentQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type BlogContentQueryQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly frontmatter: { readonly path: string | null, readonly title: string | null, readonly date: string | null, readonly draft: boolean | null, readonly description: string | null, readonly featureImg: { readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } | null } | null } }> } };
+type BlogContentQueryQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly body: string | null, readonly frontmatter: { readonly path: string | null, readonly title: string | null, readonly date: string | null, readonly draft: boolean | null, readonly description: string | null, readonly featureImg: { readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } | null } | null } }> } };
 
 
 }
