@@ -9,6 +9,13 @@ html, body, #___gatsby, #gatsby-focus-wrapper {
 	@apply h-full;
 }
 
+body {
+  font-family: "Courier New", Courier, monospace;
+  font-family: "GeistMono", ui-monospace, SFMono-Regular, Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New, monospace, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+}
+
 code.language-text {
 	padding: 0 0.25rem!important;
 	line-height: 1.5rem!important;
@@ -74,4 +81,122 @@ li {
 	p {
 		@apply inline leading-6;
 	}
+}
+
+// Mixin for headings and similar markers
+@mixin markdown-marker($selector, $marker) {
+  #{$selector}::before {
+    content: "#{$marker} ";
+    color: #888;
+  }
+}
+
+// Headings
+@include markdown-marker(h1, "#");
+@include markdown-marker(h2, "##");
+@include markdown-marker(h3, "###");
+@include markdown-marker(h4, "####");
+@include markdown-marker(h5, "#####");
+@include markdown-marker(h6, "######");
+
+// Blockquotes
+blockquote {
+  &::before {
+    content: "> ";
+    color: #888;
+    padding-right: 0.5em;
+  }
+}
+
+// Unordered List Items
+ul {
+  li {
+    &::before {
+      content: "- ";
+      color: #888;
+      margin-right: 0.25em;
+    }
+  }
+}
+
+// Ordered List Items using CSS counters
+ol {
+  counter-reset: item;
+  li {
+    counter-increment: item;
+    position: relative;
+    list-style: none;
+    padding-left: 2em;
+    &::before {
+      content: counter(item) ". ";
+      color: #888;
+      position: absolute;
+      left: 0;
+    }
+  }
+}
+
+// Inline Code (exclude code inside pre elements)
+code {
+  &:not(pre code) {
+    &::before {
+      content: "`";
+      color: #888;
+    }
+    &::after {
+      content: "`";
+      color: #888;
+    }
+  }
+}
+
+// Code Blocks (assumes a <pre><code>...</code></pre> structure)
+pre {
+  > code {
+    &::before {
+      content: "```";
+      display: block;
+      color: #888;
+    }
+    &::after {
+      content: "```";
+      display: block;
+      color: #888;
+    }
+  }
+}
+
+// Bold Text
+strong {
+  &::before {
+    content: "**";
+    color: #888;
+  }
+  &::after {
+    content: "**";
+    color: #888;
+  }
+}
+
+// Emphasized Text
+em {
+  &::before {
+    content: "*";
+    color: #888;
+  }
+  &::after {
+    content: "*";
+    color: #888;
+  }
+}
+
+// Horizontal Rule
+hr {
+  &::before {
+    content: "---";
+    display: block;
+    color: #888;
+    text-align: center;
+    margin-bottom: 0.5em;
+  }
 }
