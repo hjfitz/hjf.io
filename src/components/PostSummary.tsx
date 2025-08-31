@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import { GatsbyImage } from 'gatsby-plugin-image'
-import format from 'date-fns/format'
+import { format } from 'date-fns'
 
 type PostSummaryProps = {
     post: {
@@ -11,37 +10,40 @@ type PostSummaryProps = {
         path: string
         featureImg: {
             childImageSharp: {
-                gatsbyImageData: unknown
+                fluid?: {
+                    base64: string
+                    aspectRatio: number
+                    src: string
+                    srcSet: string
+                    srcWebp: string
+                    srcSetWebp: string
+                    sizes: string
+                }
+                gatsbyImageData?: unknown
             }
         }
     }
+    timeToReadMinutes: number
 }
 
+const toLocalPath = (path: string) => `~/posts/${path.replaceAll('/', '')}.mdx`
+
 const PostSummary = ({ post, timeToReadMinutes }: PostSummaryProps) => {
-    const { path, title, date, featureImg } = post
+    const { path, title, date } = post
 
     return (
-        <div className="flex justify-center my-2">
-            <Link
-                className="w-full hover:text-blue-500 transition ease-all"
-                to={path}
-            >
-                <GatsbyImage
-                    className="h-64 mb-4 rounded-lg"
-                    alt=""
-                    image={featureImg.childImageSharp.gatsbyImageData}
-                />
-                <header>
-                    <h2 className="text-2xl font-semibold post-link font-header">
-                        {title}
-                    </h2>
-                </header>
-                <small className="text-gray-500">
-                    {format(new Date(date), 'do MMM, yyyy')} •{' '}
-                    {timeToReadMinutes} min
-                </small>
-                <p className="text-blue-500 hover:underline">Read More »</p>
-            </Link>
+        <div className="post-item">
+            <div className="post-title">
+                <Link className="post-link" to={path}>
+                    {title}
+                </Link>
+            </div>
+            <div className="terminal-command mb-1">
+                cat {toLocalPath(path)}
+            </div>
+            <div className="post-meta">
+                {format(new Date(date), 'MMM dd, yyyy')} • {timeToReadMinutes} min read
+            </div>
         </div>
     )
 }

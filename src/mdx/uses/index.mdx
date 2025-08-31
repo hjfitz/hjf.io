@@ -3,47 +3,48 @@ type: main
 date: "2021-02-10T19:00:00.000Z"
 draft: false
 path: "/uses/"
+title: "Uses - Harry's Development Setup & Tools"
+description: "Explore Harry's development setup, tools, and workflow. From hardware and software preferences to development environment configuration and productivity tools."
+keywords: ["development setup", "developer tools", "programming tools", "development workflow", "software stack", "hardware setup", "developer environment", "productivity tools", "coding tools"]
+tags: ["uses", "setup", "tools", "workflow", "productivity", "development environment"]
+author: "Harry"
+hideMetadata: true
+featureImg: term.png
 ---
 
-# 🛠  Uses
+# $ lsusb | grep -E "(Logitech|Bose|Corne)"
 
-I always find it fascincating to see how people work. I'll eventually even put out a post on my notion dashboard. Moreover, because this page is checked in to git, I'd love to track how *I* do my work over the years.
+```bash
+Bus 001 Device 002: ID 046d:c52b Logitech, Inc. MX Master 3S
+Bus 001 Device 003: ID 1a86:7523 QinHeng Electronics CH340 (Corne Keyboard)
+Bus 001 Device 005: ID 05a7:1020 Bose Corp. QuietComfort 45
+```
 
-`/uses` is a faux-standard where div-slingers and keyboard-cowboys alike write about how they drive their output. There's [uses.tech](https://uses.tech) to track more of these - if you also find this stuff interesting.
+# $ lspci | grep -i dell
 
-As with everybody who has access to electricity, my workflow relies on hardware and software. The software can more or less be split in to 2 categories: CLI and Electron.
+```bash
+01:00.0 Display controller: Dell U2717D (2560x1440@60Hz)
+```
 
-# 🧙 Software
+# $ uname -a
 
-In terms of OS, it doesn't matter (as long as it's not Windows). I've not used that thing since Windows 7. For personal use, I'm sat on Kubuntu 21.04 and for work, I use the latest MacOS. This doesn't really make much of a difference, because I'm either in a ZSH session or in Firefox.
+```bash
+Linux harry-dev 5.15.0-generic #1 SMP Ubuntu 22.04.1 LTS
+Darwin harry-mac 23.0.0 Darwin Kernel Version 23.0.0
+```
 
-Everything I need to code lives in a terminal. I use zsh with oh-my-zsh and a few plugins. my $PS1 is `juanghurtado`. My workflow sits me in Tmux: Editor on the left and a small pane for a few stacked terminals.
+# $ which nvim alacritty tmux
 
-On Kubuntu, I use Konsole; it's pretty good and I've got no complaints. On MacOS I use iTerm. I'm not a power user, but I'd like to be.
+```bash
+/usr/local/bin/nvim
+/usr/bin/alacritty  
+/usr/bin/tmux
+```
 
-I used to be a huge fan of VS Code, but I rediscovered Vim (Neovim) from my IRC days. It's pretty excellent - especially with a few plugins. If you don't already, I recommend remapping Caps Lock to Escape.
+# $ ls /Applications/ | grep -i spotify
 
-The plugins that get my work done are:
-* vim-plug: Make it work
-* NERDTree: Let me see my files
-* coc: Eslint and highlighting
-* airline: Give me some info
+```bash
+Spotify.app
+```
 
-Pretty basic - but I used to distro-hop a lot and this is my minmax of low-maintenance and usefulness. I've also got plugins for the various web frameworks that I practice. Those vary, though.
-
-That's pretty much my stack. I use Firefox for dev (but Chrom* for anything PWA related) and Postman for API calls.
-
-# 🌍 Webapps
-
-Without any mind-tooling, I'd be horribly organised. I use Notion to drive pretty-much every aspect of my life. I've split this in to Projects, a huge kanboard and a daily tracker. I'll write more about this in the future - I promise.
-
-I also live in the MDN docs, these are incredible. My code lives on [github](https://github.com/hjfitz/). I read a lot of Hacker News, CSS Tricks and I'm on Mastodon (@hjfitz@fosstodon).
-
-# 🤖 Hardware
-
-Hardware drives the developer - but really, you just need a good, sturdy laptop. I've had this Thinkpad X1 for about 7 years now. It's pre-owned, almost 10 years old, and cost me £350. It's got an i7 and 8gb memory. It's plenty fast. Storage doesn't matter to me: Everything lives online - photos, code, music. For anything extra, I've got a NAS.
-
-I wouldn't swap this laptop for anything. The keyboard is *smooth* - but after all of the use, I've had to wrap the wrist rest in duct tape; I was getting the odd electric shock from it. Not ideal.
-
-For work, I get some nice toys which, knowing my employer, is a shock. I've got an older Macbook Pro (with the touchbar) with an i7 and 16gb memory. It sometimes feels slower than the X1. I've got a Filco Majestouch 2 and Steelseries Sensei - but they're mine. I've also got a couple of Dell U2719D courtesy of work. 
 

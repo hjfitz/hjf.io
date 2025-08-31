@@ -1359,6 +1359,7 @@ type MdxFilterListInput = {
 };
 
 type MdxFrontmatter = {
+  readonly author: Maybe<Scalars['String']>;
   readonly blog: Maybe<Scalars['String']>;
   readonly category: Maybe<Scalars['String']>;
   readonly date: Maybe<Scalars['String']>;
@@ -1366,6 +1367,8 @@ type MdxFrontmatter = {
   readonly draft: Maybe<Scalars['Boolean']>;
   readonly featureAlt: Maybe<Scalars['String']>;
   readonly featureImg: Maybe<File>;
+  readonly hideMetadata: Maybe<Scalars['Boolean']>;
+  readonly keywords: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly path: Maybe<Scalars['String']>;
   readonly tags: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly title: Maybe<Scalars['String']>;
@@ -1373,6 +1376,7 @@ type MdxFrontmatter = {
 };
 
 type MdxFrontmatterFieldSelector = {
+  readonly author: InputMaybe<FieldSelectorEnum>;
   readonly blog: InputMaybe<FieldSelectorEnum>;
   readonly category: InputMaybe<FieldSelectorEnum>;
   readonly date: InputMaybe<FieldSelectorEnum>;
@@ -1380,6 +1384,8 @@ type MdxFrontmatterFieldSelector = {
   readonly draft: InputMaybe<FieldSelectorEnum>;
   readonly featureAlt: InputMaybe<FieldSelectorEnum>;
   readonly featureImg: InputMaybe<FileFieldSelector>;
+  readonly hideMetadata: InputMaybe<FieldSelectorEnum>;
+  readonly keywords: InputMaybe<FieldSelectorEnum>;
   readonly path: InputMaybe<FieldSelectorEnum>;
   readonly tags: InputMaybe<FieldSelectorEnum>;
   readonly title: InputMaybe<FieldSelectorEnum>;
@@ -1387,6 +1393,7 @@ type MdxFrontmatterFieldSelector = {
 };
 
 type MdxFrontmatterFilterInput = {
+  readonly author: InputMaybe<StringQueryOperatorInput>;
   readonly blog: InputMaybe<StringQueryOperatorInput>;
   readonly category: InputMaybe<StringQueryOperatorInput>;
   readonly date: InputMaybe<StringQueryOperatorInput>;
@@ -1394,6 +1401,8 @@ type MdxFrontmatterFilterInput = {
   readonly draft: InputMaybe<BooleanQueryOperatorInput>;
   readonly featureAlt: InputMaybe<StringQueryOperatorInput>;
   readonly featureImg: InputMaybe<FileFilterInput>;
+  readonly hideMetadata: InputMaybe<BooleanQueryOperatorInput>;
+  readonly keywords: InputMaybe<StringQueryOperatorInput>;
   readonly path: InputMaybe<StringQueryOperatorInput>;
   readonly tags: InputMaybe<StringQueryOperatorInput>;
   readonly title: InputMaybe<StringQueryOperatorInput>;
@@ -1401,6 +1410,7 @@ type MdxFrontmatterFilterInput = {
 };
 
 type MdxFrontmatterSortInput = {
+  readonly author: InputMaybe<SortOrderEnum>;
   readonly blog: InputMaybe<SortOrderEnum>;
   readonly category: InputMaybe<SortOrderEnum>;
   readonly date: InputMaybe<SortOrderEnum>;
@@ -1408,6 +1418,8 @@ type MdxFrontmatterSortInput = {
   readonly draft: InputMaybe<SortOrderEnum>;
   readonly featureAlt: InputMaybe<SortOrderEnum>;
   readonly featureImg: InputMaybe<FileSortInput>;
+  readonly hideMetadata: InputMaybe<SortOrderEnum>;
+  readonly keywords: InputMaybe<SortOrderEnum>;
   readonly path: InputMaybe<SortOrderEnum>;
   readonly tags: InputMaybe<SortOrderEnum>;
   readonly title: InputMaybe<SortOrderEnum>;
@@ -2540,30 +2552,202 @@ type SitePluginSortInput = {
 
 type SiteSiteMetadata = {
   readonly author: Maybe<Scalars['String']>;
+  readonly authorName: Maybe<Scalars['String']>;
   readonly description: Maybe<Scalars['String']>;
+  readonly githubUsername: Maybe<Scalars['String']>;
+  readonly image: Maybe<Scalars['String']>;
+  readonly keywords: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
+  readonly language: Maybe<Scalars['String']>;
+  readonly linkedinUsername: Maybe<Scalars['String']>;
+  readonly ogImage: Maybe<Scalars['String']>;
+  readonly ogImageAlt: Maybe<Scalars['String']>;
+  readonly ogImageHeight: Maybe<Scalars['Int']>;
+  readonly ogImageWidth: Maybe<Scalars['Int']>;
+  readonly ogType: Maybe<Scalars['String']>;
+  readonly siteAuthor: Maybe<Scalars['String']>;
+  readonly siteAuthorBio: Maybe<Scalars['String']>;
+  readonly siteAuthorEmail: Maybe<Scalars['String']>;
+  readonly siteAuthorGithub: Maybe<Scalars['String']>;
+  readonly siteAuthorInterests: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
+  readonly siteAuthorLinkedin: Maybe<Scalars['String']>;
+  readonly siteAuthorLinks: Maybe<SiteSiteMetadataSiteAuthorLinks>;
+  readonly siteAuthorLocation: Maybe<Scalars['String']>;
+  readonly siteAuthorProjects: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
+  readonly siteAuthorSkills: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
+  readonly siteAuthorSocial: Maybe<SiteSiteMetadataSiteAuthorSocial>;
+  readonly siteAuthorTwitter: Maybe<Scalars['String']>;
+  readonly siteDescription: Maybe<Scalars['String']>;
+  readonly siteKeywords: Maybe<Scalars['String']>;
+  readonly siteLanguage: Maybe<Scalars['String']>;
+  readonly siteLocale: Maybe<Scalars['String']>;
+  readonly siteName: Maybe<Scalars['String']>;
   readonly siteUrl: Maybe<Scalars['String']>;
   readonly title: Maybe<Scalars['String']>;
+  readonly twitterCardType: Maybe<Scalars['String']>;
+  readonly twitterUsername: Maybe<Scalars['String']>;
 };
 
 type SiteSiteMetadataFieldSelector = {
   readonly author: InputMaybe<FieldSelectorEnum>;
+  readonly authorName: InputMaybe<FieldSelectorEnum>;
   readonly description: InputMaybe<FieldSelectorEnum>;
+  readonly githubUsername: InputMaybe<FieldSelectorEnum>;
+  readonly image: InputMaybe<FieldSelectorEnum>;
+  readonly keywords: InputMaybe<FieldSelectorEnum>;
+  readonly language: InputMaybe<FieldSelectorEnum>;
+  readonly linkedinUsername: InputMaybe<FieldSelectorEnum>;
+  readonly ogImage: InputMaybe<FieldSelectorEnum>;
+  readonly ogImageAlt: InputMaybe<FieldSelectorEnum>;
+  readonly ogImageHeight: InputMaybe<FieldSelectorEnum>;
+  readonly ogImageWidth: InputMaybe<FieldSelectorEnum>;
+  readonly ogType: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthor: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorBio: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorEmail: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorGithub: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorInterests: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorLinkedin: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorLinks: InputMaybe<SiteSiteMetadataSiteAuthorLinksFieldSelector>;
+  readonly siteAuthorLocation: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorProjects: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorSkills: InputMaybe<FieldSelectorEnum>;
+  readonly siteAuthorSocial: InputMaybe<SiteSiteMetadataSiteAuthorSocialFieldSelector>;
+  readonly siteAuthorTwitter: InputMaybe<FieldSelectorEnum>;
+  readonly siteDescription: InputMaybe<FieldSelectorEnum>;
+  readonly siteKeywords: InputMaybe<FieldSelectorEnum>;
+  readonly siteLanguage: InputMaybe<FieldSelectorEnum>;
+  readonly siteLocale: InputMaybe<FieldSelectorEnum>;
+  readonly siteName: InputMaybe<FieldSelectorEnum>;
   readonly siteUrl: InputMaybe<FieldSelectorEnum>;
   readonly title: InputMaybe<FieldSelectorEnum>;
+  readonly twitterCardType: InputMaybe<FieldSelectorEnum>;
+  readonly twitterUsername: InputMaybe<FieldSelectorEnum>;
 };
 
 type SiteSiteMetadataFilterInput = {
   readonly author: InputMaybe<StringQueryOperatorInput>;
+  readonly authorName: InputMaybe<StringQueryOperatorInput>;
   readonly description: InputMaybe<StringQueryOperatorInput>;
+  readonly githubUsername: InputMaybe<StringQueryOperatorInput>;
+  readonly image: InputMaybe<StringQueryOperatorInput>;
+  readonly keywords: InputMaybe<StringQueryOperatorInput>;
+  readonly language: InputMaybe<StringQueryOperatorInput>;
+  readonly linkedinUsername: InputMaybe<StringQueryOperatorInput>;
+  readonly ogImage: InputMaybe<StringQueryOperatorInput>;
+  readonly ogImageAlt: InputMaybe<StringQueryOperatorInput>;
+  readonly ogImageHeight: InputMaybe<IntQueryOperatorInput>;
+  readonly ogImageWidth: InputMaybe<IntQueryOperatorInput>;
+  readonly ogType: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthor: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorBio: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorEmail: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorGithub: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorInterests: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorLinkedin: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorLinks: InputMaybe<SiteSiteMetadataSiteAuthorLinksFilterInput>;
+  readonly siteAuthorLocation: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorProjects: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorSkills: InputMaybe<StringQueryOperatorInput>;
+  readonly siteAuthorSocial: InputMaybe<SiteSiteMetadataSiteAuthorSocialFilterInput>;
+  readonly siteAuthorTwitter: InputMaybe<StringQueryOperatorInput>;
+  readonly siteDescription: InputMaybe<StringQueryOperatorInput>;
+  readonly siteKeywords: InputMaybe<StringQueryOperatorInput>;
+  readonly siteLanguage: InputMaybe<StringQueryOperatorInput>;
+  readonly siteLocale: InputMaybe<StringQueryOperatorInput>;
+  readonly siteName: InputMaybe<StringQueryOperatorInput>;
   readonly siteUrl: InputMaybe<StringQueryOperatorInput>;
   readonly title: InputMaybe<StringQueryOperatorInput>;
+  readonly twitterCardType: InputMaybe<StringQueryOperatorInput>;
+  readonly twitterUsername: InputMaybe<StringQueryOperatorInput>;
+};
+
+type SiteSiteMetadataSiteAuthorLinks = {
+  readonly phone: Maybe<Scalars['String']>;
+  readonly projects: Maybe<Scalars['String']>;
+  readonly spotify: Maybe<Scalars['String']>;
+};
+
+type SiteSiteMetadataSiteAuthorLinksFieldSelector = {
+  readonly phone: InputMaybe<FieldSelectorEnum>;
+  readonly projects: InputMaybe<FieldSelectorEnum>;
+  readonly spotify: InputMaybe<FieldSelectorEnum>;
+};
+
+type SiteSiteMetadataSiteAuthorLinksFilterInput = {
+  readonly phone: InputMaybe<StringQueryOperatorInput>;
+  readonly projects: InputMaybe<StringQueryOperatorInput>;
+  readonly spotify: InputMaybe<StringQueryOperatorInput>;
+};
+
+type SiteSiteMetadataSiteAuthorLinksSortInput = {
+  readonly phone: InputMaybe<SortOrderEnum>;
+  readonly projects: InputMaybe<SortOrderEnum>;
+  readonly spotify: InputMaybe<SortOrderEnum>;
+};
+
+type SiteSiteMetadataSiteAuthorSocial = {
+  readonly github: Maybe<Scalars['String']>;
+  readonly linkedin: Maybe<Scalars['String']>;
+  readonly mastodon: Maybe<Scalars['String']>;
+  readonly twitter: Maybe<Scalars['String']>;
+};
+
+type SiteSiteMetadataSiteAuthorSocialFieldSelector = {
+  readonly github: InputMaybe<FieldSelectorEnum>;
+  readonly linkedin: InputMaybe<FieldSelectorEnum>;
+  readonly mastodon: InputMaybe<FieldSelectorEnum>;
+  readonly twitter: InputMaybe<FieldSelectorEnum>;
+};
+
+type SiteSiteMetadataSiteAuthorSocialFilterInput = {
+  readonly github: InputMaybe<StringQueryOperatorInput>;
+  readonly linkedin: InputMaybe<StringQueryOperatorInput>;
+  readonly mastodon: InputMaybe<StringQueryOperatorInput>;
+  readonly twitter: InputMaybe<StringQueryOperatorInput>;
+};
+
+type SiteSiteMetadataSiteAuthorSocialSortInput = {
+  readonly github: InputMaybe<SortOrderEnum>;
+  readonly linkedin: InputMaybe<SortOrderEnum>;
+  readonly mastodon: InputMaybe<SortOrderEnum>;
+  readonly twitter: InputMaybe<SortOrderEnum>;
 };
 
 type SiteSiteMetadataSortInput = {
   readonly author: InputMaybe<SortOrderEnum>;
+  readonly authorName: InputMaybe<SortOrderEnum>;
   readonly description: InputMaybe<SortOrderEnum>;
+  readonly githubUsername: InputMaybe<SortOrderEnum>;
+  readonly image: InputMaybe<SortOrderEnum>;
+  readonly keywords: InputMaybe<SortOrderEnum>;
+  readonly language: InputMaybe<SortOrderEnum>;
+  readonly linkedinUsername: InputMaybe<SortOrderEnum>;
+  readonly ogImage: InputMaybe<SortOrderEnum>;
+  readonly ogImageAlt: InputMaybe<SortOrderEnum>;
+  readonly ogImageHeight: InputMaybe<SortOrderEnum>;
+  readonly ogImageWidth: InputMaybe<SortOrderEnum>;
+  readonly ogType: InputMaybe<SortOrderEnum>;
+  readonly siteAuthor: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorBio: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorEmail: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorGithub: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorInterests: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorLinkedin: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorLinks: InputMaybe<SiteSiteMetadataSiteAuthorLinksSortInput>;
+  readonly siteAuthorLocation: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorProjects: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorSkills: InputMaybe<SortOrderEnum>;
+  readonly siteAuthorSocial: InputMaybe<SiteSiteMetadataSiteAuthorSocialSortInput>;
+  readonly siteAuthorTwitter: InputMaybe<SortOrderEnum>;
+  readonly siteDescription: InputMaybe<SortOrderEnum>;
+  readonly siteKeywords: InputMaybe<SortOrderEnum>;
+  readonly siteLanguage: InputMaybe<SortOrderEnum>;
+  readonly siteLocale: InputMaybe<SortOrderEnum>;
+  readonly siteName: InputMaybe<SortOrderEnum>;
   readonly siteUrl: InputMaybe<SortOrderEnum>;
   readonly title: InputMaybe<SortOrderEnum>;
+  readonly twitterCardType: InputMaybe<SortOrderEnum>;
+  readonly twitterUsername: InputMaybe<SortOrderEnum>;
 };
 
 type SiteSortInput = {
@@ -2613,7 +2797,7 @@ type BlogPostQueryQueryVariables = Exact<{
 }>;
 
 
-type BlogPostQueryQuery = { readonly mdx: { readonly id: string, readonly frontmatter: { readonly title: string | null, readonly description: string | null, readonly date: string | null, readonly path: string | null, readonly featureImg: { readonly childImageSharp: { readonly original: { readonly src: string | null } | null } | null } | null } | null } | null, readonly site: { readonly siteMetadata: { readonly siteUrl: string | null } | null } | null };
+type BlogPostQueryQuery = { readonly mdx: { readonly id: string, readonly frontmatter: { readonly title: string | null, readonly description: string | null, readonly date: string | null, readonly path: string | null, readonly tags: ReadonlyArray<string | null> | null, readonly keywords: ReadonlyArray<string | null> | null, readonly author: string | null, readonly hideMetadata: boolean | null, readonly featureImg: { readonly childImageSharp: { readonly original: { readonly src: string | null } | null } | null } | null } | null } | null, readonly site: { readonly siteMetadata: { readonly siteUrl: string | null } | null } | null };
 
 type GatsbyImageSharpFixedFragment = { readonly base64: string | null, readonly width: number, readonly height: number, readonly src: string, readonly srcSet: string };
 

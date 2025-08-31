@@ -17,6 +17,8 @@ module.exports = {
 		fontFamily: {
 			print: ['Merriweather', 'serif'],
 			header: ['Lato', 'sans-serif'],
+			mono: ['JetBrains Mono', 'Source Code Pro', 'Courier New', 'monospace'],
+			terminal: ['JetBrains Mono', 'Source Code Pro', 'Courier New', 'monospace'],
 		},
 		fontSize: {
 			xs: '.75rem',
@@ -32,7 +34,22 @@ module.exports = {
 			'6xl': '4rem',
 			'7xl': '5rem',
 		},
-		extend: {},
+		extend: {
+			colors: {
+				terminal: {
+					bg: '#0a0a0a',
+					fg: '#00ff00',
+					secondary: '#00cc00',
+					accent: '#ffff00',
+					muted: '#666666',
+					border: '#333333',
+					highlight: '#00ff00',
+					error: '#ff0000',
+					warning: '#ffaa00',
+					info: '#0088ff',
+				}
+			}
+		},
 	},
 	variants: {extend: {}},
 	plugins: [

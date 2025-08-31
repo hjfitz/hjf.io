@@ -1,5 +1,5 @@
-import React, { HTMLAttributes, useEffect, useRef } from 'react'
-import format from 'date-fns/format'
+import React, { HTMLAttributes } from 'react'
+import { format } from 'date-fns'
 import { graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 
@@ -18,6 +18,10 @@ export const pageQuery = graphql`
                 description
                 date
                 path
+                tags
+                keywords
+                author
+                hideMetadata
                 featureImg {
                     childImageSharp {
                         original {
@@ -50,25 +54,6 @@ type PostProps = {
     data: Queries.BlogPostQueryQuery
 }
 
-function useUtterances(): React.LegacyRef<HTMLElement> | undefined {
-    const utterances = useRef<HTMLElement>()
-    useEffect(() => {
-        if (typeof window === 'undefined' || !utterances) {
-            return
-        }
-        const s = document.createElement('script')
-        s.src = 'https://utteranc.es/client.js'
-        s.setAttribute('repo', 'hjfitz/hjf.io')
-        s.setAttribute('issue-term', 'title')
-        s.setAttribute('label', 'discussion')
-        s.crossOrigin = 'anonymous'
-        s.async = true
-        utterances?.current?.appendChild(s)
-    }, [])
-    // @ts-expect-error needs beer
-    return utterances
-}
-
 function deriveCanonicalUrl(
     siteUrl?: string | null,
     pathname?: string | null
@@ -77,8 +62,33 @@ function deriveCanonicalUrl(
     return 'https://hjf.io/404'
 }
 
+type MetaHeaderProps = {
+    title: string
+    date: Date
+    path: string
+    hidden: boolean
+}
+
+const toPostPath = (path: string) => `~/posts/${path?.replaceAll('/', '')}.mdx`
+
+const MetaHeader = ({ title, date, path, hidden }: MetaHeaderProps) => {
+    if (hidden) return null
+    return (
+        <>
+            <div className="terminal-prompt mb-2">$ cat {toPostPath(path)}</div>
+            <div className="terminal-separator"></div>
+            <h1 className="post-title text-2xl mb-4">
+                {title}
+            </h1>
+            <div className="post-meta mb-6">
+                Published on {format(date, 'MMM dd, yyyy')}
+            </div>
+            <div className="terminal-separator"></div>
+        </>
+    )
+}
+
 const Post = ({ children, data: { site, mdx } }: PostProps) => {
-    const utterances = useUtterances()
     const title = mdx?.frontmatter?.title ?? 'Untitled Post'
     const description = mdx?.frontmatter?.description ?? 'Undescribed post'
     const date = new Date(mdx?.frontmatter?.date ?? 0)
@@ -86,6 +96,11 @@ const Post = ({ children, data: { site, mdx } }: PostProps) => {
         site?.siteMetadata?.siteUrl,
         mdx?.frontmatter?.path
     )
+    const tags = (mdx?.frontmatter?.tags as string[]) || []
+    const keywords = (mdx?.frontmatter?.keywords as string[]) || []
+    const author = (mdx?.frontmatter?.author as string) || 'Harry'
+    const path = mdx?.frontmatter?.path ?? 'Untitled Post'
+    const hideMetadata = mdx?.frontmatter?.hideMetadata || false
     return (
         <Layout>
             <SEO
@@ -93,52 +108,54 @@ const Post = ({ children, data: { site, mdx } }: PostProps) => {
                 description={description}
                 img={generateSEOImage(mdx, site)}
                 canonical={canonicalUrl}
+                type="article"
+                publishedTime={mdx?.frontmatter?.date || undefined}
+                modifiedTime={mdx?.frontmatter?.date || undefined}
+                author={author}
+                tags={tags}
+                keywords={keywords}
             />
             <article className="container mx-auto">
-                <h1 className="pt-2 text-4xl font-semibold font-header">
-                    {title}
-                </h1>
-                <small className="text-gray-500">
-                    Published on {format(date, 'd MMMM yyyy')}
-                </small>
+                <MetaHeader title={title} date={date} path={path} hidden={hideMetadata} />
+
                 <MDXProvider
                     components={{
                         // be awkward and hoist headings down a level for ease of writing
                         h1: (props: HTMLAttributes<HTMLHeadElement>) => (
                             <h2
                                 {...props}
-                                className="pt-4 text-3xl font-semibold font-header"
+                                className="post-title text-xl mt-6 mb-3"
                             />
                         ),
                         h2: (props: HTMLAttributes<HTMLHeadElement>) => (
                             <h3
                                 {...props}
-                                className="pt-3 text-2xl font-semibold font-header"
+                                className="post-title text-lg mt-5 mb-2"
                             />
                         ),
                         h3: (props: HTMLAttributes<HTMLHeadElement>) => (
                             <h4
                                 {...props}
-                                className="pt-2 text-xl font-semibold font-header"
+                                className="post-title text-base mt-4 mb-2"
                             />
                         ),
                         h4: (props: HTMLAttributes<HTMLHeadElement>) => (
                             <h4
                                 {...props}
-                                className="pt-2 text-lg font-header"
+                                className="post-title text-sm mt-3 mb-1"
                             />
                         ),
                         p: (props: HTMLAttributes<HTMLParagraphElement>) => (
-                            <p {...props} className="py-3 text-sm font-print" />
+                            <p {...props} className="post-description mb-3" />
                         ),
                         a: (props: HTMLAttributes<HTMLAnchorElement>) => (
                             // @ts-expect-error yah
-                            <Link {...props} className="text-blue-400" />
+                            <Link {...props} />
                         ),
                         li: (props: HTMLAttributes<HTMLElement>) => (
                             <li
                                 {...props}
-                                className="text-sm list-disc list-inside font-print"
+                                className="post-description list-disc list-inside mb-1"
                             />
                         ),
                         code: (props: HTMLAttributes<HTMLElement>) => (
@@ -153,7 +170,6 @@ const Post = ({ children, data: { site, mdx } }: PostProps) => {
                     {children}
                 </MDXProvider>
             </article>
-            <section ref={utterances} />
         </Layout>
     )
 }

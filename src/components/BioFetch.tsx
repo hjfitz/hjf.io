@@ -51,12 +51,7 @@ function Details() {
 function Header() {
     return (
         <header>
-            <pre>
-                {`
-harry@hjf.io:~/ 
-> biofetch
-			`}
-            </pre>
+            <h2 className="post-title text-xl mt-6 mb-3">$ biofetch</h2>
         </header>
     )
 }

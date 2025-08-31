@@ -11,28 +11,43 @@ const IndexPage = (props: IndexPageProps) => {
     const { chunk, page } = props.pageContext
     const prevLink =
         page === 2 ? (
-            <Link to="/">Prev</Link>
+            <Link className="pagination-link" to="/">Prev</Link>
         ) : (
-            <Link to={`/${page - 1}`}>Prev</Link>
+            <Link className="pagination-link" to={`/${page - 1}`}>Prev</Link>
         )
     return (
         <Layout>
-            <SEO title="Home" />
-            <div className="gap-16 lg:gap-32 grid grid-cols-1 md:grid-cols-3 auto-rows-auto">
-                <section className="grid gap-8 col-span-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                    {chunk.map((edge) => (
-                        <PostSummary
-                            post={edge.node.frontmatter}
-                            timeToReadMinutes={edge.timeToReadMinutes}
-                            key={edge.node.id}
-                        />
-                    ))}
-                </section>
+            <SEO 
+                title="Home"
+                description="Harry's Code and Bugs - A developer's journey through JavaScript, TypeScript, React, and modern web development. Read about coding, debugging, and quick hacks."
+                keywords={[
+                    'web development blog',
+                    'javascript blog',
+                    'typescript blog',
+                    'react blog',
+                    'programming blog',
+                    'developer blog',
+                    'coding blog',
+                    'tech blog',
+                    'software development blog'
+                ]}
+                type="website"
+            />
+            <div className="terminal-prompt mb-2">$ ls -la ~/posts/</div>
+            <div className="terminal-separator"></div>
+            <div className="post-grid">
+                {chunk.map((edge) => (
+                    <PostSummary
+                        post={edge.node.frontmatter}
+                        timeToReadMinutes={edge.timeToReadMinutes}
+                        key={edge.node.id}
+                    />
+                ))}
             </div>
-            <section className="flex justify-around py-4">
+            <div className="pagination">
                 {page !== 1 && prevLink}
-                <Link to={`/${page + 1}`}>Next</Link>
-            </section>
+                <Link className="pagination-link" to={`/${page + 1}`}>Next</Link>
+            </div>
         </Layout>
     )
 }

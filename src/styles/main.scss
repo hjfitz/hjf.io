@@ -1,77 +1,431 @@
 @tailwind base; 
-
 @tailwind components;
-
 @tailwind utilities;
 
-// gatsby whyyy 
-html, body, #___gatsby, #gatsby-focus-wrapper {
-	@apply h-full;
+// Import monospaced fonts for terminal aesthetic
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600;700&display=swap');
+
+// Terminal color palette - Black text on white background
+:root {
+  --terminal-bg: #ffffff;
+  --terminal-fg: #000000;
+  --terminal-secondary: #333333;
+  --terminal-accent: #0066cc;
+  --terminal-muted: #666666;
+  --terminal-border: #cccccc;
+  --terminal-highlight: #0066cc;
+  --terminal-error: #cc0000;
+  --terminal-warning: #cc6600;
+  --terminal-info: #0066cc;
 }
 
+// Base terminal styling
+html, body, #___gatsby, #gatsby-focus-wrapper {
+  @apply h-full;
+  background-color: var(--terminal-bg);
+  color: var(--terminal-fg);
+  font-family: 'JetBrains Mono', 'Source Code Pro', 'Courier New', monospace;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+// Terminal cursor effect
+.terminal-cursor::after {
+  content: '█';
+  animation: blink 1s infinite;
+  color: var(--terminal-fg);
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+// Terminal prompt styling
+.terminal-prompt {
+  color: var(--terminal-accent);
+  font-weight: 600;
+}
+
+.terminal-command {
+  color: var(--terminal-fg);
+  font-weight: 500;
+}
+
+.terminal-output {
+  color: var(--terminal-secondary);
+}
+
+.terminal-error {
+  color: var(--terminal-error);
+}
+
+.terminal-warning {
+  color: var(--terminal-warning);
+}
+
+.terminal-info {
+  color: var(--terminal-info);
+}
+
+// Link styling
+a {
+  color: var(--terminal-highlight);
+  text-decoration: underline;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: var(--terminal-accent);
+    text-decoration: none;
+  }
+}
+
+// Post links with terminal aesthetic - SIMPLE UNDERLINE
+.post-link {
+  color: var(--terminal-fg);
+  text-decoration: underline;
+  font-weight: 600;
+  
+  &:hover {
+    color: var(--terminal-accent);
+    text-decoration: none;
+  }
+}
+
+// Navigation styling
+.nav-link {
+  color: var(--terminal-secondary);
+  text-decoration: none;
+  margin-right: 1rem;
+  
+  &:hover {
+    color: var(--terminal-accent);
+  }
+}
+
+// Header styling
+.site-header {
+  color: var(--terminal-accent);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+// Header link with blinking cursor
+.header-link {
+  color: var(--terminal-accent);
+  text-decoration: none;
+  position: relative;
+  
+  &::after {
+    content: '█';
+    animation: blink 1s infinite;
+    color: var(--terminal-accent);
+    margin-left: 2px;
+  }
+  
+  &:hover {
+    color: var(--terminal-accent);
+    text-decoration: none;
+  }
+}
+
+// Post grid styling
+.post-grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.post-item {
+  border-bottom: 1px dotted var(--terminal-border);
+  padding-bottom: 1rem;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.post-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--terminal-fg);
+}
+
+.post-meta {
+  color: var(--terminal-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.post-description {
+  color: var(--terminal-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+// Code styling
 code.language-text {
-	padding: 0 0.25rem!important;
-	line-height: 1.5rem!important;
-	@apply text-gray-500 bg-gray-200 border-gray-300 border #{!important};
+  padding: 0 0.25rem !important;
+  line-height: 1.5rem !important;
+  background-color: var(--terminal-bg) !important;
+  color: var(--terminal-fg) !important;
+  border: 1px solid var(--terminal-border) !important;
+  font-family: 'JetBrains Mono', monospace !important;
 }
 
 pre[class*="language-"] {
-	font-size: 0.75rem!important;
-	line-height: 1rem!important;
+  font-size: 0.875rem !important;
+  line-height: 1.4 !important;
+  background-color: var(--terminal-bg) !important;
+  border: 1px solid var(--terminal-border) !important;
+  color: var(--terminal-fg) !important;
+  font-family: 'JetBrains Mono', monospace !important;
 }
 
-.token.table {
-	// prism and gatsby are a bit iffy sometimes
-	display: inline!important;
+// Prism overrides for terminal theme
+code[class*="language-"], pre[class*="language-"] {
+  @apply text-sm #{!important};
+  background-color: var(--terminal-bg) !important;
+  color: var(--terminal-fg) !important;
 }
 
+// Terminal-style separators
+.terminal-separator {
+  border-top: 1px solid var(--terminal-border);
+  margin: 1rem 0;
+}
+
+.terminal-dotted-separator {
+  border-top: 1px dotted var(--terminal-border);
+  margin: 1rem 0;
+}
+
+// Responsive design
 @media screen and (max-width: 640px) {
-	.container {
-
-	}
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .post-grid {
+    gap: 1rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
-	.container {
-	
-	}
+  .container {
+    padding: 0 1.5rem;
+  }
 }
 
 @media screen and (min-width: 1024px) {
-	.container {
-		max-width: 800px;
-	}
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
 }
 
-@media screen and (max-width: 1280px) {
-	.container {
-	
-	}
+// Pagination styling
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--terminal-border);
 }
 
-@media screen and (max-width: 1536px) {
-	.container {
-	
-	}
+.pagination-link {
+  color: var(--terminal-secondary);
+  text-decoration: none;
+  
+  &:hover {
+    color: var(--terminal-accent);
+  }
 }
 
-// homepage bits
-div {
-	dt, dd {
-		@apply inline
-	}
+// Footer styling
+.footer {
+  color: var(--terminal-muted);
+  font-size: 0.9rem;
 }
 
-
-// prism overrides
-code[class*="language-"], pre[class*="language-"] {
-	@apply text-sm #{!important};
-}
-
-
+// List styling
 li {
-	@apply mb-2;
-	p {
-		@apply inline leading-6;
-	}
+  margin-bottom: 0.5rem;
+  
+  p {
+    display: inline;
+    line-height: 1.6;
+  }
+}
+
+// Definition list styling
+div {
+  dt, dd {
+    display: inline;
+  }
+}
+
+// Token overrides for syntax highlighting
+.token.table {
+  display: inline !important;
+}
+
+// Terminal-style animations
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40, end);
+}
+
+// Glitch effect for hacker aesthetic
+.glitch {
+  position: relative;
+  
+  &::before,
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  &::before {
+    animation: glitch-1 0.5s infinite;
+    color: var(--terminal-error);
+    z-index: -1;
+  }
+  
+  &::after {
+    animation: glitch-2 0.5s infinite;
+    color: var(--terminal-info);
+    z-index: -2;
+  }
+}
+
+@keyframes glitch-1 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-2 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(2px, -2px); }
+  40% { transform: translate(2px, 2px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(-2px, 2px); }
+}
+
+// Terminal-style file listing
+.file-listing {
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.8;
+}
+
+.file-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+  
+  &:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+  }
+}
+
+.file-name {
+  color: var(--terminal-fg);
+  font-weight: 600;
+}
+
+.file-meta {
+  color: var(--terminal-muted);
+  font-size: 0.9rem;
+}
+
+// Terminal-style blockquotes
+blockquote {
+  border-left: 3px solid var(--terminal-accent);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--terminal-secondary);
+  font-style: italic;
+}
+
+// Terminal-style tables
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+  
+  th, td {
+    border: 1px solid var(--terminal-border);
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  th {
+    background-color: rgba(0, 255, 0, 0.1);
+    color: var(--terminal-accent);
+    font-weight: 600;
+  }
+  
+  td {
+    color: var(--terminal-secondary);
+  }
+}
+
+// Terminal-style images
+img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--terminal-border);
+  margin: 1rem 0;
+}
+
+// Terminal-style horizontal rules
+hr {
+  border: none;
+  border-top: 1px solid var(--terminal-border);
+  margin: 2rem 0;
+}
+
+// Terminal-style form elements
+input, textarea, select {
+  background-color: var(--terminal-bg);
+  color: var(--terminal-fg);
+  border: 1px solid var(--terminal-border);
+  padding: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--terminal-accent);
+  }
+}
+
+// Terminal-style buttons
+button {
+  background-color: var(--terminal-bg);
+  color: var(--terminal-fg);
+  border: 1px solid var(--terminal-border);
+  padding: 0.5rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+    border-color: var(--terminal-accent);
+  }
 }

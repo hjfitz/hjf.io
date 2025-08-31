@@ -8,18 +8,17 @@ type NavProps = {
 }
 
 const NavItem = ({ to, children }: NavItemProps) => (
-    <Link className="hover:text-blue-600 mr-4" to={to}>
+    <Link className="nav-link" to={to}>
         {children}
     </Link>
 )
 
 const Nav = ({ children }: NavProps) => (
-    <nav className="text-gray-800 inline-block flex justify-center">
+    <nav className="flex items-center">
         {children}
-        <NavItem to="/">Home</NavItem>
-        <NavItem to="/about">About</NavItem>
-        {/* <NavItem to="/blog">Blog</NavItem> */}
-        <NavItem to="/uses">/uses</NavItem>
+        <NavItem to="/">> home</NavItem>
+        <NavItem to="/about">> about</NavItem>
+        <NavItem to="/uses">> /uses</NavItem>
     </nav>
 )
 

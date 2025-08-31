@@ -3,24 +3,35 @@ type: main
 date: "2020-12-02T19:00:00.000Z"
 draft: false
 path: "/about/"
+title: "About Harry - Full-Stack Developer"
+description: "Meet Harry, a passionate full-stack developer specializing in JavaScript, TypeScript, React, and modern web development. Learn about his projects, skills, and journey in software development."
+keywords: ["Harry", "full-stack developer", "JavaScript developer", "TypeScript developer", "React developer", "web development", "software engineer", "UK developer"]
+tags: ["about", "developer", "portfolio", "biography"]
+author: "Harry"
+hideMetadata: true
+featureImg: feature.jpeg
 ---
+
 import BioFetch from '../../components/BioFetch.tsx'
+import SystemCtl from '../../components/about/SystemCtl.tsx'
+import BashSkill from '../../components/about/BashSkill.tsx'
 
-I’m [hjf](https://www.linkedin.com/in/hjfitz/). This is a blog that I run on Netlify pages with Gatsby and Tailwind. I want it to use Preact, too. It’s mostly a learning project - but mostly because I wanted another project.
+# $ whoami
 
-I’m in love with writing code, even though it's not officially part of my main job. I write a lot of JavaScript, TypeScript and go. My favourite pieces of tech are (P)React, Taliwind and serverless hosting.
+I'm [Harry](https://www.linkedin.com/in/hjfitz/), I cook, lift heavy things, eat, write software and run a team in the south of the UK. 
 
-Recently, I’ve built:
+## $ ls [/github.com/hjfitz](https://github.com/hjfitz?tab=repositories)
 
-- [A basic p2p video/screen sharing chat, like Zoom](https://phone.hjf.io)
-- [A Spotify app that lets you see your top tracks](https://spotify.hjf.io)
-- [A fully featured custom text editor](https://github.com/hjfitz/rich-text-input)
-- [A tiny event emitter](https://github.com/hjfitz/mitr)
-- [A Spotify player for the CLI](https://github.com/hjfitz/spoticli)
-- [An alternative to optional object chaining](https://github.com/hjfitz/hitcher)
-- [A way to manipulate images in the DOM](https://github.com/hjfitz/js-images)
-- [one](https://github.com/hjfitz/relay.ts), [two](https://github.com/hjfitz/mtws) clones of Express
+- **[nanorouter](https://github.com/hjfitz/nanorouter)**: Express, but in 25 lines of code. Constraint causes beauty
+- **[spoticli](https://github.com/hjfitz/spoticli)**: My first foray in to Rust. A *blazingly slow* CLI player for Spotify
+- **[spoti5](https://github.com/hjfitz/spoti5)**: A next.js app to demonstrate how effective server components are. Shows stats on your top listened
+- **[gen](https://github.com/hjfitz/gen)**: The best CLI tool for actually improving DX with LLMs
 
-There’s a lot more - but peek through the source code yourself! I’m [hjfitz on GitHub](https://github.com/hjfitz?tab=repositories).
+## $ cat ~/.bashrc | grep -i skill
+<BashSkill />
+
+## $ systemctl status skills
+<SystemCtl />
+
 
 <BioFetch />

@@ -48,12 +48,12 @@ function Layout({ children }: LayoutProps) {
     return (
         <>
             <SEO />
-            <div className="min-h-full text-black bg-white">
-                <main className="p-2 mx-auto md:py-8 px-8">
-                    <section className="pt-4 pb-8 text-xl font-header">
+            <div className="min-h-full">
+                <main className="container mx-auto p-4 md:p-8">
+                    <section className="mb-8">
                         <Nav>
-                            <header className="pb-1 text-yellow-500 inline-block mr-4">
-                                <Link to="/">hjf.io</Link>
+                            <header className="site-header inline-block mr-8">
+                                <Link to="/" className="header-link">~/ hjf.io</Link>
                             </header>
                         </Nav>
                     </section>
