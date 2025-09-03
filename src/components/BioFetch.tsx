@@ -7,7 +7,7 @@ function Details() {
             <div aria-hidden="true">------------</div>
             <div>
                 <dt>Uptime:</dt>
-                <dd> 26 Years</dd>
+                <dd> 29 Years</dd>
             </div>
             <div>
                 <dt>Languages:</dt>
@@ -19,7 +19,7 @@ function Details() {
             </div>
             <div>
                 <dt>Currently:</dt>
-                <dd> Lead Full Stack Developer</dd>
+                <dd> Lead Developer</dd>
             </div>
             <div>
                 <dt>Host:</dt>
@@ -27,7 +27,7 @@ function Details() {
             </div>
             <div>
                 <dt>Editor:</dt>
-                <dd> Vim</dd>
+                <dd> Neovim</dd>
             </div>
             <div>
                 <dt>Hobbies:</dt>
